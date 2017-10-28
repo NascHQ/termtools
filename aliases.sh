@@ -10,7 +10,7 @@ alias ipout='dig +short myip.opendns.com @resolver1.opendns.com'
 alias ip="echo -e Internal IP Address: ;  ipconfig getifaddr en0; echo -e Public facing IP Address: ; curl ipecho.net/plain ; echo ;"
 alias aliases='alias'
 alias ..='cd ..'
-alias cs..='cd ..'
+alias cd..='cd ..'
 alias .2="cd ../../"
 alias .3="cd ../../../"
 alias .4="cd ../../../../"
@@ -66,8 +66,6 @@ alias chgrp='chgrp --preserve-root'
 # alias rm="echo Use 'del' to send it to the trash can instead.; /bin/rm -i --preserve-root"
 alias rm="/bin/rm -i --preserve-root"
 
-
-
 #   extract:  Extract most know archives with one command
 #   ---------------------------------------------------------
     extract () {
@@ -101,14 +99,17 @@ alias rm="/bin/rm -i --preserve-root"
 
 #   ii:  display useful host related informaton
 #   -------------------------------------------------------------------
-    ii() {
-        echo -e "\nYou are logged on ${RED}$HOST"
+    about() {
+        local U
+        U= `whoami`
+        echo -e "\nYou are logged on ${RED}$HOST as $IM"
         echo -e "\nAdditionnal information:$NC " ; uname -a
         echo -e "\n${RED}Users logged on:$NC " ; w -h
         echo -e "\n${RED}Current date :$NC " ; date
         echo -e "\n${RED}Machine stats :$NC " ; uptime
         echo -e "\n${RED}Current network location :$NC " ; scselect
-        echo -e "\n${RED}Public facing IP Address :$NC " ;myip
+        echo -e "\n${RED}Local IP Address :$NC " ; ipin
+        echo -e "\n${RED}Public facing IP Address :$NC " ; ipout
         #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
         echo
     }

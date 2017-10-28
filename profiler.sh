@@ -14,12 +14,12 @@ BRANCH_COLOR="\$(branch_color)"
 CURRENT_BRANCH="\$(currentGitBranch -wt)"
 RESET_COLOR="\e[m\\"
 DIR_PATH="\w"
-SESSION_TYPE=""
+MACHINE=""
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-  SESSION_TYPE="@\h"
+  MACHINE="@\h"
 else
   case $(ps -o comm= -p $PPID) in
-    sshd|*/sshd) SESSION_TYPE="@\h";;
+    sshd|*/sshd) MACHINE="@\h";;
   esac
 fi
 
