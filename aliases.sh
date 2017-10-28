@@ -28,7 +28,6 @@ alias gittree="git log --graph --decorate --oneline --all"
 alias checkout="git checkout"
 alias push="git push origin"
 alias pull="git pull origin"
-alias largest="sudo du -cxhd 1"
 alias sizes="sudo du -cxhd 1"
 alias amazon="sudo ssh -i ~/.ssh/nascserver.pem ubuntu@18.231.45.221"
 alias flushDNS='dscacheutil -flushcache'
