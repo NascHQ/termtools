@@ -18,7 +18,7 @@ USER[@host] :: Path [(branch)]$
 
 Where _@host_ is only shown in case your are on a SSH session, and _(branch)_ is only shown in directories where you have a _.git_ file. It will have a different color according to the current state of the active branch.
 
-![](raw/master/assets/nasc_profiler_sample.png)
+![](https://bitbucket.org/nascweb/nasc_profiler/raw/master/assets/nasc_profiler_sample.png)
 
 ### Features
 
@@ -52,8 +52,8 @@ Where _@host_ is only shown in case your are on a SSH session, and _(branch)_ is
 - commitAll: `git add -A; git commit`
 - gitlog: Shows a more readable log for your git repo
 - gittree: Shows a readable tree for your git repo
-- checkout: `git checkout`
-- push: `git push origin`
+- checkout: `git checkout`. Used as `checkout mybranch`.
+- push: `git push origin`. Use it like `push master`.
 - pull: `git pull origin`
 - sizes: Shows the size of your files and directories
 - flushDNS: Flushes the DNSs
