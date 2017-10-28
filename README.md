@@ -1,4 +1,4 @@
-## Nasc Profiler
+## Bash Profile by Nasc
 
 It ads a bunch of _aliases_ and extra funcionality for your bash profile.
 
