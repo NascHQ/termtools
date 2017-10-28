@@ -18,6 +18,8 @@ USER[@host] :: Path [(branch)]$
 
 Where _@host_ is only shown in case your are on a SSH session, and _(branch)_ is only shown in directories where you have a _.git_ file. It will have a different color according to the current state of the active branch.
 
+![](raw/master/assets/nasc_profiler_sample.png)
+
 ### Features
 
 - Colors in PS1
