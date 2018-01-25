@@ -32,7 +32,8 @@ alias sizes="sudo du -cxhd 1"
 alias amazon="sudo ssh -i ~/.ssh/nascserver.pem ubuntu@18.231.45.221"
 alias flushDNS='dscacheutil -flushcache'
 alias DSFiles_removal="find . -type f -name '*.DS_Store' -ls -delete"
-alias hosts_editir='sudo vim /etc/hosts'
+alias hosts_edit='sudo vim /etc/hosts'
+alias reloadprofiler='source ~/.bash_profile'
 alias h='history'
 alias today='date +"%d-%m-%Y"'
 alias now='date +"%T"'
@@ -63,7 +64,7 @@ alias chgrp='chgrp --preserve-root'
 #   done
 # }
 # alias rm="echo Use 'del' to send it to the trash can instead.; /bin/rm -i --preserve-root"
-alias rm="/bin/rm -i --preserve-root"
+alias rm="/bin/rm -i"
 
 #   extract:  Extract most know archives with one command
 #   ---------------------------------------------------------
