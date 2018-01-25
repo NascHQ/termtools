@@ -28,7 +28,7 @@ else
   esac
 fi
 
-export PS1="\[\e[38;5;111m\]\]$USER$MACHINE$SESSION_TYPE\[$RESET_COLOR]$SEP\[\e[1;37m\]$DIR_PATH\[$RESET_COLOR]\[\e$BRANCH_COLOR\]$CURRENT_BRANCH\[$RESET_COLOR] $DOLLAR \]"
+export PS1="\[\e[38;5;111m\]\]$USER$MACHINE$SESSION_TYPE\[$RESET_COLOR]$SEP\[\e[1;37m\]$DIR_PATH\[$RESET_COLOR]\[\e$BRANCH_COLOR\]$CURRENT_BRANCH\[$RESET_COLOR] $DOLLAR \]\]\]\]\]"
 
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
