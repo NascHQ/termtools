@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env node
 
 # import utilities
 . "$(dirname $BASH_SOURCE)/utils.sh"
