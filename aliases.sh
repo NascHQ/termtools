@@ -41,7 +41,7 @@ alias ports='netstat -tulanp'
 alias lsd='ll | grep "^d"' # ls for only directories
 # safety
 alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
+# alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
 # del () {
 #     # trash $1
