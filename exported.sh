@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # if ! type "trash" > /dev/null; then
 #     echo "Instaling dependency for moving files to trash."
@@ -117,3 +118,53 @@ alias rm="/bin/rm -i"
         #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
         echo
     }
+
+function testFncExpt () {
+    echo 0 > ~/.uis
+    #IS_ROOT=$(echo "$USER_IS_SUDO")
+    #IS_ROOT=$USER_IS_SUDO
+    #echo ">>$1<<"
+    #if [ "$IS_ROOT" != 1 ]; then
+       # IS_ROOT=0
+    #else
+     # echo ""
+    #fi
+    FORCE_COLOR=true && node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe 1
+}
+#export -f testFncExpt
+
+COUNTER=0
+#function buildPS1 () {
+#    echo "$(reallyBuildPS1)"
+#}
+echo 0 > ~/.uis
+function buildPS1 () {
+    #COUNTER=$((COUNTER + 1))
+    #LOGNAME=$(logname)
+    #UUSER=$([ "${LOGNAME}" = "${USER}" ] && echo ${USER} || echo '$(tput setaf 1)${LOGNAME}$(tput sgr0) as ${USER}')
+
+    #PS1="$(node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(eval "if [[ whoami -ne 'root' ]]; then echo 'NOTROOT'; else echo 'ROOT'; fi") 1)"
+    echo "$(now); $(node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(whoami) 1)"
+    #echo "$COUNTER "
+}
+export -f buildPS1
+#export -f reallyBuildPS1
+
+
+#PROMPT_COMMAND="buildPS1"
+
+#PS1="\$(eval 'if [ -n \"\\$(type -t \'buildPS1\')\"] then \"\$(buildPS1)\"; else echo \' fff \'; fi')"
+#PS1="\$(eval 'if [ -n \"\\$(type -t \'buildPS1\')\" ]; then echo \'echo 123\'; else echo \'echo 456\'; fi') >> "
+
+
+#########PS1="\$(buildPS1 || echo 123)"
+PS1="\$(if [ -n \"\$(type -t buildPS1)\" ]; then buildPS1; else echo \"IS THE FUCKING SUDOOO >>\" ; fi)"
+
+
+
+
+#PS1='${PS2c##*[$((PS2c=0))-9]}- > '
+#PS2='$((PS2c=PS2c+1)) > '
+
+
+

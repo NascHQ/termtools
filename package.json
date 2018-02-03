@@ -1,0 +1,20 @@
+{
+  "name": "nasc_profiler",
+  "version": "1.0.0",
+  "description": "It ads a bunch of _aliases_ and extra funcionality for your bash profile.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/nascweb/nasc_profiler.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/nascweb/nasc_profiler#readme",
+  "dependencies": {
+    "chalk": "^2.3.0"
+  }
+}
