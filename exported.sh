@@ -19,6 +19,7 @@ alias .5="cd ../../../../../"
 alias .6="cd ../../../../../../"
 alias .7="cd ../../../../../../../"
 alias ll='ls -FGlAhp'
+alias back='cd -'
 alias ls='ls -FA'
 alias ~="cd ~"
 alias root="cd /"
@@ -28,12 +29,23 @@ alias commitAll="git add -A; git commit -a"
 alias gitlog="git log --graph --decorate --oneline"
 alias gittree="git log --graph --decorate --oneline --all"
 alias checkout="git checkout"
+
+function bold () {
+    echo "$(tput bold)$@$(tput sgr0)"
+}
+alias bold="bold"
+function underline () {
+    echo "$(tput underline)$@$(tput sgr0)"
+}
+alias underline="underline"
+
 alias push="git push origin"
 alias pull="git pull origin"
 alias sudo="echo 1 > ~/.uis && sudo"
 alias exit="exit && echo 0 > ~/.uis"
+alias line="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -"
+alias doubleline="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' ="
 alias sizes="sudo du -cxhd 1"
-alias amazon="sudo ssh -i ~/.ssh/nascserver.pem ubuntu@18.231.45.221"
 alias flushDNS='dscacheutil -flushcache'
 alias DSFiles_removal="find . -type f -name '*.DS_Store' -ls -delete"
 alias hosts_edit='sudo vim /etc/hosts'
@@ -119,52 +131,86 @@ alias rm="/bin/rm -i"
         echo
     }
 
-function testFncExpt () {
-    echo 0 > ~/.uis
-    #IS_ROOT=$(echo "$USER_IS_SUDO")
-    #IS_ROOT=$USER_IS_SUDO
-    #echo ">>$1<<"
-    #if [ "$IS_ROOT" != 1 ]; then
-       # IS_ROOT=0
-    #else
-     # echo ""
-    #fi
-    FORCE_COLOR=true && node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe 1
-}
-#export -f testFncExpt
+#!/bin/bash
 
-COUNTER=0
-#function buildPS1 () {
-#    echo "$(reallyBuildPS1)"
-#}
+function battery_charge() {
+    case $(uname -s) in
+        "Darwin")
+            if ((pmset_on)) && command -v pmset &>/dev/null; then
+                if [ "$(pmset -g batt | grep -o 'AC Power')" ]; then
+                    BATT_CONNECTED=1
+                else
+                    BATT_CONNECTED=0
+                fi
+                BATT_PCT=$(pmset -g batt | grep -o '[0-9]*%' | tr -d %)
+            else
+                while read key value; do
+                    case $key in
+                        "MaxCapacity")
+                            maxcap=$value
+                            ;;
+                        "CurrentCapacity")
+                            curcap=$value
+                            ;;
+                        "ExternalConnected")
+                            if [ $value == "No" ]; then
+                                BATT_CONNECTED=0
+                            else
+                                BATT_CONNECTED=1
+                            fi
+                            ;;
+                    esac
+                    if [[ -n "$maxcap" && -n $curcap ]]; then
+                        BATT_PCT=$(( 100 * curcap / maxcap))
+                    fi
+                done < <(ioreg -n AppleSmartBattery -r | grep -o '"[^"]*" = [^ ]*' | sed -e 's/= //g' -e 's/"//g' | sort)
+            fi
+            ;;
+        "Linux")
+            case $(cat /etc/*-release) in
+                *"Arch Linux"*|*"Ubuntu"*|*"openSUSE"*)
+                    battery_state=$(cat $battery_path/energy_now)
+                    battery_full=$battery_path/energy_full
+                    battery_current=$battery_path/energy_now
+                    ;;
+                *)
+                    battery_state=$(cat $battery_path/status)
+                    battery_full=$battery_path/charge_full
+                    battery_current=$battery_path/charge_now
+                    ;;
+            esac
+            if [ $battery_state == 'Discharging' ]; then
+                BATT_CONNECTED=0
+            else
+                BATT_CONNECTED=1
+            fi
+                BATTERY_STATE=$(cat $battery_current)
+                full=$(cat $battery_full)
+                BATT_PCT=$((100 * $now / $full))
+            ;;
+    esac
+}
+
+battery_charge
+
 echo 0 > ~/.uis
-function buildPS1 () {
-    #COUNTER=$((COUNTER + 1))
-    #LOGNAME=$(logname)
-    #UUSER=$([ "${LOGNAME}" = "${USER}" ] && echo ${USER} || echo '$(tput setaf 1)${LOGNAME}$(tput sgr0) as ${USER}')
-
-    #PS1="$(node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(eval "if [[ whoami -ne 'root' ]]; then echo 'NOTROOT'; else echo 'ROOT'; fi") 1)"
-    echo "$(now); $(node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(whoami) 1)"
-    #echo "$COUNTER "
+function buildPS1ForReal () {
+    battery_charge
+    node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $BATT_CONNECTED $BATT_PCT $(now) $(whoami) 1
 }
+function buildPS1 () {
+    PS1="\$(if [ -n \"\$(type -t buildPS1ForReal)\" ]; then echo \"$(buildPS1ForReal h)\"; else /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt ; fi)"
+}
+
+#node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(now) root 1 > /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt
+#echo "\[\033[0;33m\][\u@\h \w]\$ \[\033[00m\]"
 export -f buildPS1
-#export -f reallyBuildPS1
+PROMPT_COMMAND="buildPS1"
 
-
-#PROMPT_COMMAND="buildPS1"
-
-#PS1="\$(eval 'if [ -n \"\\$(type -t \'buildPS1\')\"] then \"\$(buildPS1)\"; else echo \' fff \'; fi')"
-#PS1="\$(eval 'if [ -n \"\\$(type -t \'buildPS1\')\" ]; then echo \'echo 123\'; else echo \'echo 456\'; fi') >> "
-
-
-#########PS1="\$(buildPS1 || echo 123)"
-PS1="\$(if [ -n \"\$(type -t buildPS1)\" ]; then buildPS1; else echo \"IS THE FUCKING SUDOOO >>\" ; fi)"
-
-
-
-
-#PS1='${PS2c##*[$((PS2c=0))-9]}- > '
-#PS2='$((PS2c=PS2c+1)) > '
+####PS1="\$(if [ -n \"\$(type -t buildPS1)\" ]; then buildPS1 h; else /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt ; fi)"
+PS1="${PS2c##*[$((PS2c=1))-9]}$PS1"
+PS2="[40m[90m \$((PS2c=PS2c+1)) [39m[49m"
+PS4="!"
 
 
 

@@ -18,6 +18,7 @@ alias .5="cd ../../../../../"
 alias .6="cd ../../../../../../"
 alias .7="cd ../../../../../../../"
 alias ll='ls -FGlAhp'
+alias back='cd -'
 alias ls='ls -FA'
 alias ~="cd ~"
 alias root="cd /"
@@ -27,12 +28,23 @@ alias commitAll="git add -A; git commit -a"
 alias gitlog="git log --graph --decorate --oneline"
 alias gittree="git log --graph --decorate --oneline --all"
 alias checkout="git checkout"
+
+function bold () {
+    echo "$(tput bold)$@$(tput sgr0)"
+}
+alias bold="bold"
+function underline () {
+    echo "$(tput underline)$@$(tput sgr0)"
+}
+alias underline="underline"
+
 alias push="git push origin"
 alias pull="git pull origin"
 alias sudo="echo 1 > ~/.uis && sudo"
 alias exit="exit && echo 0 > ~/.uis"
+alias line="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -"
+alias doubleline="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' ="
 alias sizes="sudo du -cxhd 1"
-alias amazon="sudo ssh -i ~/.ssh/nascserver.pem ubuntu@18.231.45.221"
 alias flushDNS='dscacheutil -flushcache'
 alias DSFiles_removal="find . -type f -name '*.DS_Store' -ls -delete"
 alias hosts_edit='sudo vim /etc/hosts'

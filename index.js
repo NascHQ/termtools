@@ -42,57 +42,35 @@ try {
 
 // populating some aliases
 let aliases = fs.readFileSync(DIR_NAME + '/aliases.sh', 'utf8').toString()
+let battery = fs.readFileSync(DIR_NAME + '/battery.sh', 'utf8').toString()
 
 // for (let alias in SETTINGS.aliases) {
 //     aliases += '\nalias ' + alias + '=' + JSON.stringify(SETTINGS.aliases[alias])
 // }
 
-aliases+= `
-function testFncExpt () {
-    echo 0 > ~/.uis
-    #IS_ROOT=$(echo "$USER_IS_SUDO")
-    #IS_ROOT=$USER_IS_SUDO
-    #echo ">>$1<<"
-    #if [ "$IS_ROOT" != 1 ]; then
-       # IS_ROOT=0
-    #else
-     # echo ""
-    #fi
-    FORCE_COLOR=true && node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} ${useCustomSettings}
-}
-#export -f testFncExpt
-
-COUNTER=0
-#function buildPS1 () {
-#    echo "\$(reallyBuildPS1)"
-#}
-echo 0 > ~/.uis
-function buildPS1 () {
-    #COUNTER=$((COUNTER + 1))
-    #LOGNAME=$(logname)
-    #UUSER=$([ "\${LOGNAME}" = "\${USER}" ] && echo \${USER} || echo '$(tput setaf 1)\${LOGNAME}$(tput sgr0) as \${USER}')
-
-    #PS1="$(node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$(eval \"if [[ whoami -ne 'root' ]]; then echo 'NOTROOT'; else echo 'ROOT'; fi\") ${useCustomSettings})"
-    echo "\$(now); \$(node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$(whoami) ${useCustomSettings})"
-    #echo "\$COUNTER "
-}
-export -f buildPS1
-#export -f reallyBuildPS1
-`
 // sudo bash -c "echo OI"
 
 // let ps1 = `export PS1='${PS1Parts.join('')} \\W\\$ >> $(runNodePS1) $ '`
 // let ps1 = `export PS1='\`node ${DIR_NAME}/get-ps1-parts.js \\"${JSON.stringify(SETTINGS)}\\"\`'`
 let ps1 = `
-#PROMPT_COMMAND="buildPS1"
+echo 0 > ~/.uis
+function buildPS1ForReal () {
+    battery_charge
+    node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$BATT_CONNECTED \$BATT_PCT \$(now) \$(whoami) ${useCustomSettings}
+}
+function buildPS1 () {
+    PS1="\\$(if [ -n \\"\\$(type -t buildPS1ForReal)\\" ]; then echo \\"$(buildPS1ForReal \h)\\"; else ${DIR_NAME}/sudoed-ps1.txt ; fi)"
+}
 
-#########PS1="\\$(buildPS1 || echo 123)"
-PS1="\\$(if [ -n \\"\\$(type -t buildPS1)\\" ]; then buildPS1; else echo \\"IS THE FUCKING SUDOOO >>\\" ; fi)"
+#node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$(now) root ${useCustomSettings} > ${DIR_NAME}/sudoed-ps1.txt
+#echo "\\[\\033[0;33m\\][\\u@\\h \\w]\\$ \\[\\033[00m\\]"
+export -f buildPS1
+PROMPT_COMMAND="buildPS1"
 
-
-
-#PS1='\${PS2c##*[$((PS2c=0))-9]}- > '
-#PS2='$((PS2c=PS2c+1)) > '
+####PS1="\\$(if [ -n \\"\\$(type -t buildPS1)\\" ]; then buildPS1 \h; else ${DIR_NAME}/sudoed-ps1.txt ; fi)"
+PS1="\${PS2c##*[$((PS2c=1))-9]}\$PS1"
+PS2="${colors.bgBlack.gray(" \\$((PS2c=PS2c+1)) ")}"
+PS4="!"
 `
 // let ps1 = `` 
 let nodeBin = ''// `export PATH="$HOME/.node/bin:$PATH"`
@@ -102,6 +80,7 @@ let nodeBin = ''// `export PATH="$HOME/.node/bin:$PATH"`
 const exportedContent = '' +
     `#!/bin/bash\n` +
     `${aliases}\n` +
+    `${battery}\n` +
     `${ps1}\n` +
     `${nodeBin}\n\n`
 
