@@ -4,6 +4,7 @@ module.exports = function (data) {
         aliases: {
             foo: "echo baz",
             baz: "echo bar",
+            bar: "echo foo",
         },
         decorators: {
             pathSeparator: '  ',

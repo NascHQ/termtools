@@ -3,3 +3,5 @@ node_modules
 sudoed-ps1.txt
 exported.sh
 package-lock.json
+tmp-user-settings.js
+custom-user-settings.js

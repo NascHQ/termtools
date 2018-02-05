@@ -1,8 +1,7 @@
 {
   "name": "nasc_profiler",
   "version": "1.0.0",
-  "description": "It ads a bunch of _aliases_ and extra funcionality for your bash profile.",
-  "main": "index.js",
+  "description": "Easy to customize, uses the power of both JavaScript and Bash to add a bunch of _aliases_ and extra funcionality for your bash profile.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,10 +11,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://bitbucket.org/nascweb/nasc_profiler#readme",
   "dependencies": {
-    "battery-level": "^3.0.0",
     "chalk": "^2.3.0"
   }
 }

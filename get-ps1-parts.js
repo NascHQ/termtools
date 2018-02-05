@@ -1,72 +1,123 @@
 #!/usr/bin/env node
 
-let colors = require('chalk')
+/**
+ * This script is triggered on PROMPT_COMMAND every time PS1 is about to be
+ * rendered. We will output here, what will be shown in PS1
+ * 
+ * This is a mess!
+ */
+
+// let's import some useful dependencies
+// besides chalk, used for colors, everything else is native from node
 const path = require('path')
 const fs = require('fs')
 const execSync = require('child_process').execSync
-
-const os = require('os')
-const userInfo = os.userInfo()
-const IS_DEBUGGING = process.argv[1] === 'inspect'
-const ARG_POSITION = IS_DEBUGGING ? 1 : 0
-
-const NODE_BIN = process.argv[0]
-const PROFILER_JS_PATH = process.argv[ARG_POSITION + 2]
-const PROFILER_SH_PATH = process.argv[ARG_POSITION + 3]
-const DIR_NAME = path.dirname(PROFILER_JS_PATH)
-const IS_TTY = process.argv[ARG_POSITION + 4] == '1' ? true : false
-const DEFAULT_ELLIPSIS_SIZE = 4
-const DEFAULT_MAX_PATH_LENGTH = 40
-// const batteryLevel = require('battery-level');
-
-// batteryLevel().then(level => {
-// 	console.log(level);
-// 	//=> 0.55
-// });
-
-
-// const MACHINE = colors.bgBlackBright.white(' 🖥 \\h ')
-
-// const IM = process.argv[ARG_POSITION + 7]
-// const IS_ROOT = userInfo.username === 'root' || process.getuid && process.getuid() === 0
-// console.log(userInfo)
-const SESSION_TYPE = process.argv[ARG_POSITION + 7]
-const ARGVLength = process.argv.length
-const TIME = process.argv[ARGVLength - 3]
-const UUNAME = process.argv[ARGVLength - 2]
-const IS_ROOT = UUNAME == 'root'
-const BATTERY = parseInt(process.argv[ARGVLength - 4], 10)
-const IS_CHARGING = parseInt(process.argv[ARGVLength - 5], 10)
-const IS_WRITABLE = parseInt(process.argv[ARGVLength - 6], 10)
-let GIT_INFO = IS_ROOT ? [] : process.argv[ARGVLength - 7].split('@@@')
-const GIT_BRANCH = GIT_INFO[0] || ''
-const GIT_STATUS = parseInt(GIT_INFO[1], 10) || ''
-const GIT_SYMBOL = GIT_INFO[2] || ''
-
-const USE_CUSTOM_SETTINGS = process.argv[ARGVLength - 1] == 1
-
-const USER = UUNAME
-
-const HOST_NAME = process.argv[ARG_POSITION + 5].replace(/\.[^\.]+$/, '')
-
-const HOME = process.argv[ARG_POSITION + 6]
-const IP = process.argv[ARG_POSITION + 7]
-const MACHINE = IS_ROOT ? [' 🖥 \\h '] : ` 🖥 ${HOST_NAME} `
-
-let BASENAME = IS_ROOT ? '' : path.basename(process.cwd()).toString()
-const PATH = IS_ROOT ? ['\\w '] : path.dirname(process.cwd().replace(HOME, ' ~')).split(path.sep)
-if (!IS_ROOT && PATH.join('') === '.') {
-    BASENAME = '~'
-}
-
+let colors = require('chalk')
+// we will have to enforce chalk to use colors
+// as it is running in a second level command, it will turn them off by default
 colors.enabled = true
 colors.level = 3
+// we will also need to parse/escape the unprintable characters
+// otherwise, the PS1 will act really weird with long lines and command history
 colors.wrapper = {
     pre: '\\[',
     post: '\\]',
 }
 
-let SETTINGS = require('./default-settings.js', 'utf8')({
+// also, let's defined some constants
+const DEFAULT_ELLIPSIS_SIZE = 4
+const DEFAULT_MAX_PATH_LENGTH = 40
+
+// sadly enough...the only way we could get the arguments from bash was from 
+// args passed to the node process :/
+const IS_DEBUGGING = process.argv[1] === 'inspect'
+const ARG_POSITION = IS_DEBUGGING ? 1 : 0
+
+// the path where node we find the node executable file
+const NODE_BIN = process.argv[0]
+// the profiler js file (index.js in this project)
+const PROFILER_JS_PATH = process.argv[ARG_POSITION + 2]
+// the profiler js file (index.sh in this project)
+const PROFILER_SH_PATH = process.argv[ARG_POSITION + 3]
+// we will use this to find files from within this project
+const DIR_NAME = path.dirname(PROFILER_JS_PATH)
+
+// is it running under a TTY environment?
+const IS_TTY = process.argv[ARG_POSITION + 4] == '1' ? true : false
+// the session type
+const SESSION_TYPE = process.argv[ARG_POSITION + 7]
+
+// let's look for some of the arguments, from the other way around
+const ARGVLength = process.argv.length
+// the current time itself
+const TIME = process.argv[ARGVLength - 3]
+// the real user name
+const USER = process.argv[ARGVLength - 2]
+// and if the current user is root
+const IS_ROOT = USER == 'root'
+//  we will also use some useful info on the current battery status
+// updated every 10 seconds
+const BATTERY = parseInt(process.argv[ARGVLength - 4], 10)
+const IS_CHARGING = parseInt(process.argv[ARGVLength - 5], 10)
+
+// if user is root, we will not be able to update it from line to line (unless
+// we had changed the root profile as well, what would require sudo permission
+// and I was not much up to do so)
+const IS_WRITABLE = IS_ROOT ? 1 : parseInt(process.argv[ARGVLength - 6], 10)
+
+/**
+ * This parses the gitinfo into git branch, status and symbol
+ * 
+ * The status may be from -2 to 5, meaning:
+ * -2: COMMITS DIVERGED
+ * -1: COMMITS BEHIND
+ * 0: NO CHANGES
+ * 1: COMMITS AHEAD
+ * 2: UNTRACKED CHANGES
+ * 3: CHANGES TO BE COMMITTED
+ * 4: LOCAL AND UNTRACKED CHANGES
+ * 5: LOCAL CHANGES
+ * 
+ * Symbols can be:
+ * "-": COMMITS BEHIND
+ * "+": COMMITS AHEAD
+ * "!": COMMITS DIVERGED
+ * "*": UNTRACKED
+ * "": Anything else
+ */
+
+let GIT_INFO = IS_ROOT ? [] : process.argv[ARGVLength - 7].split('@@@')
+const GIT_BRANCH = GIT_INFO[0] || ''
+const GIT_STATUS = parseInt(GIT_INFO[1], 10) || ''
+const GIT_SYMBOL = GIT_INFO[2] || ''
+
+// this will be 1 when there are imported user customizations
+const USE_CUSTOM_SETTINGS = process.argv[ARGVLength - 1] == 1
+
+// the machine/host name
+const HOST_NAME = process.argv[ARG_POSITION + 5].replace(/\.[^\.]+$/, '')
+
+// this is the current user's home path
+const HOME = process.argv[ARG_POSITION + 6]
+// in case we will show the machine ip
+const IP = process.argv[ARG_POSITION + 7]
+
+// this is the real string we will use ahead, to show the hostname
+const MACHINE = ` 🖥 ${IS_ROOT ? '\\h' : HOST_NAME} `
+
+// we will separate the basename from the rest of the path, and show them as
+// two distinct sections
+// but, again, as we will not be able to update this during sudo navigation
+// we will use only one section, the path, with the full address
+let BASENAME = IS_ROOT ? '' : path.basename(process.cwd()).toString()
+const PATH = IS_ROOT ? ['\\w '] : path.dirname(process.cwd().replace(HOME, ' ~')).split(path.sep)
+// node returns `path.dirname('~')` as "." instead of "~"
+if (!IS_ROOT && PATH.join('') === '.') {
+    BASENAME = '~'
+}
+
+// this is the resulting context for the current state
+const context = {
     IS_TTY,
     IS_ROOT,
     IP,
@@ -77,9 +128,177 @@ let SETTINGS = require('./default-settings.js', 'utf8')({
     IS_WRITABLE,
     IS_CHARGING,
     colors,
-})
+}
 
-function getPath (opts) {
+// time to start preparing the PS1 itself
+// firstly, we will require the default settings we have and will run it (as it
+// is a function) using the current state (with everything we parsed so far)
+let SETTINGS = require('./default-settings.js', 'utf8')(context)
+const sectionSeparator = SETTINGS.decorators.section
+
+// if the user has custom settings...
+// (we have set this flag only once, so we can avoid looking for this file
+// everytime we have to update the PS1, unless the user has customizations)
+if (USE_CUSTOM_SETTINGS) {
+    try {
+        // users may export a function, or a straight object
+        let custom = require('./custom-user-settings.js')
+        if (typeof custom == 'function') {
+            custom = custom(context)
+        }
+
+        // then, we will have to merge the current default options with
+        // the user's customization
+        custom.ps1 = custom.ps1 || {}
+        SETTINGS.ps1.parts = Object.assign({}, SETTINGS.ps1.parts, custom.ps1.parts || {})
+        SETTINGS.ps1.decorators = Object.assign({}, SETTINGS.ps1.decorators, custom.ps1.decorators || {})
+        SETTINGS.ps1.effects = Object.assign({}, SETTINGS.ps1.effects, custom.ps1.effects || {})
+    } catch (e) {
+        if (e.message.indexOf('Cannot find module') < 0) {
+            console.log(colors.red('[x] ') + 'Failed importing settings.\n' + e.message)
+        }
+    }
+}
+
+// these are the variables available to be used as parts of the PS1 string
+// we will use the parts from SETTINGS, only if they exist here
+const VARS = {
+    string: '',
+    time: IS_ROOT ? ' \\t ' : ` ${TIME} `,
+    machine: `${MACHINE}`,
+    basename: `${BASENAME || (IS_ROOT ? '': ' / ')}`,
+    path: getPath,
+    entry: '',
+    readOnly: IS_WRITABLE ? '' : 'R+ ', // 🔒🔐👁
+    separator: sectionSeparator,
+    git: `${SETTINGS.decorators.git} ${GIT_BRANCH}${GIT_SYMBOL}`, // ⑂ᛘ⎇
+    gitStatus: GIT_STATUS,
+    battery: ` ${IS_CHARGING ? '⚡' : '◒'}${BATTERY}% `,
+    userName: ` ${USER} `
+}
+
+// let's start by having the PS1Parts list empty
+let PS1Parts = []
+// this map will help us quickly find the effects for each part of PS1
+const effectsMap = new Map()
+
+// SETTINGS is now the merge between the default settings and the user's customizations
+for (let partName in SETTINGS.ps1.parts) {
+    let tmp = ''
+
+    // remember that? We will not use the basename for sudos
+    if (IS_ROOT && partName == 'basename') { continue }
+
+    // the part itself, with its options
+    let part = SETTINGS.ps1.parts[partName]
+    part.name = partName
+
+    // obviously...
+    if (!part.enabled) {
+        continue
+    }
+
+    // in case the current part is "string" or "entry", we will output that part
+    // using their respective effects, adding their contents
+    if (partName === 'string' || partName === 'entry') {
+        tmp += applyEffects(part, part.content)
+    } else {
+        // for any other kind of part, we check if they exist in our valid list
+        if (VARS[partName]) {
+            // and, if so,
+            // that may be either a string of a function that will return a string
+            let value = VARS[partName]
+            if (typeof value === 'function') {
+                value = value(part)
+            }
+            // finally, we add the effects to it
+            tmp += applyEffects(part, value)
+        }
+    }
+
+    // if there is something to add...
+    if (tmp) {
+        // we set it in our map, for later use
+        effectsMap.set(tmp, {
+            fx: SETTINGS.ps1.effects[part.name],
+            part
+        })
+        // and add it to the PS1 part :)
+        PS1Parts.push(tmp)
+    }
+}
+
+/**
+ * Time to think about the separators!
+ * 
+ * The hard part here is their logic.
+ * For example:
+ * the separator "" need to have the TEXT COLOR of the current section BGCOLOR,
+ * and the BGCOLOR of the NEXT section's BGCOLOR.
+ */
+PS1Parts = PS1Parts.map((part, i) => {
+    let nextPart = PS1Parts[i + 1] || null
+    let curFx = effectsMap.get(part)
+    let nextFx = effectsMap.get(nextPart)
+    let sep = sectionSeparator
+
+    if (!nextPart && curFx && curFx.fx && curFx.fx.bgColor) {
+        // this is the end of the PS1
+        return part + colorNameParser(colors, curFx.fx.bgColor)(sep)
+    }
+
+    if (!nextFx || !isSection(nextFx.part)) {
+        return part
+    }
+    // if the current section does not have any effects, we will
+    // not use any separator
+    if (curFx) {
+        if (curFx.fx && curFx.fx.bgColor) {
+            sep = colorNameParser(colors, curFx.fx.bgColor)(sep)
+        } else {
+            return part
+        }
+    } else {
+        // for  separator to work, we need at least a background
+        return part
+    }
+    if (nextFx) {
+        if (nextFx.fx && nextFx.fx.bgColor) {
+            sep = colorNameParser(colors, nextFx.fx.bgColor, 'bg')(sep)
+        }
+    }
+    return part + sep
+}).join('')
+
+
+/******************************************************************************
+ * HERE IS WHERE THE MAGIC HAPPENS!
+ * not like that...just prints the result for the current context and
+ * PS1 will use our output
+ *****************************************************************************/
+
+process.stdout.write(PS1Parts + colors.reset())
+
+/******************************************************************************
+ * Bellow here, we can find the functions we used above
+ * long live hoisting!
+ *****************************************************************************/
+
+// we can use nonSections to avoid section separators
+function isSection (part) {
+    const nonSections = new Set([/*'basename'/*, 'entry'*/])
+    return !nonSections.has(part.name)
+}
+
+/**
+ * Get the current path with separators.
+ * 
+ * This function will treat the path parts and add separators and
+ * effects as specified in the current context settings.
+ * 
+ * @param {object} opts The options for how to decorate the path
+ */
+function getPath (opts = {}) {
     let str = ''
     let thePATH = Array.from(PATH)
     let sep = SETTINGS.decorators.pathSeparator || path.sep
@@ -135,55 +354,20 @@ function getPath (opts) {
     return thePath.length ? thePath + ' ' : ''
 }
 
-const sectionSeparator = SETTINGS.decorators.section
-const VARS = {
-    string: '',
-    time: IS_ROOT ? ' \\t ' : ` ${TIME} `,
-    machine: `${MACHINE}`,
-    basename: `${BASENAME || (IS_ROOT ? '': ' / ')}`,
-    path: getPath,
-    entry: '',
-    readOnly: IS_WRITABLE ? '' : 'R+ ', // 🔒🔐👁
-    separator: sectionSeparator,
-    git: `⎇ ${GIT_BRANCH}${GIT_SYMBOL}`, // ⑂ᛘ⎇
-    gitStatus: GIT_STATUS,
-    battery: ` ${IS_CHARGING ? '⚡' : '◒'}${BATTERY}% `,
-    userName: ` ${USER} ` //) + colors.bgBlackBright.blueBright('◣▶')
-}
 
-if (USE_CUSTOM_SETTINGS) {
-    try {
-        let custom = require('./custom-user-settings.js')
-        if (typeof custom == 'function') {
-            custom = custom({
-                IS_TTY,
-                IS_ROOT,
-                IP,
-                BATTERY,
-                GIT_STATUS,
-                GIT_BRANCH,
-                GIT_SYMBOL,
-                IS_CHARGING,
-                IS_WRITABLE,
-                colors
-            })
-        }
-
-        custom.ps1 = custom.ps1 || {}
-        
-        SETTINGS.ps1.parts = Object.assign({}, SETTINGS.ps1.parts, custom.ps1.parts || {})
-        SETTINGS.ps1.decorators = Object.assign({}, SETTINGS.ps1.decorators, custom.ps1.decorators || {})
-        SETTINGS.ps1.effects = Object.assign({}, SETTINGS.ps1.effects, custom.ps1.effects || {})
-        // SETTINGS = Object.assign({}, SETTINGS, custom)
-        // SETTINGS.parts = custom.parts || SETTINGS.parts // we force use the customized list of parts
-    } catch (e) {
-        if (e.message.indexOf('Cannot find module') < 0) {
-            console.log(colors.red('[x] ') + 'Failed importing settings.\n' + e.message)
-        }
-    }
-}
-
-// dealing with the parts of PS1
+/**
+ * This function parses the colors
+ * 
+ * It will not only parse the colors themselves, but will also parse the effect
+ * name. For example, "redBright", when used with the prefix "bg", becomes "bgRedBright".
+ * Noticed the camel case?
+ * Also, just for fun, there is a mix with gray, grey and blackBright when used with
+ * or without "bg".
+ * 
+ * @param {Chalk} applier An instance of chalk. May already have effects applied to it
+ * @param {String} color The color itself. May be a valid color name of an RGB code in hex starting with "#"
+ * @param {String} prefix Optionally, adds a prefix to the effect function. Mainly used for prefixing colors with "bg"
+ */
 function colorNameParser (applier, color, prefix) {
     if (color.startsWith('#')) {
         if (prefix) {
@@ -207,11 +391,10 @@ function colorNameParser (applier, color, prefix) {
     }
 }
 
-function fixTerminalColors (str) {
-    return unescape(escape(str).replace(/\%1B/i, '%1B'))
-}
-
-const effectsMap = new Map()
+/**
+ * This function will run through the parts of PS1 and apply their respective effects
+ * dealing also with their separators.
+ */
 function applyEffects (part, str) {
     let fx = SETTINGS.ps1.effects[part.name]
     let applier = colors
@@ -240,80 +423,8 @@ function applyEffects (part, str) {
     return str
 }
 
-let PS1Parts = []
-// SETTINGS.ps1.parts.forEach((part, i) => {
-for (let partName in SETTINGS.ps1.parts) { // ((part, i) => {
-    let tmp = ''
-
-    if (IS_ROOT && partName == 'basename') {continue}
-
-    let part = SETTINGS.ps1.parts[partName]
-    part.name = partName
-    if (!part.enabled) {
-        continue
-    }
-    if (partName === 'string' || partName === 'entry') {
-        tmp += applyEffects(part, part.content)// + colors.reset()
-    } else {
-        if (VARS[partName]) {
-            let value = VARS[partName]
-            if (typeof value === 'function') {
-                value = value(part)
-            }
-            tmp += applyEffects(part, value)// + colors.reset()
-        }
-    }
-    // PS1Parts.push(fixTerminalColors(tmp))
-    // PS1Parts.push(tmp.replace(/\[/g, '\\\['))
-    // PS1Parts.push('\\[' +tmp+ '\\]')
-    effectsMap.set(tmp, {
-        fx: SETTINGS.ps1.effects[part.name],
-        part
-    })
-    PS1Parts.push(tmp)
-}//)
-
-const nonSections = new Set([/*'basename'/*, 'entry'*/])
-function isSection (part) {
-    return !nonSections.has(part.name)
-}
-
-PS1Parts = PS1Parts.map((part, i) => {
-    let nextPart = PS1Parts[i + 1] || null
-    let curFx = effectsMap.get(part)
-    let nextFx = effectsMap.get(nextPart)
-    let sep = sectionSeparator
-
-    if (!nextPart && curFx && curFx.fx && curFx.fx.bgColor) {
-        // this is the end of the PS1
-        return part + colorNameParser(colors, curFx.fx.bgColor)(sep)
-    }
-
-    if (!nextFx || !isSection(nextFx.part)) {
-        return part
-    }
-    // if the current section does not have any effects, we will
-    // not use any separator
-    if (curFx) {
-        if (curFx.fx && curFx.fx.bgColor) {
-            sep = colorNameParser(colors, curFx.fx.bgColor)(sep)
-        } else {
-            return part
-        }
-    } else {
-        // for  separator to work, we need at least a background
-        return part
-    }
-    if (nextFx) {
-        if (nextFx.fx && nextFx.fx.bgColor) {
-            sep = colorNameParser(colors, nextFx.fx.bgColor, 'bg')(sep)
-        }
-    }
-    return part + sep
-}).join('')
-
-// console.log(colors.enabled, colors.level, colors.red(123).replace(/001B/g, '\\u001B'))
-// console.log(colors.enabled, colors.level, escape(colors.red(123)))
-process.stdout.write(PS1Parts + colors.reset())
-// console.log('\u001B[94m XXX')
-// console.log(PS1Parts.join(''))
+// not sure will ever be used again...but once it worked on TTYs...
+// if we have any issue related to that again, we may come here and use it!
+// function fixTerminalColors (str) {
+//     return unescape(escape(str).replace(/\%1B/i, '%1B'))
+// }

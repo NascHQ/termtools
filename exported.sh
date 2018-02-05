@@ -5,9 +5,13 @@
 #     npm install trash-cli -g
 # fi
 
+# some chrome versions require this for you to enter on a meeting
 alias fixcamera="sudo killall VDCAssistant"
+# your IP in the local network
 alias ipin="ipconfig getifaddr en0"
+# your IP seen from outside
 alias ipout='dig +short myip.opendns.com @resolver1.opendns.com'
+# more information about your ip
 alias ip="echo -e Internal IP Address: ;  ipconfig getifaddr en0; echo -e Public facing IP Address: ; curl ipecho.net/plain ; echo ;"
 alias aliases='alias'
 alias ..='cd ..'
@@ -45,6 +49,7 @@ alias flushDNS='dscacheutil -flushcache'
 alias DSFiles_removal="find . -type f -name '*.DS_Store' -ls -delete"
 alias hosts_edit='sudo vim /etc/hosts'
 alias reloadprofiler='source ~/.bash_profile'
+alias reload="exec ${SHELL} -l"
 alias h='history'
 alias today='date +"%d-%m-%Y"'
 alias now='date +"%T"'
@@ -63,12 +68,17 @@ alias documents='cd ~/Documents'
 alias documents='cd ~/Documents'
 alias downloads='cd ~/Downloads'
 alias down='cd ~/Downloads'
+alias amionline="ping www.google.com -t 1 2>/dev/null >/dev/null && echo \"Yes\" || echo \"No\""
+alias amioffline="ping www.google.com -t 1 2>/dev/null >/dev/null && echo \"No\" || echo \"Yes\""
 
 alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
 alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
 command -v md5sum > /dev/null || alias md5sum="md5"
 command -v sha1sum > /dev/null || alias sha1sum="shasum"
 
+function dog () {
+    cat $@ | less -FRNX
+}
 
 # Show/hide hidden files in Finder
 alias show-hidden-files="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
@@ -106,7 +116,7 @@ function hierarchy() {
 }
 
 # Determine size of a file or total size of a directory
-function size-of() {
+function sizeof() {
 	if du -b /dev/null > /dev/null 2>&1; then
 		local arg=-sbh;
 	else
@@ -156,27 +166,7 @@ function targz() {
 alias chown='chown --preserve-root'
 # alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
-# del () {
-#     # trash $1
-#     move $1 '~/'
-#     echo "$1 Moved to trash"
-# }
-# del () {
-#   local path
-#   for path in "$@"; do
-#     # ignore any arguments
-#     if [[ "$path" = -* ]]; then :
-#     else
-#       local dst=${path##*/}
-#       # append the time if necessary
-#     #   while [ -e ~/.Trash/"$dst" ]; do
-#     #     dst="$dst "$(date +%H-%M-%S)
-#     #   done
-#       mv "$path" ~/.Trash/"$dst"
-#     fi
-#   done
-# }
-# alias rm="echo Use 'del' to send it to the trash can instead.; /bin/rm -i --preserve-root"
+
 alias rm="/bin/rm -i"
 
 #   extract:  Extract most know archives with one command
@@ -232,7 +222,7 @@ alias rm="/bin/rm -i"
 #
 # Shorten a URL using the Google URL Shortener service (http://goo.gl).
 # (imported from https://gist.github.com/wafflesnatcha/3694648)
-goo.gl() {
+googl() {
 	[[ ! $1 ]] && { echo -e "Usage: goo.gl [URL]\n\nShorten a URL using the Google URL Shortener service (http://goo.gl)."; return; }
 	curl -qsSL -m10 --connect-timeout 10 \
 		'https://www.googleapis.com/urlshortener/v1/url' \
@@ -242,7 +232,7 @@ goo.gl() {
 }
 
 # shrink URLS using goo.gl service
-alias short="goo.gl"
+alias short="googl"
 
 # back and forward with cd
 export BACK_HISTORY=""
@@ -274,6 +264,9 @@ function forward {
     fi
 }
 
+alias foo="echo baz"
+alias baz="echo bar"
+alias bar="echo foo"
 function getGit () {
     local branch_name=`git branch 2>/dev/null | grep -e '\*' --color=never | sed 's/\* //'`
     local status=0
@@ -295,7 +288,7 @@ function getGit () {
                         status=1 #"$COMMITS_AHEAD_OR_BEHIND"
                     ;;
                     "diverged")
-                        timelineSymbol=""
+                        timelineSymbol="!"
                         status=-2
                     ;;
                     *)
@@ -391,32 +384,47 @@ function battery_charge() {
 battery_charge
 
 echo 0 > ~/.uis
-lastBatteryCheck=$SECONDS
+
+# the battery_charge function updates some variables with information about the battery
 battery_charge
 function buildPS1ForReal () {
+    # we will re-run battery_charge function every 10 seconds
     if ((SECONDS % 10 == "0")); then
         battery_charge
     fi
+
+    # writtable checks if user has write access to the current directory
     WRITTABLE=0
     if [ -w `pwd` ]; then
         WRITTABLE=1
     fi
 
+    # every time PS1 is rendered, we trigger this node call
+    # ensuring it will bring its results up to date
     node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(getGit) $WRITTABLE $BATT_CONNECTED $BATT_PCT $(now) $1 1
 }
+
+# This function is called only ONCE, as soon as the profile is applied
+# it will write the PS1 in a way it will trigger buildPS1ForReal on new entries
+# and will also write a default output for sudo
 function buildPS1 () {
     PS1="\$(if [ -n \"\$(type -t buildPS1ForReal)\" ]; then echo \"$(buildPS1ForReal $(whoami))\"; else echo \"$(cat /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt)\" ; fi)"
 }
 
+# here is where we use the current settings to generate the output for sudo
+# we do this only once, too
 node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(now) root 1 > /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt
-#echo "\[\033[0;33m\][\u@\h \w]\$ \[\033[00m\]"
+
+# exporting the function
 export -f buildPS1
+
+# as PROMPT_COMMAND is called before PS1 is rendered, we can update it there
 PROMPT_COMMAND="buildPS1"
 
-####PS1="\$(if [ -n \"\$(type -t buildPS1)\" ]; then buildPS1 h; else /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt ; fi)"
+# also, we will deal with PS2, showing some line numbers while you type
+# commands in multiple lines
 PS1="${PS2c##*[$((PS2c=1))-9]}$PS1"
 PS2="[40m[90m \$((PS2c=PS2c+1)) [39m[49m"
-PS4="!"
 
 
 
