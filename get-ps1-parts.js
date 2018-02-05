@@ -31,11 +31,14 @@ const DEFAULT_MAX_PATH_LENGTH = 40
 // const IS_ROOT = userInfo.username === 'root' || process.getuid && process.getuid() === 0
 // console.log(userInfo)
 const SESSION_TYPE = process.argv[ARG_POSITION + 7]
-const TIME = process.argv[process.argv.length - 3]
-const UUNAME = process.argv[process.argv.length - 2]
-const BATTERY = parseInt(process.argv[process.argv.length - 4], 10)
-const IS_CHARGING = parseInt(process.argv[process.argv.length - 5], 10)
-const USE_CUSTOM_SETTINGS = process.argv[process.argv.length - 1] == 1
+const ARGVLength = process.argv.length
+const TIME = process.argv[ARGVLength - 3]
+const UUNAME = process.argv[ARGVLength - 2]
+const BATTERY = parseInt(process.argv[ARGVLength - 4], 10)
+const IS_CHARGING = parseInt(process.argv[ARGVLength - 5], 10)
+const IS_WRITABLE = parseInt(process.argv[ARGVLength - 6], 10)
+const USE_CUSTOM_SETTINGS = process.argv[ARGVLength - 1] == 1
+
 // const USER_NAME = execSync('id -u | xargs echo -n').toString()//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
 // const USER_NAME = execSync('echo `whoami` | xargs echo -n').toString()//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
 // const USER_NAME = execSync('echo $LOGNAME').toString().replace(/\n/g, '')//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
@@ -67,8 +70,8 @@ const IP = process.argv[ARG_POSITION + 7]
 const MACHINE = IS_ROOT ? [' 🖥 \\h '] : ` 🖥 ${HOST_NAME} `
 
 let BASENAME = IS_ROOT ? '' : path.basename(process.cwd()).toString()
-const PATH = IS_ROOT ? ['\\W '] : path.dirname(process.cwd().replace(HOME, ' ~')).split(path.sep)
-if (PATH.join('') === '.') {
+const PATH = IS_ROOT ? ['\\w '] : path.dirname(process.cwd().replace(HOME, ' ~')).split(path.sep)
+if (!IS_ROOT && PATH.join('') === '.') {
     BASENAME = '~'
 }
 // console.log(HOME, process.cwd(), path.dirname(path.sep))
@@ -92,6 +95,7 @@ let SETTINGS = require('./default-settings.js', 'utf8')({
     IS_ROOT,
     IP,
     BATTERY,
+    IS_WRITABLE,
     IS_CHARGING,
     colors,
 })
@@ -157,9 +161,10 @@ const VARS = {
     string: '',
     time: IS_ROOT ? ' \\t ' : ` ${TIME} `,
     machine: `${MACHINE}`,
-    basename: `${BASENAME || ' / '}`,
+    basename: `${BASENAME || (IS_ROOT ? '': ' / ')}`,
     path: getPath,
     entry: '',
+    readOnly: IS_WRITABLE ? '' : 'R+ ', // 🔒🔐👁
     separator: sectionSeparator,
     battery: ` ${IS_CHARGING ? '⚡' : '◒'}${BATTERY}% `,
     userName: ` ${USER} ` //) + colors.bgBlackBright.blueBright('◣▶')
@@ -175,6 +180,7 @@ if (USE_CUSTOM_SETTINGS) {
                 IP,
                 BATTERY,
                 IS_CHARGING,
+                IS_WRITABLE,
                 colors
             })
         }
@@ -254,6 +260,9 @@ let PS1Parts = []
 // SETTINGS.ps1.parts.forEach((part, i) => {
 for (let partName in SETTINGS.ps1.parts) { // ((part, i) => {
     let tmp = ''
+
+    if (IS_ROOT && partName == 'basename') {continue}
+
     let part = SETTINGS.ps1.parts[partName]
     part.name = partName
     if (!part.enabled) {

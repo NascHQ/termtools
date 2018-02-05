@@ -60,7 +60,12 @@ function buildPS1ForReal () {
     if ((SECONDS % 10 == "0")); then
         battery_charge
     fi
-    node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$BATT_CONNECTED \$BATT_PCT \$(now) $1 ${useCustomSettings}
+    WRITTABLE=0
+    if [ -w \`pwd\` ]; then
+        WRITTABLE=1
+    fi
+
+    node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$WRITTABLE \$BATT_CONNECTED \$BATT_PCT \$(now) $1 ${useCustomSettings}
 }
 function buildPS1 () {
     PS1="\\$(if [ -n \\"\\$(type -t buildPS1ForReal)\\" ]; then echo \\"$(buildPS1ForReal $(whoami))\\"; else echo \\"$(cat ${DIR_NAME}/sudoed-ps1.txt)\\" ; fi)"
