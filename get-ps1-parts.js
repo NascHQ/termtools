@@ -42,6 +42,7 @@ let GIT_INFO = IS_ROOT ? [] : process.argv[ARGVLength - 7].split('@@@')
 const GIT_BRANCH = GIT_INFO[0] || ''
 const GIT_STATUS = parseInt(GIT_INFO[1], 10) || ''
 const GIT_SYMBOL = GIT_INFO[2] || ''
+
 const USE_CUSTOM_SETTINGS = process.argv[ARGVLength - 1] == 1
 
 const USER = UUNAME

@@ -19,7 +19,7 @@ function getGit () {
                         status=1 #"$COMMITS_AHEAD_OR_BEHIND"
                     ;;
                     "diverged")
-                        timelineSymbol=""
+                        timelineSymbol="!"
                         status=-2
                     ;;
                     *)

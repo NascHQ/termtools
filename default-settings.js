@@ -3,7 +3,7 @@ module.exports = function (data) {
 
     const gitBranchFX = { color: 'white', bgColor: 'gray', bold: false }
 
-    if (data.GIT_STATUS != -1) {
+    if (data.GIT_BRANCH !== '') {
         switch (data.GIT_STATUS) {
             case 0: {
                 // NO_CHANGES_COLOR
@@ -12,9 +12,21 @@ module.exports = function (data) {
                 break
             }
             case 1: {
-                // COMMITS_AHEAD_OR_BEHIND
+                // COMMITS_AHEAD
                 gitBranchFX.bgColor = '#0b0'
                 gitBranchFX.color = 'black'
+                break
+            }
+            case -2: {
+                // COMMITS_DIVERGED
+                gitBranchFX.bgColor = '#000'
+                gitBranchFX.color = 'red'
+                break
+            }
+            case -1: {
+                // COMMITS_BEHIND
+                gitBranchFX.bgColor = '#d09'
+                gitBranchFX.color = 'white'
                 break
             }
             case 2: {
@@ -41,6 +53,9 @@ module.exports = function (data) {
                 gitBranchFX.bgColor = 'yellow'
                 break
             }
+        }
+        if (data.GIT_BRANCH === 'master') {
+            gitBranchFX.bold = true
         }
     }
 

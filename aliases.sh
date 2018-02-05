@@ -18,7 +18,6 @@ alias .5="cd ../../../../../"
 alias .6="cd ../../../../../../"
 alias .7="cd ../../../../../../../"
 alias ll='ls -FGlAhp'
-alias back='cd -'
 alias ls='ls -FA'
 alias ~="cd ~"
 alias root="cd /"
@@ -241,4 +240,35 @@ goo.gl() {
 		perl -ne 'if(m/^\s*"id":\s*"(.*)",?$/i) { print $1 }'
 }
 
+# shrink URLS using goo.gl service
 alias short="goo.gl"
+
+# back and forward with cd
+export BACK_HISTORY=""
+export FORWARD_HISTORY=""
+
+function cd {
+    BACK_HISTORY=$PWD:$BACK_HISTORY
+    FORWARD_HISTORY=""
+    builtin cd "$@"
+}
+
+function back {
+    DIR=${BACK_HISTORY%%:*}
+    if [[ -d "$DIR" ]]
+    then
+        BACK_HISTORY=${BACK_HISTORY#*:}
+        FORWARD_HISTORY=$PWD:$FORWARD_HISTORY
+        builtin cd "$DIR"
+    fi
+}
+
+function forward {
+    DIR=${FORWARD_HISTORY%%:*}
+    if [[ -d "$DIR" ]]
+    then
+        FORWARD_HISTORY=${FORWARD_HISTORY#*:}
+        BACK_HISTORY=$PWD:$BACK_HISTORY
+        builtin cd "$DIR"
+    fi
+}
