@@ -15,7 +15,7 @@ module.exports = function (data) {
                 time: { enabled: false },
                 userName: { enabled: true },
                 string: { enabled: false, content: 'OMG :o ' },
-                machine: { enabled: true},//data.IS_TTY },
+                machine: { enabled: data.IS_TTY },
                 path: { enabled: true, ellipsis: 5, cut: 'left', maxLength: 40 },
                 basename: { enabled: true },
                 entry: { enabled: true, content: data.IS_ROOT ? ' # ' :  ' $ ' },
