@@ -15,7 +15,8 @@ const PROFILER_JS_PATH = process.argv[ARG_POSITION + 2]
 const PROFILER_SH_PATH = process.argv[ARG_POSITION + 3]
 const DIR_NAME = path.dirname(PROFILER_JS_PATH)
 const IS_TTY = process.argv[ARG_POSITION + 4] == '1' ? true : false
-
+const DEFAULT_ELLIPSIS_SIZE = 4
+const DEFAULT_MAX_PATH_LENGTH = 40
 // const batteryLevel = require('battery-level');
 
 // batteryLevel().then(level => {
@@ -32,9 +33,9 @@ const IS_TTY = process.argv[ARG_POSITION + 4] == '1' ? true : false
 const SESSION_TYPE = process.argv[ARG_POSITION + 7]
 const TIME = process.argv[process.argv.length - 3]
 const UUNAME = process.argv[process.argv.length - 2]
-const BATTERY = process.argv[process.argv.length - 4]
+const BATTERY = parseInt(process.argv[process.argv.length - 4], 10)
 const IS_CHARGING = parseInt(process.argv[process.argv.length - 5], 10)
-const USE_CUSTOM_SETTINGS = parseInt(process.argv[process.argv.length - 1] === 1, 10)
+const USE_CUSTOM_SETTINGS = process.argv[process.argv.length - 1] == 1
 // const USER_NAME = execSync('id -u | xargs echo -n').toString()//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
 // const USER_NAME = execSync('echo `whoami` | xargs echo -n').toString()//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
 // const USER_NAME = execSync('echo $LOGNAME').toString().replace(/\n/g, '')//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
@@ -63,11 +64,14 @@ const HOST_NAME = process.argv[ARG_POSITION + 5].replace(/\.[^\.]+$/, '')
 // const HOST_NAME = process.argv[process.argv.length - 3]
 const HOME = process.argv[ARG_POSITION + 6]
 const IP = process.argv[ARG_POSITION + 7]
-const MACHINE = ` 🖥 ${HOST_NAME} `
+const MACHINE = IS_ROOT ? [' 🖥 \\h '] : ` 🖥 ${HOST_NAME} `
 
-const BASENAME = path.sep + path.basename(process.cwd()).toString()
-const PATH = path.dirname(process.cwd()).split(path.sep)
-
+let BASENAME = IS_ROOT ? '' : path.basename(process.cwd()).toString()
+const PATH = IS_ROOT ? ['\\W '] : path.dirname(process.cwd().replace(HOME, ' ~')).split(path.sep)
+if (PATH.join('') === '.') {
+    BASENAME = '~'
+}
+// console.log(HOME, process.cwd(), path.dirname(path.sep))
 // colors = colors({
 //     enabled: true,
 //     level: 3,
@@ -93,25 +97,27 @@ let SETTINGS = require('./default-settings.js', 'utf8')({
 })
 
 function getPath (opts) {
-    // PATH.join(path.sep) + path.sep
     let str = ''
     let thePATH = Array.from(PATH)
+    let sep = SETTINGS.decorators.pathSeparator || path.sep
 
-    if (opts.cutMiddle && thePATH.length > 2) {
-        let first = thePATH.shift()
-        if (!first.length) {
-            first+= path.sep + thePATH.shift()
-        }
-        thePATH = [
-            first,
-            '…',
-            thePATH.pop(),
-        ]
+    if (thePATH[0] === '.' || thePATH[0] === '~') {
+        thePATH[0] = ''
     }
 
-    if (opts.ellipsis) {
+    if (thePATH[0] === '') {
+        if (thePATH[1]) {
+            thePATH[1] = path.sep + thePATH[1]
+            thePATH.shift()
+        }
+    }
+    if (thePATH.join('') === '') {
+        return ' '
+    }
+
+    if (opts.ellipsis && !opts.cut) {
         let ellipsisSize = opts.ellipsis === true
-            ? 3
+            ? DEFAULT_ELLIPSIS_SIZE
             : opts.ellipsis
 
         let last = thePATH.length - 1
@@ -125,19 +131,38 @@ function getPath (opts) {
         })
     }
 
-    thePath = thePATH.join(path.sep)
-    return thePath === '/' ? '' : thePath
+    thePath = thePATH.join(sep)
+    thePath = thePath === sep ? '' : thePath
+
+    let l = opts.maxLength || DEFAULT_MAX_PATH_LENGTH
+    if (opts.cut && thePath.length > l - 6) {
+        if (opts.cut === 'center') {
+            l = l / 2 -3
+            thePath = thePath.slice(0, l) + '...' + thePath.slice(-1 * l)
+        }
+        if (opts.cut === 'left') {
+            l = l - 4
+            thePath = ' …' + thePath.slice(-1 * l)
+        }
+        if (opts.cut === 'right') {
+            l = l - 4
+            thePath = thePath.slice(0, l) + '… '
+        }
+    }
+    return thePath.length ? thePath + ' ' : ''
 }
 
+const sectionSeparator = SETTINGS.decorators.section
 const VARS = {
     string: '',
-    time: ` ${TIME} `,
+    time: IS_ROOT ? ' \\t ' : ` ${TIME} `,
     machine: `${MACHINE}`,
-    basename: ` ${BASENAME}`,
+    basename: `${BASENAME || ' / '}`,
     path: getPath,
     entry: '',
+    separator: sectionSeparator,
     battery: ` ${IS_CHARGING ? '⚡' : '◒'}${BATTERY}% `,
-    userName: ` ${USER} ` //) + colors.bgBlackBright.blueBright('◣▶')
+    userName: ` ${USER} ` //) + colors.bgBlackBright.blueBright('◣▶')
 }
 
 if (USE_CUSTOM_SETTINGS) {
@@ -153,8 +178,14 @@ if (USE_CUSTOM_SETTINGS) {
                 colors
             })
         }
-        SETTINGS = Object.assign({}, SETTINGS, custom)
-        SETTINGS.parts = custom.parts || SETTINGS.parts // we force use the customized list of parts
+
+        custom.ps1 = custom.ps1 || {}
+        
+        SETTINGS.ps1.parts = Object.assign({}, SETTINGS.ps1.parts, custom.ps1.parts || {})
+        SETTINGS.ps1.decorators = Object.assign({}, SETTINGS.ps1.decorators, custom.ps1.decorators || {})
+        SETTINGS.ps1.effects = Object.assign({}, SETTINGS.ps1.effects, custom.ps1.effects || {})
+        // SETTINGS = Object.assign({}, SETTINGS, custom)
+        // SETTINGS.parts = custom.parts || SETTINGS.parts // we force use the customized list of parts
     } catch (e) {
         if (e.message.indexOf('Cannot find module') < 0) {
             console.log(colors.red('[x] ') + 'Failed importing settings.\n' + e.message)
@@ -165,7 +196,6 @@ if (USE_CUSTOM_SETTINGS) {
 // dealing with the parts of PS1
 function colorNameParser (applier, color, prefix) {
     if (color.startsWith('#')) {
-        // console.log(applier.bgHex(color)(color))
         if (prefix) {
             return applier[prefix + 'Hex'](color)
         } else {
@@ -173,7 +203,12 @@ function colorNameParser (applier, color, prefix) {
         }
     } else {
         if (prefix) {
+            if (color === 'gray' || color === 'grey') {
+                color = 'blackBright'
+            }
             color = prefix + color[0].toUpperCase() + color.substr(1)
+        } else if (color === 'blackBright') {
+            color = 'gray'
         }
         if (applier[color]) {
             return applier[color]
@@ -186,33 +221,28 @@ function fixTerminalColors (str) {
     return unescape(escape(str).replace(/\%1B/i, '%1B'))
 }
 
+const effectsMap = new Map()
 function applyEffects (part, str) {
     let fx = SETTINGS.ps1.effects[part.name]
     let applier = colors
 
     if (fx) {
         if (fx.bgColor) {
-            // applier = colorNameParser(applier, fx.bgColor, 'bg')
             str = colorNameParser(applier, fx.bgColor, 'bg')(str)
         }
         if (fx.color) {
-            // applier = colorNameParser(applier, fx.color)
             str = colorNameParser(applier, fx.color)(str)
         }
         if (fx.bold) {
-            // applier = applier.bold
             str = colors.bold(str)
         }
         if (fx.italic) {
-            // applier = applier.italic
             str = colors.italic(str)
         }
         if (fx.dim) {
-            // applier = applier.italic
             str = colors.dim(str)
         }
         if (fx.underline) {
-            // applier = applier.underline
             str = colors.underline(str)
         }
         return str
@@ -220,18 +250,20 @@ function applyEffects (part, str) {
     return str
 }
 
-const PS1Parts = []
-SETTINGS.ps1.parts.forEach((part, i) => {
+let PS1Parts = []
+// SETTINGS.ps1.parts.forEach((part, i) => {
+for (let partName in SETTINGS.ps1.parts) { // ((part, i) => {
     let tmp = ''
+    let part = SETTINGS.ps1.parts[partName]
+    part.name = partName
     if (!part.enabled) {
-        return
+        continue
     }
-    if (part.name === 'string' || part.name === 'entry') {
+    if (partName === 'string' || partName === 'entry') {
         tmp += applyEffects(part, part.content)// + colors.reset()
     } else {
-        if (VARS[part.name]) {
-            // console.log(applyEffects(part)(VARS[part.name]))
-            let value = VARS[part.name]
+        if (VARS[partName]) {
+            let value = VARS[partName]
             if (typeof value === 'function') {
                 value = value(part)
             }
@@ -239,13 +271,56 @@ SETTINGS.ps1.parts.forEach((part, i) => {
         }
     }
     // PS1Parts.push(fixTerminalColors(tmp))
-    //   console.log(tmp.replace(/\[/g, '\\\\\['))
     // PS1Parts.push(tmp.replace(/\[/g, '\\\['))
     // PS1Parts.push('\\[' +tmp+ '\\]')
+    effectsMap.set(tmp, {
+        fx: SETTINGS.ps1.effects[part.name],
+        part
+    })
     PS1Parts.push(tmp)
-})
+}//)
+
+const nonSections = new Set([/*'basename'/*, 'entry'*/])
+function isSection (part) {
+    return !nonSections.has(part.name)
+}
+
+PS1Parts = PS1Parts.map((part, i) => {
+    let nextPart = PS1Parts[i + 1] || null
+    let curFx = effectsMap.get(part)
+    let nextFx = effectsMap.get(nextPart)
+    let sep = sectionSeparator
+
+    if (!nextPart && curFx && curFx.fx && curFx.fx.bgColor) {
+        // this is the end of the PS1
+        return part + colorNameParser(colors, curFx.fx.bgColor)(sep)
+    }
+
+    if (!nextFx || !isSection(nextFx.part)) {
+        return part
+    }
+    // if the current section does not have any effects, we will
+    // not use any separator
+    if (curFx) {
+        if (curFx.fx && curFx.fx.bgColor) {
+            sep = colorNameParser(colors, curFx.fx.bgColor)(sep)
+        } else {
+            return part
+        }
+    } else {
+        // for  separator to work, we need at least a background
+        return part
+    }
+    if (nextFx) {
+        if (nextFx.fx && nextFx.fx.bgColor) {
+            sep = colorNameParser(colors, nextFx.fx.bgColor, 'bg')(sep)
+        }
+    }
+    return part + sep
+}).join('')
+
 // console.log(colors.enabled, colors.level, colors.red(123).replace(/001B/g, '\\u001B'))
 // console.log(colors.enabled, colors.level, escape(colors.red(123)))
-process.stdout.write(PS1Parts.join('') + colors.reset())
+process.stdout.write(PS1Parts + colors.reset())
 // console.log('\u001B[94m XXX')
 // console.log(PS1Parts.join(''))

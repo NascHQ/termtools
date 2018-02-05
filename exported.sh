@@ -194,15 +194,19 @@ function battery_charge() {
 battery_charge
 
 echo 0 > ~/.uis
+lastBatteryCheck=$SECONDS
+battery_charge
 function buildPS1ForReal () {
-    battery_charge
-    node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $BATT_CONNECTED $BATT_PCT $(now) $(whoami) 1
+    if ((SECONDS % 10 == "0")); then
+        battery_charge
+    fi
+    node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $BATT_CONNECTED $BATT_PCT $(now) $1 1
 }
 function buildPS1 () {
-    PS1="\$(if [ -n \"\$(type -t buildPS1ForReal)\" ]; then echo \"$(buildPS1ForReal h)\"; else /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt ; fi)"
+    PS1="\$(if [ -n \"\$(type -t buildPS1ForReal)\" ]; then echo \"$(buildPS1ForReal $(whoami))\"; else echo \"$(cat /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt)\" ; fi)"
 }
 
-#node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(now) root 1 > /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt
+node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(now) root 1 > /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt
 #echo "\[\033[0;33m\][\u@\h \w]\$ \[\033[00m\]"
 export -f buildPS1
 PROMPT_COMMAND="buildPS1"

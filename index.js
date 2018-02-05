@@ -54,15 +54,19 @@ let battery = fs.readFileSync(DIR_NAME + '/battery.sh', 'utf8').toString()
 // let ps1 = `export PS1='\`node ${DIR_NAME}/get-ps1-parts.js \\"${JSON.stringify(SETTINGS)}\\"\`'`
 let ps1 = `
 echo 0 > ~/.uis
+lastBatteryCheck=$SECONDS
+battery_charge
 function buildPS1ForReal () {
-    battery_charge
-    node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$BATT_CONNECTED \$BATT_PCT \$(now) \$(whoami) ${useCustomSettings}
+    if ((SECONDS % 10 == "0")); then
+        battery_charge
+    fi
+    node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$BATT_CONNECTED \$BATT_PCT \$(now) $1 ${useCustomSettings}
 }
 function buildPS1 () {
-    PS1="\\$(if [ -n \\"\\$(type -t buildPS1ForReal)\\" ]; then echo \\"$(buildPS1ForReal \h)\\"; else ${DIR_NAME}/sudoed-ps1.txt ; fi)"
+    PS1="\\$(if [ -n \\"\\$(type -t buildPS1ForReal)\\" ]; then echo \\"$(buildPS1ForReal $(whoami))\\"; else echo \\"$(cat ${DIR_NAME}/sudoed-ps1.txt)\\" ; fi)"
 }
 
-#node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$(now) root ${useCustomSettings} > ${DIR_NAME}/sudoed-ps1.txt
+node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$(now) root ${useCustomSettings} > ${DIR_NAME}/sudoed-ps1.txt
 #echo "\\[\\033[0;33m\\][\\u@\\h \\w]\\$ \\[\\033[00m\\]"
 export -f buildPS1
 PROMPT_COMMAND="buildPS1"
