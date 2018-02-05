@@ -22,6 +22,7 @@ function branch_color() {
     if [[ $branch_name =~ .+ ]]; then
         case "$(git status 2>/dev/null | grep -E -o 'nothing|Untracked|Changes|to be committed|Unmerged' | paste -s -d"," -)" in
             "nothing")
+            
                 if [[ $(git status 2>/dev/null | grep -E "behind|ahead|diverged" 2>/dev/null) ]]; then
                     final_color="$COMMITS_AHEAD_OR_BEHIND"
                 else

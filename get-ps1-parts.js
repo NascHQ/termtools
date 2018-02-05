@@ -34,37 +34,20 @@ const SESSION_TYPE = process.argv[ARG_POSITION + 7]
 const ARGVLength = process.argv.length
 const TIME = process.argv[ARGVLength - 3]
 const UUNAME = process.argv[ARGVLength - 2]
+const IS_ROOT = UUNAME == 'root'
 const BATTERY = parseInt(process.argv[ARGVLength - 4], 10)
 const IS_CHARGING = parseInt(process.argv[ARGVLength - 5], 10)
 const IS_WRITABLE = parseInt(process.argv[ARGVLength - 6], 10)
+let GIT_INFO = IS_ROOT ? [] : process.argv[ARGVLength - 7].split('@@@')
+const GIT_BRANCH = GIT_INFO[0] || ''
+const GIT_STATUS = parseInt(GIT_INFO[1], 10) || ''
+const GIT_SYMBOL = GIT_INFO[2] || ''
 const USE_CUSTOM_SETTINGS = process.argv[ARGVLength - 1] == 1
 
-// const USER_NAME = execSync('id -u | xargs echo -n').toString()//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
-// const USER_NAME = execSync('echo `whoami` | xargs echo -n').toString()//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
-// const USER_NAME = execSync('echo $LOGNAME').toString().replace(/\n/g, '')//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
-// const USER_NAME = execSync('echo $USER').toString().replace(/\W/g, '')//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
-// console.log('>>>', JSON.stringify(execSync('who am i').toString().split('   ').shift()))
-// let IS_ROOT = JSON.stringify(execSync('OUTPUT="$USER" && echo "${OUTPUT}"').toString().replace(/\n/, ''))
-// let IS_ROOT = JSON.stringify(execSync('echo $USER > ~/.tmp.un.txt && cat ~/.tmp.un.txt && rm ~/.tmp.un.txt').toString().replace(/\n/, ''))
-// let IS_ROOT = JSON.stringify(execSync('echo $USER_IS_SUDO').toString().replace(/\n/, ''))
-// let IS_ROOT = JSON.stringify(execSync('node -e "console.log(process.env.USER_IS_SUDO)"').toString().replace(/\n/, ''))
-// const IS_ROOT = JSON.stringify(execSync('cat ~/.uis').toString())
-// console.log(`${HOME}/.uis`)
-// const IS_ROOT = execSync(`cat ${HOME}/.uis`).toString().replace(/\n/g, '')
-const IS_ROOT = UUNAME == 'root'
-// const IS_ROOT = fs.readFileSync(`${HOME}/.uis`, 'utf8')
-// console.log('>>>>' + JSON.stringify(IS_ROOT) + '<<<<')
-// console.log('>>>'+ IS_ROOT + ' > ' + (new Date).getTime())
-// console.log("UUNAME: '"+JSON.stringify(UUNAME)+"'", UUNAME == 'root')//, JSON.stringify(UUNAME).split(''))
-// let IS_ROOT = ''
-// console.log('>>>>', JSON.stringify(IS_ROOT))
-// console.log('.'+JSON.stringify(USER_NAME)+'.', process.getuid(), USER_NAME.toString() == 'root', IS_ROOT)
-// const USER = '\\'+'u'//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
-const USER = UUNAME//colors.bgBlueBright.white(' \\u ') + colors.bgBlackBright.blueBright('')
-// const USER = ''
+const USER = UUNAME
 
 const HOST_NAME = process.argv[ARG_POSITION + 5].replace(/\.[^\.]+$/, '')
-// const HOST_NAME = process.argv[process.argv.length - 3]
+
 const HOME = process.argv[ARG_POSITION + 6]
 const IP = process.argv[ARG_POSITION + 7]
 const MACHINE = IS_ROOT ? [' 🖥 \\h '] : ` 🖥 ${HOST_NAME} `
@@ -74,15 +57,7 @@ const PATH = IS_ROOT ? ['\\w '] : path.dirname(process.cwd().replace(HOME, ' ~')
 if (!IS_ROOT && PATH.join('') === '.') {
     BASENAME = '~'
 }
-// console.log(HOME, process.cwd(), path.dirname(path.sep))
-// colors = colors({
-//     enabled: true,
-//     level: 3,
-//     wrapper: {
-//         pre: '\\[',
-//         post: '\\]',
-//     }
-// })
+
 colors.enabled = true
 colors.level = 3
 colors.wrapper = {
@@ -95,6 +70,9 @@ let SETTINGS = require('./default-settings.js', 'utf8')({
     IS_ROOT,
     IP,
     BATTERY,
+    GIT_STATUS,
+    GIT_BRANCH,
+    GIT_SYMBOL,
     IS_WRITABLE,
     IS_CHARGING,
     colors,
@@ -166,6 +144,8 @@ const VARS = {
     entry: '',
     readOnly: IS_WRITABLE ? '' : 'R+ ', // 🔒🔐👁
     separator: sectionSeparator,
+    git: `⎇ ${GIT_BRANCH}${GIT_SYMBOL}`, // ⑂ᛘ⎇
+    gitStatus: GIT_STATUS,
     battery: ` ${IS_CHARGING ? '⚡' : '◒'}${BATTERY}% `,
     userName: ` ${USER} ` //) + colors.bgBlackBright.blueBright('◣▶')
 }
@@ -179,6 +159,9 @@ if (USE_CUSTOM_SETTINGS) {
                 IS_ROOT,
                 IP,
                 BATTERY,
+                GIT_STATUS,
+                GIT_BRANCH,
+                GIT_SYMBOL,
                 IS_CHARGING,
                 IS_WRITABLE,
                 colors

@@ -42,6 +42,7 @@ try {
 
 // populating some aliases
 let aliases = fs.readFileSync(DIR_NAME + '/aliases.sh', 'utf8').toString()
+let git = fs.readFileSync(DIR_NAME + '/get-git.sh', 'utf8').toString()
 let battery = fs.readFileSync(DIR_NAME + '/battery.sh', 'utf8').toString()
 
 // for (let alias in SETTINGS.aliases) {
@@ -65,7 +66,7 @@ function buildPS1ForReal () {
         WRITTABLE=1
     fi
 
-    node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$WRITTABLE \$BATT_CONNECTED \$BATT_PCT \$(now) $1 ${useCustomSettings}
+    node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} $(getGit) \$WRITTABLE \$BATT_CONNECTED \$BATT_PCT \$(now) $1 ${useCustomSettings}
 }
 function buildPS1 () {
     PS1="\\$(if [ -n \\"\\$(type -t buildPS1ForReal)\\" ]; then echo \\"$(buildPS1ForReal $(whoami))\\"; else echo \\"$(cat ${DIR_NAME}/sudoed-ps1.txt)\\" ; fi)"
@@ -89,6 +90,7 @@ let nodeBin = ''// `export PATH="$HOME/.node/bin:$PATH"`
 const exportedContent = '' +
     `#!/bin/bash\n` +
     `${aliases}\n` +
+    `${git}\n` +
     `${battery}\n` +
     `${ps1}\n` +
     `${nodeBin}\n\n`
