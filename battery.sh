@@ -2,6 +2,8 @@
 
 function battery_charge() {
     local battery_path="/sys/class/power_supply/BAT0"
+    local battery_path2="/sys/class/power_supply/BAT1/"
+
     case $(uname -s) in
         "Darwin")
             if ((pmset_on)) && command -v pmset &>/dev/null; then
@@ -37,12 +39,12 @@ function battery_charge() {
         "Linux")
             case $(cat /etc/*-release) in
                 *"Arch Linux"*|*"Ubuntu"*|*"openSUSE"*)
-                    battery_state=$(cat $battery_path/energy_now)
+                    battery_state=$(cat $battery_path/energy_now || cat $battery_path2/capacity)
                     battery_full=$battery_path/energy_full
                     battery_current=$battery_path/energy_now
                     ;;
                 *)
-                    battery_state=$(cat $battery_path/status)
+                    battery_state=$(cat $battery_path/status || cat $battery_path2/status)
                     battery_full=$battery_path/charge_full
                     battery_current=$battery_path/charge_now
                     ;;
