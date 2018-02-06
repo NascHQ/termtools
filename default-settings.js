@@ -14,7 +14,7 @@ module.exports = function (data) {
             case 1: {
                 // COMMITS_AHEAD
                 gitBranchFX.bgColor = '#0b0'
-                gitBranchFX.color = 'black'
+                gitBranchFX.color = 'white'
                 break
             }
             case -2: {
