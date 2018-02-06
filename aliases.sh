@@ -39,7 +39,6 @@ alias bold="bold"
 
 alias push="git push origin"
 alias pull="git pull origin"
-alias sudo="echo 1 > ~/.uis && sudo"
 alias exit="exit && echo 0 > ~/.uis"
 alias line="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -"
 alias doubleline="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' ="
