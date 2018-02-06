@@ -15,10 +15,11 @@ function createCustomFile (homeFilePath) {
         homeFilePath,
     )
     console.log(
-        'Created file at ' + colors.bold(homeFilePath) +
+        'Created file at ' + colors.bold.underline(homeFilePath) +
         '\nFeel free to apply changes to that file.',
         '\nFollow the comments in it, or refer to our documentation.'
     )
+    rl.close();
 }
 
 module.exports = function (homePath) {
@@ -34,7 +35,6 @@ module.exports = function (homePath) {
             if (answer.toLowerCase().startsWith('y')) {
                 createCustomFile(homeFilePath)
             }
-            rl.close();
         });
     } else {
         createCustomFile(homeFilePath)

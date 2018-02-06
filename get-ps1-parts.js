@@ -138,7 +138,8 @@ let SETTINGS = {}
 if (USE_CUSTOM_SETTINGS) {
     try {
         // users may export a function, or a straight object
-        let custom = require('./custom-user-settings.js')
+        // let custom = require('./custom-user-settings.js')
+        let custom = require(path.resolve(HOME, '.bash_profile.js'))
         if (typeof custom == 'function') {
             custom = custom(context)
         }

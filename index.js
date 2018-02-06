@@ -19,7 +19,7 @@ const PROFILER_JS_PATH = process.argv[ARG_POSITION + 1]
 const DIR_NAME = path.dirname(PROFILER_JS_PATH)
 const HOME = process.argv[ARG_POSITION + 5]
 
-let useCustomSettings = 0
+let useCustomSettings = 1
 let SETTINGS = {}
 
 try {
@@ -116,9 +116,9 @@ try {
         exportedPath,
         exportedContent
     )
-} catch (error) {
-    throw new Error('Could not register the PS1 or aliases!\n' + error)
-}
 
-// let's set it as executable (trying it without sudo, and if failed, with sudo)
-execSync(`chmod +x ${exportedPath} || sudo chmod +x ${exportedPath}`)
+    // let's set it as executable (trying it without sudo, and if failed, with sudo)
+    execSync(`chmod +x ${exportedPath} || sudo chmod +x ${exportedPath}`)
+} catch (error) {
+    throw new Error(colors.red('[x] ') + 'Error when applying terminal tools!\n' + colors.bold(error))
+}
