@@ -2,6 +2,8 @@
 
 function battery_charge() {
     local battery_path="/sys/class/power_supply/BAT1/"
+    local curcap
+    local maxcap
     BATT_PCT=99
     case $(uname -s) in
         "Darwin")
@@ -30,7 +32,7 @@ function battery_charge() {
                             ;;
                     esac
                     if [[ -n "$maxcap" && -n $curcap ]]; then
-                        BATT_PCT=$(( 100 * curcap / maxcap))
+                        BATT_PCT=$[100 * $curcap / $maxcap]
                     fi
                 done < <(ioreg -n AppleSmartBattery -r | grep -o '"[^"]*" = [^ ]*' | sed -e 's/= //g' -e 's/"//g' | sort)
             fi
@@ -52,9 +54,6 @@ function battery_charge() {
                 BATT_CONNECTED=1
             fi
                 BATTERY_STATE=$battery_state #$(cat $battery_current)
-                # BATT_PCT=
-                # full=$(cat $battery_full)
-                # BATT_PCT=$((100 * $now / $full))
             ;;
     esac
 }
