@@ -11,7 +11,7 @@ case $1 in
     "reload")
         exec ${SHELL} -l
     ;;
-    "--help" | "help")
+    "--help" | "help" | "-h" | "?")
         nasc-termtools help --color=aways | less -R
     ;;
     "remove" | "restore")

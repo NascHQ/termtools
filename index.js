@@ -30,7 +30,7 @@ try {
     useCustomSettings = 1
 } catch (e) {
     // if the file DOES exist, but there was an error:
-    if (e.message.indexOf('Cannot find module') < 0) {
+    if (e.message.indexOf('ENOENT') < 0) {
         console.log(colors.red('[x] ') + 'Failed importing settings.\n' + e.message)
     }
 }

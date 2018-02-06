@@ -22,7 +22,7 @@ Easy to customize, built on top of the power of JavaScript and Bash, it ads a bu
 Easy like sunday morning!
 
 ```
-npm install -g @nasc/profiler
+npm install -g @nasc/termtools
 ```
 
 ## Applying it
