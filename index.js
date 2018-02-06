@@ -24,14 +24,19 @@ let SETTINGS = {}
 
 try {
     // let's try and use the user's settings at ~/.bash_profile.js
-    // if the file exists, we will save a copy of it in our path
-    fs.copyFileSync(HOME + '/.bash_profile.js', DIR_NAME + '/custom-user-settings.js')
-    SETTINGS = require(DIR_NAME + '/custom-user-settings.js')({})
+    SETTINGS = require(HOME + '/.bash_profile.js')({})
     useCustomSettings = 1
 } catch (e) {
     // if the file DOES exist, but there was an error:
-    if (e.message.indexOf('ENOENT') < 0) {
+    if (e.message.toLowerCase().indexOf('enoent') < 0) {
         console.log(colors.red('[x] ') + 'Failed importing settings.\n' + e.message)
+    }
+    if (e.message.toLowerCase().indexOf('denied') < 0) {
+        console.log(
+            colors.red('[x] '),
+            'Permission denied to read your customized file.\n' +
+            'Can you please set reading permissions for your ~/.bash_profile.js? \n' +
+            '\n    chmod 555 ' + HOME + '/.bash_profile.js' + '\n\n')
     }
 }
 
@@ -120,5 +125,12 @@ try {
     // let's set it as executable (trying it without sudo, and if failed, with sudo)
     execSync(`chmod +x ${exportedPath} || sudo chmod +x ${exportedPath}`)
 } catch (error) {
-    throw new Error(colors.red('[x] ') + 'Error when applying terminal tools!\n' + colors.bold(error))
+    if (e.message.toLowerCase().indexOf('denied') < 0) {
+        console.log(
+            colors.red('[x] '),
+            'Permission denied to write the output sh file.\n' +
+            'Can you please set writing permissions to the following file? \n' +
+            '\n    ' + exportedPath + '\n\n')
+    }
+    // throw new Error(colors.red('[x] ') + 'Error when applying terminal tools!\n' + colors.bold(error))
 }
