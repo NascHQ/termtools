@@ -1,9 +1,8 @@
 #!/bin/bash
 
 function battery_charge() {
-    local battery_path="/sys/class/power_supply/BAT0"
-    local battery_path2="/sys/class/power_supply/BAT1/"
-
+    local battery_path="/sys/class/power_supply/BAT1/"
+    BATT_PCT=99
     case $(uname -s) in
         "Darwin")
             if ((pmset_on)) && command -v pmset &>/dev/null; then
@@ -39,14 +38,12 @@ function battery_charge() {
         "Linux")
             case $(cat /etc/*-release) in
                 *"Arch Linux"*|*"Ubuntu"*|*"openSUSE"*)
-                    battery_state=$(cat $battery_path2/capacity 2>/dev/null || cat $battery_path/energy_now 2>/dev/null || echo "Charging")
-                    battery_full=$battery_path/energy_full
-                    battery_current=$battery_path/energy_now
+                    BATT_PCT=$(cat $battery_path/capacity 2>/dev/null || echo "100")
+                    battery_state=$(cat $battery_path/status 2>/dev/null || echo "Charging")
                     ;;
                 *)
-                    battery_state=$(cat $battery_path2/status 2>/dev/null || cat $battery_path/status 2>/dev/null || echo "Charging")
-                    battery_full=$battery_path/charge_full
-                    battery_current=$battery_path/charge_now
+                    BATT_PCT=$(cat $battery_path/capacity 2>/dev/null || echo "100")
+                    battery_state=$(cat $battery_path/status 2>/dev/null || echo "Charging")
                     ;;
             esac
             if [ $battery_state == 'Discharging' ]; then
@@ -55,8 +52,9 @@ function battery_charge() {
                 BATT_CONNECTED=1
             fi
                 BATTERY_STATE=$battery_state #$(cat $battery_current)
+                # BATT_PCT=
                 # full=$(cat $battery_full)
-                BATT_PCT=$((100 * $now / $full))
+                # BATT_PCT=$((100 * $now / $full))
             ;;
     esac
 }
