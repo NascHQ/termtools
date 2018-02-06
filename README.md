@@ -94,21 +94,21 @@ If you exported a function, it will be called, receiving one parameter, an objec
 - BATTERY: The current percentage of the battery (give or take...some OSs lie a little about it)
 - IS_CHARGING: True if the device is connected and charging
 - GIT_STATUS: The repository status. May be from -2 to 5, meaning:
-  * -2: COMMITS DIVERGED
-  * -1: COMMITS BEHIND
-  * 0: NO CHANGES
-  * 1: COMMITS AHEAD
-  * 2: UNTRACKED CHANGES
-  * 3: CHANGES TO BE COMMITTED
-  * 4: LOCAL AND UNTRACKED CHANGES
-  * 5: LOCAL CHANGES
+    * -2: COMMITS DIVERGED
+    * -1: COMMITS BEHIND
+    * 0: NO CHANGES
+    * 1: COMMITS AHEAD
+    * 2: UNTRACKED CHANGES
+    * 3: CHANGES TO BE COMMITTED
+    * 4: LOCAL AND UNTRACKED CHANGES
+    * 5: LOCAL CHANGES
 - GIT_SYMBOL: A symbol representing the current position of the branch. Symbols can be:
-  * "-": COMMITS BEHIND
-  * "+": COMMITS AHEAD
-  * "!": COMMITS DIVERGED
-  * "*": UNTRACKED
-  * "": Anything else
-- GIT_BRANCH: The name of the current branch
+    * "-": COMMITS BEHIND
+    * "+": COMMITS AHEAD
+    * "!": COMMITS DIVERGED
+    * "*": UNTRACKED
+    * "": Anything else
+-   GIT_BRANCH: The name of the current branch
 - IS_WRITABLE: True if the current user has write access to the current directory
 - colors: A referece to the a `chalk` instance, allowing you to add colors if you need to
 
