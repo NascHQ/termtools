@@ -19,6 +19,10 @@ const PROFILER_JS_PATH = process.argv[ARG_POSITION + 1]
 const DIR_NAME = path.dirname(PROFILER_JS_PATH)
 const HOME = process.argv[ARG_POSITION + 5]
 
+if (HOME.indexOf('/root/') >= 0) {
+    HOME = require('os').homedir()
+}
+
 let useCustomSettings = 1
 let SETTINGS = {}
 
@@ -79,12 +83,12 @@ function buildPS1ForReal () {
 # it will write the PS1 in a way it will trigger buildPS1ForReal on new entries
 # and will also write a default output for sudo
 function buildPS1 () {
-    PS1="\\$(if [ -n \\"\\$(type -t buildPS1ForReal)\\" ]; then echo \\"$(buildPS1ForReal $(whoami))\\"; else echo \\"$(cat ${DIR_NAME}/sudoed-ps1.txt)\\" ; fi)"
+    PS1="\\$(if [ -n \\"\\$(type -t buildPS1ForReal)\\" ]; then echo \\"$(buildPS1ForReal $(whoami))\\"; else echo \\"$(cat ${DIR_NAME}/sudoed-ps1.txt 2>/dev/null)\\" ; fi)"
 }
 
 # here is where we use the current settings to generate the output for sudo
 # we do this only once, too
-node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$(now) root ${useCustomSettings} > ${DIR_NAME}/sudoed-ps1.txt
+node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} \$(now) root ${useCustomSettings} > ${DIR_NAME}/sudoed-ps1.txt 2>/dev/null
 
 # exporting the function
 export -f buildPS1
