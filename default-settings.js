@@ -67,7 +67,7 @@ module.exports = function (data) {
         decorators: {
             pathSeparator: '  ',
             section: '',
-            git: '⎇'
+            git: '⎇' // ⑂ᛘ⎇
         },
         ps1: {
             parts: {

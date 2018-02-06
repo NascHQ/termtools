@@ -401,7 +401,7 @@ function buildPS1ForReal () {
 
     # every time PS1 is rendered, we trigger this node call
     # ensuring it will bring its results up to date
-    node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(getGit) $WRITTABLE $BATT_CONNECTED $BATT_PCT $(now) $1 1
+    node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /private/var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(getGit) $WRITTABLE $BATT_CONNECTED $BATT_PCT $(now) $1 1
 }
 
 # This function is called only ONCE, as soon as the profile is applied
@@ -413,7 +413,7 @@ function buildPS1 () {
 
 # here is where we use the current settings to generate the output for sudo
 # we do this only once, too
-node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(now) root 1 > /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt
+node /private/var/www/NASC/projects/nasc_profiler/get-ps1-parts.js /private/var/www/NASC/projects/nasc_profiler/index.js /private/var/www/NASC/projects/nasc_profiler/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(now) root 1 > /private/var/www/NASC/projects/nasc_profiler/sudoed-ps1.txt
 
 # exporting the function
 export -f buildPS1

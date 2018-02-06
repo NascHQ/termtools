@@ -32,8 +32,8 @@ fi
 # let's ensure the right fonts are available
 . $DIR/ensure-fonts.sh
 
-# echo $SOURCE
+echo $PS1 > "$DIR/_previous-ps1.bkp"
+
 node $DIR/index.js $SOURCE $TTY $HOSTNAME $HOME $IP $SESSION_TYPE 
-# node inspect $DIR/index.js $SOURCE $TTY $HOSTNAME $HOME $IP $SESSION_TYPE 
+
 source $DIR/exported.sh
-# sudo bash -c "echo 'source $DIR/exported.sh' > ~/.bash_profile"

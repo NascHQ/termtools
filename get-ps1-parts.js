@@ -12,7 +12,7 @@
 const path = require('path')
 const fs = require('fs')
 const execSync = require('child_process').execSync
-let colors = require('chalk')
+let colors = require('./colors')
 // we will have to enforce chalk to use colors
 // as it is running in a second level command, it will turn them off by default
 colors.enabled = true
@@ -171,9 +171,9 @@ const VARS = {
     entry: '',
     readOnly: IS_WRITABLE ? '' : 'R+ ', // 🔒🔐👁
     separator: sectionSeparator,
-    git: `${SETTINGS.decorators.git} ${GIT_BRANCH}${GIT_SYMBOL}`, // ⑂ᛘ⎇
+    git: `${SETTINGS.decorators.git} ${GIT_BRANCH}${GIT_SYMBOL}`, // ⑂ᛘ⎇
     gitStatus: GIT_STATUS,
-    battery: ` ${IS_CHARGING ? '⚡' : '◒'}${BATTERY}% `,
+    battery: ` ${IS_CHARGING ? '⚡ ' : '◒'}${BATTERY}% `,
     userName: ` ${USER} `
 }
 

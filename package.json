@@ -1,9 +1,16 @@
 {
-  "name": "nasc_profiler",
+  "name": "@nasc/termtools",
   "version": "1.0.0",
   "description": "Easy to customize, uses the power of both JavaScript and Bash to add a bunch of _aliases_ and extra funcionality for your bash profile.",
+  "main": "install.js",
+  "bin": {
+    "termtools": "bin/index.sh",
+    "nasc-termtools": "bin/index.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "apply": "node ./install.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": ""
   },
   "repository": {
     "type": "git",
@@ -14,6 +21,6 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/nascweb/nasc_profiler#readme",
   "dependencies": {
-    "chalk": "^2.3.0"
+    "@nasc/chalk": "^2.3.1"
   }
 }

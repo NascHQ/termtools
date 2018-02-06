@@ -2,7 +2,7 @@
 const fs = require('fs')
 const inspector = require('inspector')
 const path = require('path')
-const colors = require('chalk')
+const colors = require('./colors')
 const execSync = require('child_process').execSync
 
 const IS_DEBUGGING = process.argv[1] === 'inspect'
