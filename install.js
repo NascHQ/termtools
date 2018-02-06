@@ -23,7 +23,7 @@ try {
     }
 
 } catch (error) {
-    if (e.message.toLowerCase().indexOf('denied') < 0) {
+    if (error.message.toLowerCase().indexOf('denied') < 0) {
         console.log(
             colors.red('[x] '),
             'Permission denied to access ~/.bash_profile.\n' +

@@ -124,7 +124,7 @@ try {
 
     // let's set it as executable (trying it without sudo, and if failed, with sudo)
     execSync(`chmod +x ${exportedPath} || sudo chmod +x ${exportedPath}`)
-} catch (error) {
+} catch (e) {
     if (e.message.toLowerCase().indexOf('denied') < 0) {
         console.log(
             colors.red('[x] '),
