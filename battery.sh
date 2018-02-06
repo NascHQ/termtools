@@ -1,6 +1,7 @@
 #!/bin/bash
 
 function battery_charge() {
+    local battery_path="/sys/class/power_supply/BAT0"
     case $(uname -s) in
         "Darwin")
             if ((pmset_on)) && command -v pmset &>/dev/null; then
@@ -52,7 +53,7 @@ function battery_charge() {
                 BATT_CONNECTED=1
             fi
                 BATTERY_STATE=$(cat $battery_current)
-                full=$(cat $battery_full)
+                # full=$(cat $battery_full)
                 BATT_PCT=$((100 * $now / $full))
             ;;
     esac
