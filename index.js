@@ -110,14 +110,15 @@ const exportedContent = '' +
 
 // and finally printing it all into the real .sh file
 const exportedPath = DIR_NAME + '/exported.sh'
-fs.writeFile(
-    exportedPath,
-    exportedContent,
-    err => {
-    if (err) {
-        throw new Error('Could not register the PS1 or aliases!\n' + err)
-    }
-})
+
+try {
+    fs.writeFileSync(
+        exportedPath,
+        exportedContent
+    )
+} catch (error) {
+    throw new Error('Could not register the PS1 or aliases!\n' + error)
+}
 
 // let's set it as executable (trying it without sudo, and if failed, with sudo)
 execSync(`chmod +x ${exportedPath} || sudo chmod +x ${exportedPath}`)
