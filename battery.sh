@@ -39,12 +39,12 @@ function battery_charge() {
         "Linux")
             case $(cat /etc/*-release) in
                 *"Arch Linux"*|*"Ubuntu"*|*"openSUSE"*)
-                    battery_state=$(cat $battery_path/energy_now || cat $battery_path2/capacity)
+                    battery_state=$(cat $battery_path2/capacity || cat $battery_path/energy_now)
                     battery_full=$battery_path/energy_full
                     battery_current=$battery_path/energy_now
                     ;;
                 *)
-                    battery_state=$(cat $battery_path/status || cat $battery_path2/status)
+                    battery_state=$(cat $battery_path2/status || cat $battery_path/status)
                     battery_full=$battery_path/charge_full
                     battery_current=$battery_path/charge_now
                     ;;
