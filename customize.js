@@ -11,7 +11,7 @@ const rl = readline.createInterface({
 
 function createCustomFile (homeFilePath) {
     fs.copyFileSync(
-        path.resolve(__dirname, 'default-settings.js'),
+        path.resolve(__dirname, 'themes/default.js'),
         homeFilePath,
     )
     console.log(
