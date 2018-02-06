@@ -64,7 +64,6 @@ alias desk='cd ~/Desktop'
 alias d='cd ~/Documents'
 alias docs='cd ~/Documents'
 alias documents='cd ~/Documents'
-alias documents='cd ~/Documents'
 alias downloads='cd ~/Downloads'
 alias down='cd ~/Downloads'
 alias amionline="ping www.google.com -t 1 2>/dev/null >/dev/null && echo \"Yes\" || echo \"No\""

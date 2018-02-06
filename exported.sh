@@ -266,7 +266,6 @@ function forward {
 
 alias foo="echo baz"
 alias baz="echo bar"
-alias bar="echo foo"
 function getGit () {
     local branch_name=`git branch 2>/dev/null | grep -e '\*' --color=never | sed 's/\* //'`
     local status=0

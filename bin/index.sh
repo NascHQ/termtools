@@ -11,17 +11,15 @@ case $1 in
     "reload")
         exec ${SHELL} -l
     ;;
-    # "restore")
-    #     nasc-termtools remove
-    #     PS1=$( cat $DIR/_previous-ps1.bkp )
-    #     exec ${SHELL} -l
-    # ;;
     "--help" | "help")
         nasc-termtools help --color=aways | less -R
     ;;
-    "remove")
+    "remove" | "restore")
         nasc-termtools remove
         exec ${SHELL} -l
+    ;;
+    "customize")
+        nasc-termtools customize $HOME
     ;;
     *)
         nasc-termtools $@
