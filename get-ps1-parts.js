@@ -103,7 +103,7 @@ const HOME = process.argv[ARG_POSITION + 6]
 const IP = process.argv[ARG_POSITION + 7]
 
 // this is the real string we will use ahead, to show the hostname
-const MACHINE = ` 🖥 ${IS_ROOT ? '\\h' : HOST_NAME} `
+const MACHINE = `${IS_ROOT ? '\\h' : HOST_NAME}`
 
 // we will separate the basename from the rest of the path, and show them as
 // two distinct sections
@@ -131,11 +131,7 @@ const context = {
 }
 
 // time to start preparing the PS1 itself
-// firstly, we will require the default settings we have and will run it (as it
-// is a function) using the current state (with everything we parsed so far)
-let SETTINGS = require('./default-settings.js', 'utf8')(context)
-const sectionSeparator = SETTINGS.decorators.section
-
+let SETTINGS = {}
 // if the user has custom settings...
 // (we have set this flag only once, so we can avoid looking for this file
 // everytime we have to update the PS1, unless the user has customizations)
@@ -146,13 +142,7 @@ if (USE_CUSTOM_SETTINGS) {
         if (typeof custom == 'function') {
             custom = custom(context)
         }
-
-        // then, we will have to merge the current default options with
-        // the user's customization
-        custom.ps1 = custom.ps1 || {}
-        SETTINGS.ps1.parts = Object.assign({}, SETTINGS.ps1.parts, custom.ps1.parts || {})
-        SETTINGS.ps1.decorators = Object.assign({}, SETTINGS.ps1.decorators, custom.ps1.decorators || {})
-        SETTINGS.ps1.effects = Object.assign({}, SETTINGS.ps1.effects, custom.ps1.effects || {})
+        SETTINGS = custom
     } catch (e) {
         if (e.message.indexOf('Cannot find module') < 0) {
             console.log(colors.red('[x] ') + 'Failed importing settings.\n' + e.message)
@@ -160,21 +150,48 @@ if (USE_CUSTOM_SETTINGS) {
     }
 }
 
+// here, we will require the default settings we have and will run it (as it
+// is a function) using the current state (with everything we parsed so far)
+let theme = SETTINGS.extends || 'default'
+try {
+    theme = require(`./themes/${theme}.js`, 'utf8')(context)
+} catch (e) {
+    console.error('Invalid theme!\nPlease, select one of the following:')
+    
+    let availableThemes = execSync(`ls ${DIR_NAME}/themes/`)
+        .toString()
+        .split('\n')
+        .map(theme => theme.replace(/\.js$/, ''))
+        .filter(theme => theme.length)
+
+    console.log('\n - ' + availableThemes.join('\n - ') + '\n')
+    console.log('Loading default theme instead')
+    theme = require(`./themes/default.js`, 'utf8')(context)
+}
+
+// then, we will have to merge the current default options with
+// the user's customization
+SETTINGS.ps1 = SETTINGS.ps1 || {}
+SETTINGS.ps1.parts = Object.assign({}, theme.ps1.parts, SETTINGS.ps1.parts || {})
+SETTINGS.decorators = Object.assign({}, theme.decorators, SETTINGS.decorators || {})
+SETTINGS.ps1.effects = Object.assign({}, theme.ps1.effects, SETTINGS.ps1.effects || {})
+const sectionSeparator = SETTINGS.decorators.section
+
 // these are the variables available to be used as parts of the PS1 string
 // we will use the parts from SETTINGS, only if they exist here
 const VARS = {
     string: '',
-    time: IS_ROOT ? ' \\t ' : ` ${TIME} `,
-    machine: `${MACHINE}`,
-    basename: `${BASENAME || (IS_ROOT ? '': ' / ')}`,
-    path: getPath,
-    entry: '',
-    readOnly: IS_WRITABLE ? '' : 'R+ ', // 🔒🔐👁
+    time: getWrapper('time', IS_ROOT ? ' \\t ' : ` ${TIME} `),
+    machine: getWrapper('machine', `${MACHINE}`),
+    basename: getWrapper('basename', `${BASENAME || (IS_ROOT ? '': ' / ')}`),
+    path: getWrapper('path', getPath),
+    entry: getWrapper('entry', ''),
+    readOnly: getWrapper('readOnly', IS_WRITABLE ? '' : SETTINGS.decorators.readOnly || 'R'), // 🔒🔐👁
     separator: sectionSeparator,
-    git: `${SETTINGS.decorators.git} ${GIT_BRANCH}${GIT_SYMBOL}`, // ⑂ᛘ⎇
+    git: getWrapper('git', `${SETTINGS.decorators.git}${GIT_BRANCH}${GIT_SYMBOL}`), // ⑂ᛘ⎇
     gitStatus: GIT_STATUS,
-    battery: ` ${IS_CHARGING ? '⚡ ' : '◒'}${BATTERY}% `,
-    userName: ` ${USER} `
+    battery: getWrapper('battery', `${IS_CHARGING ? '⚡ ' : '◒'}${BATTERY}`),
+    userName: getWrapper('userName', USER)
 }
 
 // let's start by having the PS1Parts list empty
@@ -223,7 +240,6 @@ for (let partName in SETTINGS.ps1.parts) {
             fx: SETTINGS.ps1.effects[part.name],
             part
         })
-        // and add it to the PS1 part :)
         PS1Parts.push(tmp)
     }
 }
@@ -283,6 +299,19 @@ process.stdout.write(PS1Parts + colors.reset())
  * Bellow here, we can find the functions we used above
  * long live hoisting!
  *****************************************************************************/
+
+/**
+ * Gets the configured wrapper for the content
+ */
+function getWrapper (partName, content) {
+    let part = SETTINGS.ps1.parts[partName]
+    if (part) {
+        if (part.wrapper) {
+            return part.wrapper.replace(/\$1/, content)
+        }
+    }
+    return content
+}
 
 // we can use nonSections to avoid section separators
 function isSection (part) {
@@ -351,7 +380,7 @@ function getPath (opts = {}) {
             thePath = thePath.slice(0, l) + '… '
         }
     }
-    return thePath.length ? thePath + ' ' : ''
+    return thePath.length ? thePath + '' : ''
 }
 
 

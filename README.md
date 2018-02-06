@@ -10,7 +10,8 @@ Easy to customize, built on top of the power of JavaScript and Bash, it ads a bu
 - [x] PS2 with line numbers
 - [x] Auto completes git commands
 - [x] Shows current branch and git state (also customizable)
-- [x] Extra aliases (check the aliases section for more info about it)
+- [x] (lots of) Extra aliases (check the aliases section for more info about it)
+- [x] Extra functions
 - [x] Protects some actions (like deleting or change permissions to root path)
 - [x] Terminal comands to enable or disable it
 - [x] Auto installs fonts for you (although, you might need to select them in your terminal settings)
@@ -21,7 +22,7 @@ Easy to customize, built on top of the power of JavaScript and Bash, it ads a bu
 Easy like sunday morning!
 
 ```
-npm install @nasc/profiler [-g]
+npm install -g @nasc/profiler
 ```
 
 ## Applying it
@@ -37,12 +38,14 @@ termtools apply
 Seing _weird characters_? No worries, follow the tips your own terminal will give you.  
 At any time, you can run `termtools check` to validate the characters and some colors.
 
-## Remove it
+## Remove it (restore)
 
 Want to see the your PS1 as it was before (will also loos all the _aliases_ and extra functions).
 
-```
+```sh
 termtools remove
+# or
+termtools restore
 ```
 
 To bring it back, just run the `apply` command again:
@@ -159,6 +162,7 @@ The effects are the style rules, applied for each part.
 ##### Parts
 
 Every part of your PS1 has the `enabled` flag, allowing you to turn them on or off as you will.  
+Besides that, all the properties also accept a `wrapper`, which is a string with a "$1". For example, in the "username", the wrapper "[$1]" for the user "felipe" becomes "[felipe]"
 The available parts and their attributes special attributes are:
 
 | Part name | Description | Extra options |
@@ -173,8 +177,19 @@ The available parts and their attributes special attributes are:
 | entry | The last character waiting for the user entry. Usually a "$" sign | content: A given string for it |
 | readOnly | Shown when the current directory is readonly for the current user | |
 
-```
-```
+##### Effects
+
+For each part you used, you can apply effects.  
+The available effects are:
+
+- color*: The text color
+- bgColor*: The background color
+- bold: Sets text as bold
+- italic: Tries to set the text as italic (not all terminals support it)
+- underline: Underlines the text
+- dim: Sets the text as dim
+
+  > Values for both `color` and `bgColor` accept the colors from [chalk](https://github.com/chalk/chalk). You can also use _RGB_ colors starting with "#", for example `#f00`. But keep in mind that some hex values are not supported in some terminals.
 
 ### Aliases
 

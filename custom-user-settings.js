@@ -60,42 +60,43 @@ module.exports = function (data) {
     }
 
     return {
+        extends: 'default',
         aliases: {
-            foo: "echo baz",
-            baz: "echo bar",
+            // foo: "echo baz",
+            // baz: "echo bar",
         },
         decorators: {
-            pathSeparator: '  ',
-            section: '',
-            git: '⎇' // ⑂ᛘ⎇
+            // pathSeparator: '  ',
+            // section: '',
+            // git: '⎇' // ⑂ᛘ⎇
         },
         ps1: {
-            parts: {
-                battery: { enabled: /* !data.IS_CHARGING && */ data.BATTERY < minBat },
-                time: { enabled: false },
-                userName: { enabled: true },
-                string: { enabled: false, content: 'OMG :o ' },
-                machine: { enabled: data.IS_TTY },
-                path: { enabled: true, ellipsis: 5, cut: 'left', maxLength: 40 },
-                basename: { enabled: true },
-                git: { enabled: data.GIT_BRANCH },
-                entry: { enabled: true, content: data.IS_ROOT ? ' # ' :  ' $ ' },
-                readOnly: { enabled: !data.IS_WRITABLE },
-            },
-            effects: {
-                userName: { color: 'white', bgColor: data.IS_ROOT ? 'redBright' : '#00f', bold: data.IS_ROOT, italic: false, underline: false , dim: false},
-                machine: { color: 'black', bgColor: 'white', bold: false, italic: false, underline: false, dim: false},
-                time: { color: false, bgColor: false, bold: false, italic: false, underline: false, dim: true},
-                path: { color: 'white', bgColor: 'gray', bold: false, italic: false, underline: false, dim: !data.IS_ROOT },
-                basename: { color: 'black', bgColor: 'white', bold: false, italic: false, underline: false, dim: false},
-                entry: { color: 'white', bgColor: data.IS_ROOT ? 'redBright' : '#00f', bold: false, italic: false, underline: false, dim: false},
-                readOnly: { color: 'black', bgColor: 'yellow', bold: false, italic: false, underline: false, dim: false},
-                git: gitBranchFX,
-                battery: {
-                    color: data.IS_CHARGING && data.BATTERY >= minBat? 'gray': 'white',
-                    bgColor: data.BATTERY < minBat ? 'red' : data.IS_CHARGING ? 'greenBright' : false,
-                    bold: false, italic: false, underline: false, dim: false},
-            }
+            // parts: {
+            //     battery: { enabled: /* !data.IS_CHARGING && */ data.BATTERY < minBat },
+            //     time: { enabled: false },
+            //     userName: { enabled: true },
+            //     string: { enabled: false, content: 'OMG :o ' },
+            //     machine: { enabled: data.IS_TTY },
+            //     path: { enabled: true, ellipsis: 5, cut: 'left', maxLength: 40 },
+            //     basename: { enabled: true },
+            //     git: { enabled: data.GIT_BRANCH },
+            //     entry: { enabled: true, content: data.IS_ROOT ? ' # ' :  ' $ ' },
+            //     readOnly: { enabled: !data.IS_WRITABLE },
+            // },
+            // effects: {
+            //     userName: { color: 'white', bgColor: data.IS_ROOT ? 'redBright' : '#00f', bold: data.IS_ROOT, italic: false, underline: false , dim: false},
+            //     machine: { color: 'black', bgColor: 'white', bold: false, italic: false, underline: false, dim: false},
+            //     time: { color: false, bgColor: false, bold: false, italic: false, underline: false, dim: true},
+            //     path: { color: 'white', bgColor: 'gray', bold: false, italic: false, underline: false, dim: !data.IS_ROOT },
+            //     basename: { color: 'black', bgColor: 'white', bold: false, italic: false, underline: false, dim: false},
+            //     entry: { color: 'white', bgColor: data.IS_ROOT ? 'redBright' : '#00f', bold: false, italic: false, underline: false, dim: false},
+            //     readOnly: { color: 'black', bgColor: 'yellow', bold: false, italic: false, underline: false, dim: false},
+            //     git: gitBranchFX,
+            //     battery: {
+            //         color: data.IS_CHARGING && data.BATTERY >= minBat? 'gray': 'white',
+            //         bgColor: data.BATTERY < minBat ? 'red' : data.IS_CHARGING ? 'greenBright' : false,
+            //         bold: false, italic: false, underline: false, dim: false},
+            // }
         }
     }
 }

@@ -1,6 +1,6 @@
 module.exports = function (data) {
-    const minBat = 18
 
+    const minBat = 18
     const gitBranchFX = { color: 'white', bgColor: 'gray', bold: false }
 
     if (data.GIT_BRANCH !== '') {
@@ -60,6 +60,7 @@ module.exports = function (data) {
     }
 
     return {
+        extends: 'default',
         aliases: {
             foo: "echo baz",
             baz: "echo bar",
@@ -67,20 +68,21 @@ module.exports = function (data) {
         decorators: {
             pathSeparator: '  ',
             section: '',
-            git: '⎇' // ⑂ᛘ⎇ // \ue0c0
+            readOnly: '🔐', // R+🔒🔐👁
+            git: ' ⎇ ' // ⑂ᛘ⎇ // \ue0c0
         },
         ps1: {
             parts: {
-                battery: { enabled: /* !data.IS_CHARGING && */ data.BATTERY < minBat },
+                battery: { enabled: /* !data.IS_CHARGING && */ data.BATTERY < minBat, wrapper: ' $1% ' },
                 time: { enabled: false },
-                userName: { enabled: true },
+                userName: { enabled: true, wrapper: ' $1 ' },
                 string: { enabled: false, content: 'OMG :o ' },
-                machine: { enabled: data.IS_TTY },
-                path: { enabled: true, ellipsis: 5, cut: 'left', maxLength: 40 },
+                machine: { enabled: data.IS_TTY, wrapper: ' 🖥 $1 ' },
+                path: { enabled: true, ellipsis: 5, cut: 'left', maxLength: 40, wrapper: '$1 ' },
                 basename: { enabled: true },
                 git: { enabled: data.GIT_BRANCH },
                 entry: { enabled: true, content: data.IS_ROOT ? ' # ' :  ' $ ' },
-                readOnly: { enabled: !data.IS_WRITABLE },
+                readOnly: { enabled: !data.IS_WRITABLE, wrapper: '$1 ' },
             },
             effects: {
                 userName: { color: 'white', bgColor: data.IS_ROOT ? 'redBright' : '#00f', bold: data.IS_ROOT, italic: false, underline: false , dim: false},
