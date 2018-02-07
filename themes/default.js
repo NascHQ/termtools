@@ -32,7 +32,7 @@ module.exports = function (data) {
             case 2: {
                 // UNTRACKED_CHANGES_COLOR
                 gitBranchFX.bgColor = '#f90'
-                gitBranchFX.color = 'black'
+                gitBranchFX.color = 'white'
                 break
             }
             case 3: {
