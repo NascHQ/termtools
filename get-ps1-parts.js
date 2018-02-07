@@ -185,7 +185,7 @@ const VARS = {
     time: getWrapper('time', IS_ROOT ? ' \\t ' : ` ${TIME} `),
     machine: getWrapper('machine', `${MACHINE}`),
     basename: getWrapper('basename', `${BASENAME || (IS_ROOT ? '': ' / ')}`),
-    path: getWrapper('path', getPath),
+    path: getPath,
     entry: getWrapper('entry', ''),
     readOnly: getWrapper('readOnly', IS_WRITABLE ? '' : SETTINGS.decorators.readOnly || 'R'), // 🔒🔐👁
     separator: sectionSeparator,
@@ -227,7 +227,7 @@ for (let partName in SETTINGS.ps1.parts) {
             // that may be either a string of a function that will return a string
             let value = VARS[partName]
             if (typeof value === 'function') {
-                value = value(part)
+                value = getWrapper(partName, value(part))
             }
             // finally, we add the effects to it
             tmp += applyEffects(part, value)
@@ -329,6 +329,7 @@ function isSection (part) {
  * @param {object} opts The options for how to decorate the path
  */
 function getPath (opts = {}) {
+
     let str = ''
     let thePATH = Array.from(PATH)
     let sep = SETTINGS.decorators.pathSeparator || path.sep
