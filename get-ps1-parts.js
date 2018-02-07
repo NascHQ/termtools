@@ -153,7 +153,7 @@ if (USE_CUSTOM_SETTINGS) {
 
 // here, we will require the default settings we have and will run it (as it
 // is a function) using the current state (with everything we parsed so far)
-let theme = SETTINGS.extends || 'basic'
+let theme = SETTINGS.extends || 'default'
 try {
     theme = require(`./themes/${theme}.js`, 'utf8')(context)
 } catch (e) {
