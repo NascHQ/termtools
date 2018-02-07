@@ -38,7 +38,18 @@ termtools apply
 Seing _weird characters_? No worries, follow the tips your own terminal will give you.  
 At any time, you can run `termtools check` to validate the characters and some colors.
 
-## Remove it (restore)
+The font we are using (and was already installed for you) is:  
+**"Droid Sans Mono for Powerline Plus Nerd File Types Mono"**
+
+All you gotta do is go to your terminal settings, and edit your profile changint its font family/face to that one.
+
+In _Visual Studio Code_, you can add the settings for the integrated terminal:
+
+```
+"terminal.integrated.fontFamily": "Droid Sans Mono for Powerline Plus Nerd File Types Mono"
+```
+
+## Removing it (restore)
 
 Want to see the your PS1 as it was before (will also loos all the _aliases_ and extra functions).
 
@@ -251,6 +262,5 @@ The available effects are:
 - line: Writes a line (-) in terminal
 - doubleline: Writes a double line (=) in terminal
 - bold: Like `echo`, but outputs the text in _bold_.
-
 
 

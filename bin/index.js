@@ -19,6 +19,11 @@ switch (param) {
         require('../remove')
         break
     }
+    case "version" : {
+        const pkg = require('../package.json')
+        console.log(pkg.version)
+        break
+    }
     case "check":
     case "test" : {
         require('../test-fonts.js')

@@ -2,7 +2,7 @@
 
 _dir="$( cd "$( dirname "$0" )" && pwd )"
 
-if [ -f ".$HOME/.has_bash_fonts_installed" ]; then :
+if [ -f "$HOME/.has_bash_fonts_installed" ]; then :
 else
     if test "$(uname)" = "Darwin" ; then
         # MacOS
@@ -24,11 +24,9 @@ else
     echo "Installed fonts for terminal"
     nasc-termtools check
 
-    echo "Type \"termtools help\" for more information"
+    echo "Type \"termtools help\" for more information."
     echo "For any question, bug report or suggestion, check our repository and leave an issue or comment."
     echo ""
     
     echo 1 > "$HOME/.has_bash_fonts_installed"
 fi
-
-# xterm*font: Microsoft\ Sans\ Serif.ttf 2-12

@@ -8,6 +8,9 @@ case $1 in
         nasc-termtools install
         exec ${SHELL} -l
     ;;
+    "version" | "-v" | "v")
+        nasc-termtools version
+    ;;
     "reload")
         exec ${SHELL} -l
     ;;
@@ -17,6 +20,9 @@ case $1 in
     "remove" | "restore")
         nasc-termtools remove
         exec ${SHELL} -l
+    ;;
+    "post-install")
+        . ./post-install.sh
     ;;
     "customize")
         nasc-termtools customize $HOME

@@ -76,7 +76,7 @@ function buildPS1ForReal () {
 
     # every time PS1 is rendered, we trigger this node call
     # ensuring it will bring its results up to date
-    node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} $(getGit) \$WRITTABLE \$BATT_CONNECTED \$BATT_PCT \$(now) $1 ${useCustomSettings}
+    node ${DIR_NAME}/get-ps1-parts.js ${ARGV.join(' ')} $(getGit) \$WRITTABLE \$BATT_CONNECTED \$BATT_PCT \$(now) $1 ${useCustomSettings} 2>/dev/null
 }
 
 # This function is called only ONCE, as soon as the profile is applied
