@@ -2,20 +2,27 @@
 
 Easy to customize, built on top of the power of JavaScript and Bash, it ads a bunch of _aliases_, functions, features and extra funcionality for your bash profile.
 
+![Termtools default theme](media/termtools-theme-default-git.png)
+
 ## Features
 
-- [x] Fully customizable using JavaScript
-- [x] Colors in PS1
-- [x] Allows you to dinamically turn on and off parts of PS1
+- [x] Fully customizable using **JavaScript**
+- [x] Applies to PS1
+- [x] Terminal comands to enable or disable it (restoring your previous PS1)
+- [x] Allows you to dinamically _turn on_ and _off_ parts of PS1
 - [x] PS2 with line numbers
 - [x] Auto completes git commands
-- [x] Shows current branch and git state (also customizable)
-- [x] (lots of) Extra aliases (check the aliases section for more info about it)
-- [x] Extra functions
-- [x] Protects some actions (like deleting or change permissions to root path)
-- [x] Terminal comands to enable or disable it
-- [x] Auto installs fonts for you (although, you might need to select them in your terminal settings)
-- [x] Ensures colors...every where, _grep_, _git_, _ls_...
+- [x] Shows current **branch** and git **state** (also customizable)
+- [x] (lots of) Extra **aliases** (check the aliases section for more info about it)
+- [x] Extra **functions**
+- [x] **Protects** some actions (like deleting or change permissions to root path)
+- [x] Auto installs **fonts** for you (although, you might need to select them in your terminal settings)
+- [x] Ensures colors...everywhere... _grep_, _git_, _ls_...
+- [x] More tools, like time, battery and readOnly...
+- [x] Extendable...you can customize your theme with any extra string, allowing you to use JavaScript to decide what to show
+
+![Termtools with battery](media/termtools-theme-default-with-battery.jpg)
+![Termtools with time and read only](media/termtools-theme-default-time-read-only.png)
 
 ## Installing it
 
@@ -48,6 +55,10 @@ In _Visual Studio Code_, you can add the settings for the integrated terminal:
 ```
 "terminal.integrated.fontFamily": "Droid Sans Mono for Powerline Plus Nerd File Types Mono"
 ```
+
+You should be able to run `termtools check` and see this message:
+
+![Termtools character set test](media/character-set-check.png)
 
 ## Removing it (restore)
 
@@ -83,7 +94,7 @@ termtools apply
 
 We also change your PS2 a little, adding line numbers for your multiple lined commands:
 
-TODO: add image here
+![Termtools multiline commands with line numbers](media/termtools-theme-default-multi-line.png)
 
 ## Customizing
 
@@ -97,7 +108,8 @@ Just run:
 termtools customize
 ```
 
-It will create a file at `~/.basch_profile.js`.  
+It will create a file at **`~/.basch_profile.js`**.  
+That file is a copy of our _default_ theme, with comments and all you might need to extend it.  
 This JavaScript file **must** export a literal object, or a function that resolves to a literal object.
 
 If you exported a function, it will be called, receiving one parameter, an object with these properties:
@@ -130,9 +142,23 @@ Use these data to decide how your exported object will be. You can use it, for e
 
 Check the documentation bellow to understand it better, how to customize your terminal using JavaScript.
 
+  > After any change you make in your customized theme, you should see the difference just by hitting [ENTER] in your terminal.  
+  If not...you can force it to reload using `termtools reload` or just the elias `reload`.
+
 ### Customization options
 
 You will export a _literal object_ containing these options, or a function that returns such an object.
+You can extend a given theme, or the default theme will be used.
+
+```js
+{
+    extends: 'basic'
+}
+```
+
+While the default theme will have a _PS1_ like the first image in this documentation, the basic theme will look like this:
+
+![Termtools basic theme](termtools-theme-basic.jpg)
 
 #### aliases
 

@@ -5,18 +5,6 @@ module.exports = function (data) {
 
     if (data.GIT_BRANCH !== '') {
         switch (data.GIT_STATUS) {
-            case 0: {
-                // NO_CHANGES_COLOR
-                gitBranchFX.bgColor = 'gray'
-                gitBranchFX.color = 'black'
-                break
-            }
-            case 1: {
-                // COMMITS_AHEAD
-                gitBranchFX.bgColor = '#0b0'
-                gitBranchFX.color = 'white'
-                break
-            }
             case -2: {
                 // COMMITS_DIVERGED
                 gitBranchFX.bgColor = '#000'
@@ -29,28 +17,40 @@ module.exports = function (data) {
                 gitBranchFX.color = 'white'
                 break
             }
+            case 0: {
+                // NO_CHANGES_COLOR
+                gitBranchFX.bgColor = '#999'
+                gitBranchFX.color = '#000'
+                break
+            }
+            case 1: {
+                // COMMITS_AHEAD
+                gitBranchFX.bgColor = '#0b0'
+                gitBranchFX.color = 'white'
+                break
+            }
             case 2: {
                 // UNTRACKED_CHANGES_COLOR
                 gitBranchFX.bgColor = '#f90'
-                gitBranchFX.color = 'white'
+                gitBranchFX.color = '#000'
                 break
             }
             case 3: {
                 // CHANGES_TO_BE_COMMITTED
-                gitBranchFX.color = 'black'
                 gitBranchFX.bgColor = '#aa5'
+                gitBranchFX.color = '#000'
                 break
             }
             case 4: {
                 // LOCAL_AND_UNTRACKED_CHANGES_COLOR
-                gitBranchFX.color = 'white'
                 gitBranchFX.bgColor = 'red'
+                gitBranchFX.color = 'white'
                 break
             }
             case 5: {
                 // LOCAL_CHANGES_COLOR
-                gitBranchFX.color = 'black'
                 gitBranchFX.bgColor = 'yellow'
+                gitBranchFX.color = 'black'
                 break
             }
         }
@@ -68,13 +68,13 @@ module.exports = function (data) {
         decorators: {
             pathSeparator: '  ',
             section: '',
-            readOnly: '🔐', // R+🔒🔐👁
+            readOnly: ' 🔐', // R+🔒🔐👁
             git: ' ⎇ ' // ⑂ᛘ⎇ // \ue0c0
         },
         ps1: {
             parts: {
                 battery: { enabled: /* !data.IS_CHARGING && */ data.BATTERY < minBat, wrapper: ' $1% ' },
-                time: { enabled: false },
+                time: { enabled: true },
                 userName: { enabled: true, wrapper: ' $1 ' },
                 string: { enabled: false, content: 'OMG :o ' },
                 machine: { enabled: data.IS_TTY, wrapper: ' 🖥 $1 ' },

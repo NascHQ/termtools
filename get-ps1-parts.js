@@ -58,7 +58,7 @@ const IS_ROOT = USER == 'root'
 //  we will also use some useful info on the current battery status
 // updated every 10 seconds
 const BATTERY = parseInt(process.argv[ARGVLength - 4], 10)
-const IS_CHARGING = parseInt(process.argv[ARGVLength - 5], 10)
+const IS_CHARGING = true //parseInt(process.argv[ARGVLength - 5], 10)
 
 // if user is root, we will not be able to update it from line to line (unless
 // we had changed the root profile as well, what would require sudo permission
@@ -153,7 +153,7 @@ if (USE_CUSTOM_SETTINGS) {
 
 // here, we will require the default settings we have and will run it (as it
 // is a function) using the current state (with everything we parsed so far)
-let theme = SETTINGS.extends || 'default'
+let theme = SETTINGS.extends || 'basic'
 try {
     theme = require(`./themes/${theme}.js`, 'utf8')(context)
 } catch (e) {
@@ -191,7 +191,7 @@ const VARS = {
     separator: sectionSeparator,
     git: getWrapper('git', `${SETTINGS.decorators.git}${GIT_BRANCH}${GIT_SYMBOL}`), // ⑂ᛘ⎇
     gitStatus: GIT_STATUS,
-    battery: getWrapper('battery', `${IS_CHARGING ? '⚡ ' : '◒'}${BATTERY}`),
+    battery: getWrapper('battery', `${IS_CHARGING ? '⚡ ' : '◒ '}${BATTERY}`),
     userName: getWrapper('userName', USER)
 }
 
@@ -384,7 +384,6 @@ function getPath (opts = {}) {
     }
     return thePath.length ? thePath + '' : ''
 }
-
 
 /**
  * This function parses the colors
