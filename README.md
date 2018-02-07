@@ -201,7 +201,7 @@ So far, they are:
 You can use the code (`\uCODE`) for the following characters (available in the installed font).  
 For example, the code "e0a0" can be used as `"\ue0a0"`:
 
-![Termtool fontforge](media/fontforge.png)
+![Termtool fontforge](media/fontforge.png)  
 (imported from https://github.com/ryanoasis/powerline-extra-symbols)
 
 #### ps1
