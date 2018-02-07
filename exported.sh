@@ -406,6 +406,7 @@ function buildPS1ForReal () {
 # it will write the PS1 in a way it will trigger buildPS1ForReal on new entries
 # and will also write a default output for sudo
 function buildPS1 () {
+    PS2c=1
     PS1="\$(if [ -n \"\$(type -t buildPS1ForReal)\" ]; then echo \"$(buildPS1ForReal $(whoami))\"; else echo \"$(cat /private/var/www/NASC/projects/termtools/sudoed-ps1.txt 2>/dev/null)\" ; fi)"
 }
 

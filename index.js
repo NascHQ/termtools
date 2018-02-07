@@ -83,6 +83,7 @@ function buildPS1ForReal () {
 # it will write the PS1 in a way it will trigger buildPS1ForReal on new entries
 # and will also write a default output for sudo
 function buildPS1 () {
+    PS2c=1
     PS1="\\$(if [ -n \\"\\$(type -t buildPS1ForReal)\\" ]; then echo \\"$(buildPS1ForReal $(whoami))\\"; else echo \\"$(cat ${DIR_NAME}/sudoed-ps1.txt 2>/dev/null)\\" ; fi)"
 }
 
@@ -135,6 +136,8 @@ try {
             'Permission denied to write the output sh file.\n' +
             'Can you please set writing permissions to the following file? \n' +
             '\n    ' + exportedPath + '\n\n')
+        console.log('\n'+
+        'Do you have problem with sudo and global instalations? try running:\n\n   sudo chown -R $(whoami) ~/.npm\n\n')
     }
     // throw new Error(colors.red('[x] ') + 'Error when applying terminal tools!\n' + colors.bold(error))
 }
