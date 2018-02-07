@@ -48,6 +48,7 @@ alias DSFiles_removal="find . -type f -name '*.DS_Store' -ls -delete"
 alias hosts_edit='sudo vim /etc/hosts'
 alias reloadprofiler='source ~/.bash_profile'
 alias reload="exec ${SHELL} -l"
+# alias reload="tset 2>/dev/null || reset"
 alias h='history'
 alias today='date +"%d-%m-%Y"'
 alias now='date +"%T"'

@@ -27,6 +27,13 @@ case $1 in
     "customize")
         nasc-termtools customize $HOME
     ;;
+    "set")
+        nasc-termtools set $HOME $2 $3
+        exec ${SHELL} -l
+    ;;
+    "add")
+        nasc-termtools add $@ $HOME
+    ;;
     *)
         nasc-termtools $@
     ;;

@@ -32,10 +32,11 @@ try {
     useCustomSettings = 1
 } catch (e) {
     // if the file DOES exist, but there was an error:
-    if (e.message.toLowerCase().indexOf('enoent') < 0) {
+    // if (e.message.toLowerCase().indexOf('enoent') < 0) {
+    if (e.message.toLowerCase().indexOf('enoent') < 0 && e.message.indexOf('Cannot find module') < 0) {
         console.log(colors.red('[x] ') + 'Failed importing settings.\n' + e.message)
     }
-    if (e.message.toLowerCase().indexOf('denied') < 0) {
+    if (e.message.toLowerCase().indexOf('denied') >= 0) {
         console.log(
             colors.red('[x] '),
             'Permission denied to read your customized file.\n' +

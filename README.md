@@ -13,7 +13,7 @@ Easy to customize, built on top of the power of JavaScript and Bash, it ads a bu
 - [x] PS2 with line numbers
 - [x] Auto completes git commands
 - [x] Shows current **branch** and git **state** (also customizable)
-- [x] (lots of) Extra **aliases** (check the aliases section for more info about it)
+- [x] Lots of Extra **aliases** (check the aliases section for more info about it)
 - [x] Extra **functions**
 - [x] **Protects** some actions (like deleting or change permissions to root path)
 - [x] Auto installs **fonts** for you (although, you might need to select them in your terminal settings)
@@ -134,7 +134,7 @@ If you exported a function, it will be called, receiving one parameter, an objec
     * "!": COMMITS DIVERGED
     * "*": UNTRACKED
     * "": Anything else
--   GIT_BRANCH: The name of the current branch
+- GIT_BRANCH: The name of the current branch
 - IS_WRITABLE: True if the current user has write access to the current directory
 - colors: A referece to the a `chalk` instance, allowing you to add colors if you need to
 
@@ -190,6 +190,12 @@ So far, they are:
 - section
 - git
 
+You can use the code (`\uCODE`) for the following characters (available in the installed font).  
+For example, the code "e0a0" can be used as `"\ue0a0"`:
+
+![Termtool fontforge](media/fontforge.png)
+(imported from https://github.com/ryanoasis/powerline-extra-symbols)
+
 #### ps1
 
 This is the part where you specify the rules for your PS1.  
@@ -225,6 +231,7 @@ The available effects are:
 - italic: Tries to set the text as italic (not all terminals support it)
 - underline: Underlines the text
 - dim: Sets the text as dim
+- separator: By default, will be the decorator you set as separator. If false, no separator will be used for that part. Can be used to customize the separator of one specific part of PS1
 
   > Values for both `color` and `bgColor` accept the colors from [chalk](https://github.com/chalk/chalk). You can also use _RGB_ colors starting with "#", for example `#f00`. But keep in mind that some hex values are not supported in some terminals.
 

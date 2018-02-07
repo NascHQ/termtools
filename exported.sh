@@ -49,6 +49,7 @@ alias DSFiles_removal="find . -type f -name '*.DS_Store' -ls -delete"
 alias hosts_edit='sudo vim /etc/hosts'
 alias reloadprofiler='source ~/.bash_profile'
 alias reload="exec ${SHELL} -l"
+# alias reload="tset 2>/dev/null || reset"
 alias h='history'
 alias today='date +"%d-%m-%Y"'
 alias now='date +"%T"'
@@ -262,8 +263,9 @@ function forward {
     fi
 }
 
-alias foo="echo baz"
-alias baz="echo bar"
+alias foo="echo baz?"
+alias baz="echo bar ^^"
+alias bar="echo foo?!"
 function getGit () {
     local branch_name=`git branch 2>/dev/null | grep -e '\*' --color=never | sed 's/\* //'`
     local status=0

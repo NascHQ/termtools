@@ -8,7 +8,7 @@ const fs = require('fs')
 // help // shows the contents from readme
 // customize // create a custom file for you to edit (based on the current default)
 const param = process.argv[2]
-const detail = process.argv[3]
+const args = Array.from(process.argv).slice(3)
 
 switch (param) {
     case "install" : {
@@ -30,14 +30,21 @@ switch (param) {
         break
     }
     case "customize" : {
-        require('../customize.js')(detail)
+        require('../customize.js')(args[0])
         break
     }
     case "copy-fonts" : {
-        require('../copy-fonts.js')(detail)
+        require('../copy-fonts.js')(args[0])
         break
     }
-    case "help" : {
+    case "set" : {
+        if (args[1] === 'theme') {
+            require('../customize.js')(args[0], args[2])
+        }
+        break
+    }
+    case "help" :
+    default: {
         let helpContent = `# TermTools
 Nasc terminal tools based in JavaScript.
 
@@ -47,8 +54,5 @@ Nasc terminal tools based in JavaScript.
     `
         helpContent += fs.readFileSync('./README.md', 'utf8').toString()
         console.log(helpContent)
-    }
-    default: {
-
     }
 }

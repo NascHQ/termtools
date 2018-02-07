@@ -31,9 +31,9 @@ module.exports = function (data) {
 
     return {
         // the name of the theme, used just for identification
-        name: 'default',
+        name: 'hell',
         // extending the default theme
-        extends: 'default',
+        extends: 'hell',
         // customize or add some aliases for your terminal
         // note that the values here, are BASH COMMANDS
         // For example:
@@ -88,8 +88,8 @@ module.exports = function (data) {
         // \ue0d3 : empty
         // \ue0d4 : bracket left
         decorators: {
-            pathSeparator: '  ',
-            section: '',
+            pathSeparator: ' \ue0c1  ',
+            section: '\ue0c0  ',
             readOnly: ' 🔐', // Other options: R+ 🔒 🔐 👁 \ue0a2
             git: ' ⎇ ' // Other options: ⑂ ᛘ ⎇ 
         },

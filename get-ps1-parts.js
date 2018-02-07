@@ -146,7 +146,7 @@ if (USE_CUSTOM_SETTINGS) {
         SETTINGS = custom
     } catch (e) {
         if (e.message.indexOf('Cannot find module') < 0) {
-            console.log(colors.red('[x] ') + 'Failed importing settings.\n' + e.message)
+            console.log(colors.red('[x] ') + 'Failed importing settings!\n' + e.message)
         }
     }
 }
@@ -254,6 +254,7 @@ for (let partName in SETTINGS.ps1.parts) {
  * and the BGCOLOR of the NEXT section's BGCOLOR.
  */
 PS1Parts = PS1Parts.map((part, i) => {
+    // let curPart = PS1Parts[i]
     let nextPart = PS1Parts[i + 1] || null
     let curFx = effectsMap.get(part)
     let nextFx = effectsMap.get(nextPart)
@@ -269,7 +270,8 @@ PS1Parts = PS1Parts.map((part, i) => {
     }
     // if the current section does not have any effects, we will
     // not use any separator
-    if (curFx) {
+    // if separator was set to FALSE in that part, we will not show it either
+    if (curFx && curFx.fx.separator !== false) {
         if (curFx.fx && curFx.fx.bgColor) {
             sep = colorNameParser(colors, curFx.fx.bgColor)(sep)
         } else {
