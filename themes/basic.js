@@ -32,7 +32,7 @@ module.exports = function (data) {
     return {
         // the name of the theme, used just for identification
         name: 'basic',
-        // extending the default theme
+        // extending the basic theme
         extends: 'basic',
         // customize or add some aliases for your terminal
         // note that the values here, are BASH COMMANDS

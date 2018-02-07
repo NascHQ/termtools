@@ -2,7 +2,7 @@
 
 Easy to customize, built on top of the power of JavaScript and Bash, it ads a bunch of _aliases_, functions, features and extra funcionality for your bash profile.
 
-![Termtools default theme](media/termtools-theme-default-git.png)
+![termtools themes](media/termtools-built-in-themes.png)
 
 ## Features
 
@@ -15,6 +15,8 @@ Easy to customize, built on top of the power of JavaScript and Bash, it ads a bu
 - [x] Shows current **branch** and git **state** (also customizable)
 - [x] Lots of Extra **aliases** (check the aliases section for more info about it)
 - [x] Extra **functions**
+- [x] Suport **themes** (coming with 6 themes for you to extend and customize...[see below](#Themes))
+- [x] Move easily from one theme to another
 - [x] **Protects** some actions (like deleting or change permissions to root path)
 - [x] Auto installs **fonts** for you (although, you might need to select them in your terminal settings)
 - [x] Ensures colors...everywhere... _grep_, _git_, _ls_...
@@ -90,6 +92,13 @@ termtools restore
 termtools apply
 ```
 
+## Git integration
+
+If you are navigating in a directory that happens to belong to a Git Repository, you will see its current branch in your terminal.  
+Also, the color indicates the current status of your branch, there you might see symbols identifying your branch as _behind_, _ahead_ or _diverged_.
+
+![Termtools default theme](media/termtools-theme-default-git.png)
+
 ### PS2
 
 We also change your PS2 a little, adding line numbers for your multiple lined commands:
@@ -158,7 +167,7 @@ You can extend a given theme, or the default theme will be used.
 
 While the default theme will have a _PS1_ like the first image in this documentation, the basic theme will look like this:
 
-![Termtools basic theme](termtools-theme-basic.jpg)
+![Termtools basic theme](media/termtools-theme-basic.jpg)
 
 #### aliases
 
@@ -234,6 +243,27 @@ The available effects are:
 - separator: By default, will be the decorator you set as separator. If false, no separator will be used for that part. Can be used to customize the separator of one specific part of PS1
 
   > Values for both `color` and `bgColor` accept the colors from [chalk](https://github.com/chalk/chalk). You can also use _RGB_ colors starting with "#", for example `#f00`. But keep in mind that some hex values are not supported in some terminals.
+
+#### Themes
+
+Yes, we deliver _termtools_ with 6 builtin themes, they are:
+
+- basic
+- default
+- hell
+- sea
+- pinkish
+- round
+
+You can easily move from one theme to another using the command
+
+```
+termtools set theme [theme-name]
+```
+
+Just be careful! It will replace your `~/.bash_profile.js` and, if you have done any customization to it, you will loose them.
+
+  > If you have created a very nice theme and want to share, send us a pull request :)
 
 ### Aliases
 

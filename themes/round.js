@@ -31,9 +31,9 @@ module.exports = function (data) {
 
     return {
         // the name of the theme, used just for identification
-        name: 'hell',
-        // extending the default theme
-        extends: 'hell',
+        name: 'round',
+        // extending the round theme
+        extends: 'round',
         // customize or add some aliases for your terminal
         // note that the values here, are BASH COMMANDS
         // For example:
@@ -88,8 +88,8 @@ module.exports = function (data) {
         // \ue0d3 : empty
         // \ue0d4 : bracket left
         decorators: {
-            pathSeparator: ' \ue0c1  ',
-            section: '\ue0c0 ',
+            pathSeparator: ' \ue0b5 ',
+            section: '\ue0b4',
             readOnly: ' 🔐', // Other options: R+ 🔒 🔐 👁 \ue0a2
             git: ' ⎇ ' // Other options: ⑂ ᛘ ⎇ 
         },
@@ -100,7 +100,7 @@ module.exports = function (data) {
                 // by default, we will show the battery only if the
                 // current % is less than MIN_BATTERY(18%)
                 battery: {
-                    enabled: /* !data.IS_CHARGING && */ data.BATTERY < MIN_BATTERY,
+                    enabled: true || /* !data.IS_CHARGING && */ data.BATTERY < MIN_BATTERY,
                     wrapper: ' $1% ' // adds spaces and the % symbol
                 },
                 time: { enabled: false },
@@ -114,7 +114,7 @@ module.exports = function (data) {
                 // let's also add a cool icon to it :)
                 machine: { enabled: data.IS_TTY, wrapper: ' 🖥 $1 ' },
                 // play around these options to see what best fits your needs
-                path: { enabled: true, ellipsis: 5, cut: 'left', maxLength: 40, wrapper: '$1 \ue0c1  ' },
+                path: { enabled: true, ellipsis: 5, cut: 'left', maxLength: 40, wrapper: '$1 ' },
                 basename: { enabled: true },
                 // git is enabled only if currently in a git repository
                 git: { enabled: data.GIT_BRANCH },
@@ -127,18 +127,18 @@ module.exports = function (data) {
             effects: {
                 // play around these settings to set colors or text effects
                 // to the parts you enabled above
-                userName: { color: '#000', bgColor: data.IS_ROOT ? 'redBright' : 'yellow', bold: data.IS_ROOT, italic: false, underline: false , dim: false},
-                machine: { color: 'black', bgColor: '#f50', bold: false, italic: false, underline: false, dim: false},
-                time: { color: false, bgColor: '#000', bold: false, italic: false, underline: false, dim: true},
-                path: { color: '#fff', bgColor: '#900', bold: false, italic: false, underline: false, dim: !data.IS_ROOT },
-                basename: { color: 'white', bgColor: '#f00', bold: false, italic: false, underline: false, dim: false},
-                entry: { color: 'white', bgColor: '#f00', bold: false, italic: false, underline: false, dim: false},
+                userName: { color: 'black', bgColor: data.IS_ROOT ? 'redBright' : '#5f5', bold: data.IS_ROOT, italic: false, underline: false , dim: false},
+                machine: { color: 'black', bgColor: '#F4B13E', bold: false, italic: false, underline: false, dim: false},
+                time: { color: '#000', bgColor: '#fff', bold: false, italic: false, underline: false, dim: true},
+                path: { color: 'white', bgColor: 'gray', bold: false, italic: false, underline: false, dim: !data.IS_ROOT },
+                basename: { color: 'black', bgColor: 'white', bold: false, italic: false, underline: false, dim: false},
+                entry: { color: 'black', bgColor: data.IS_ROOT ? 'redBright' : '#5f5', bold: false, italic: false, underline: false, dim: false},
                 readOnly: { color: 'black', bgColor: 'yellow', bold: false, italic: false, underline: false, dim: false},
                 git: gitBranchFX,
                 // if the battery is low, we mark it in red...unless it is charging
                 battery: {
-                    color: data.IS_CHARGING && data.BATTERY >= MIN_BATTERY? '#000': 'white',
-                    bgColor: data.BATTERY < MIN_BATTERY ? 'red' : data.IS_CHARGING ? 'yellow' : false,
+                    color: data.IS_CHARGING && data.BATTERY >= MIN_BATTERY? 'gray': 'white',
+                    bgColor: data.BATTERY < MIN_BATTERY ? 'red' : data.IS_CHARGING ? 'greenBright' : false,
                     bold: false, italic: false, underline: false, dim: false
                 }
             }
