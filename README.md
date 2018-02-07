@@ -23,8 +23,7 @@ Easy to customize, built on top of the power of JavaScript and Bash, it ads a bu
 - [x] More tools, like time, battery and readOnly...
 - [x] Extendable...you can customize your theme with any extra string, allowing you to use JavaScript to decide what to show
 
-![Termtools with battery](media/termtools-theme-default-with-battery.jpg)
-![Termtools with time and read only](media/termtools-theme-default-time-read-only.png)
+![Termtools with battery, time and read only](media/termtools-theme-default-with-battery.jpg)
 
 ## Installing it
 

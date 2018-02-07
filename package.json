@@ -14,12 +14,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/nascweb/nasc_profiler.git"
+    "url": "https://github.com/NascHQ/termtools"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "homepage": "https://bitbucket.org/nascweb/nasc_profiler#readme",
+  "homepage": "https://github.com/NascHQ/termtools",
   "dependencies": {
     "@nasc/chalk": "^2.3.1"
   }
