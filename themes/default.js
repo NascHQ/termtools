@@ -74,7 +74,7 @@ module.exports = function (data) {
         ps1: {
             parts: {
                 battery: { enabled: /* !data.IS_CHARGING && */ data.BATTERY < minBat, wrapper: ' $1% ' },
-                time: { enabled: true },
+                time: { enabled: false },
                 userName: { enabled: true, wrapper: ' $1 ' },
                 string: { enabled: false, content: 'OMG :o ' },
                 machine: { enabled: data.IS_TTY, wrapper: ' 🖥 $1 ' },
