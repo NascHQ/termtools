@@ -15,7 +15,7 @@ Easy to customize, built on top of the power of JavaScript and Bash, it ads a bu
 - [x] Shows current **branch** and git **state** (also customizable)
 - [x] Lots of Extra **aliases** (check the aliases section for more info about it)
 - [x] Extra **functions**
-- [x] Suport **themes** (coming with 6 themes for you to extend and customize...[see below](#Themes))
+- [x] Suport **themes** (coming with 6 themes for you to extend and customize...[see below](#themes))
 - [x] Move easily from one theme to another
 - [x] **Protects** some actions (like deleting or change permissions to root path)
 - [x] Auto installs **fonts** for you (although, you might need to select them in your terminal settings)
