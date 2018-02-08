@@ -7,13 +7,14 @@ const HOME = require('os').homedir()
 const PROFILE_PATH = HOME + path.sep + '.bash_profile'
 
 let SOURCE_COMMAND = '\n  source ' + __dirname + path.sep + 'index.sh'
+let SOURCE_COMMAND_STR = `
+# Pointing bash_profile to load profiler js${SOURCE_COMMAND};
+`
 
 try {
     const bashProfileContent = fs.readFileSync(PROFILE_PATH, 'utf8').toString()
     if (bashProfileContent.indexOf(SOURCE_COMMAND) < 0) {
-        let SOURCE_COMMAND_STR = `
-# Pointing bash_profile to load profiler js${SOURCE_COMMAND};
-`
+        
         execSync(`echo "${SOURCE_COMMAND_STR}" >> ${PROFILE_PATH}`)
 
         const l = Math.max(60, SOURCE_COMMAND.length + 2)
