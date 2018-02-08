@@ -1,4 +1,4 @@
-# Bash Profile by Nasc
+# Bash Profile in JavaScript
 
 Easy to customize, built on top of the power of JavaScript and Bash, it ads a bunch of _aliases_, functions, features and extra funcionality for your bash profile.
 
