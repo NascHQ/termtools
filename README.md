@@ -41,6 +41,8 @@ Run this command and, if everything went well, your terminal should be good look
 termtools apply
 ```
 
+This will also install the fonts you will need, if they are not already there.
+
 ## Oh Oh!
 
 Seing _weird characters_? No worries, follow the tips your own terminal will give you.  
@@ -49,37 +51,38 @@ At any time, you can run `termtools check` to validate the characters and some c
 The font we are using (and was already installed for you) is:  
 **"Droid Sans Mono for Powerline Plus Nerd File Types Mono"**
 
-All you gotta do is go to your terminal settings, and edit your profile changint its font family/face to that one.
+All you gotta do is go to your terminal settings and edit your profile changing its font face/family to that one.
 
-In _Visual Studio Code_, you can add the settings for the integrated terminal:
+In _Visual Studio Code_, you can add the settings for the integrated terminal (ctrl/cmd+",", digite "terminal.integrated.fontFamily" to find it easily):
 
 ```
 "terminal.integrated.fontFamily": "Droid Sans Mono for Powerline Plus Nerd File Types Mono"
 ```
 
-You should be able to run `termtools check` and see this message:
+You should be able to run ` termtools check ` and see this message:
 
 ![Termtools character set test](media/character-set-check.png)
 
 ## Removing it (restore)
 
-Want to see the your PS1 as it was before (will also loos all the _aliases_ and extra functions).
+Want to see your PS1 as it was before (will also loose all the _aliases_ and extra functions we had applied to your bash).
 
 ```sh
-termtools remove
-# or
-termtools restore
+ termtools remove 
+ # or
+ termtools restore 
 ```
 
-To bring it back, just run the `apply` command again:
+To bring it back, just run the ` apply ` command again:
 
 ```
-termtools apply
+ termtools apply 
 ```
 
 ## Reloading it
 
-After installed and applied, you have three ways to reload it. Both ways will reload the whole bash profile (applying any updates that might be outdated).
+You will probably not need to reload it anytime soon, but just in case...  
+After installed and applied, you have three ways to reload it. They will reload the whole bash profile (applying any updates that might be outdated).
 
 ```sh
 # alternative 1
@@ -94,7 +97,7 @@ termtools apply
 ## Git integration
 
 If you are navigating in a directory that happens to belong to a Git Repository, you will see its current branch in your terminal.  
-Also, the color indicates the current status of your branch, there you might see symbols identifying your branch as _behind_, _ahead_ or _diverged_.
+Also, the color indicates the current status of your branch and you might see symbols identifying your branch as _behind_, _ahead_ or _diverged_.
 
 ![Termtools default theme](media/termtools-theme-default-git.png)
 
@@ -104,54 +107,79 @@ We also change your PS2 a little, adding line numbers for your multiple lined co
 
 ![Termtools multiline commands with line numbers](media/termtools-theme-default-multi-line.png)
 
-## Customizing
+#### Themes
 
-You can customize it using **JavaScript** \o/  
-And it is not even a _JSON_, nope...it is JavaScript, indeed.
+Yes, we deliver _termtools_ with 6 builtin themes, they are:
 
-We can create a boilerplate for you to customize (a copy of the default settings).  
+- basic
+- default
+- hell
+- sea
+- pinkish
+- round
+
+You can easily move from one theme to another using the command
+
+```
+
+ termtools set theme [theme-name]
+ 
+```
+
+Just be careful! It will **replace** your ` ~/.bash_profile.js ` and, if you have done any customization to it, you will loose them.
+
+  > If you have created a very nice theme and want to share, send us a pull request 😊
+
+## Customizing it
+
+You can customize _Termtools_ using **JavaScript** \o/  
+And it is not even a _JSON_, nope...it is JavaScript, indeed 🙏.
+
+We can create a boilerplate for you to customize (a copy of the default theme).  
 Just run:
 
 ```
-termtools customize
+ termtools customize
 ```
 
-It will create a file at **`~/.basch_profile.js`**.  
+It will create a file at **` ~/.basch_profile.js `**.  
 That file is a copy of our _default_ theme, with comments and all you might need to extend it.  
-This JavaScript file **must** export a literal object, or a function that resolves to a literal object.
+This JavaScript file **must** export a _literal object_, or a _function that returns a literal object_.
 
-If you exported a function, it will be called, receiving one parameter, an object with these properties:
+If you exported a function, it will be called receiving one parameter, an object with these properties:
 
-- IS_TTY: True if current session is running on a TTY environment
-- IS_ROOT: True if the current user is root
-- IP: The current device's ip
-- BATTERY: The current percentage of the battery (give or take...some OSs lie a little about it)
-- IS_CHARGING: True if the device is connected and charging
-- GIT_STATUS: The repository status. May be from -2 to 5, meaning:
-    * -2: COMMITS DIVERGED
-    * -1: COMMITS BEHIND
-    * 0: NO CHANGES
-    * 1: COMMITS AHEAD
-    * 2: UNTRACKED CHANGES
-    * 3: CHANGES TO BE COMMITTED
-    * 4: LOCAL AND UNTRACKED CHANGES
-    * 5: LOCAL CHANGES
-- GIT_SYMBOL: A symbol representing the current position of the branch. Symbols can be:
-    * "-": COMMITS BEHIND
-    * "+": COMMITS AHEAD
-    * "!": COMMITS DIVERGED
-    * "*": UNTRACKED
-    * "": Anything else
-- GIT_BRANCH: The name of the current branch
-- IS_WRITABLE: True if the current user has write access to the current directory
-- colors: A referece to the a `chalk` instance, allowing you to add colors if you need to
+| Property    | Description                                                                           |
+|-------------|:--------------------------------------------------------------------------------------|
+| IS_TTY      | True if current session is running on a TTY environment                               |
+| IS_ROOT     | True if the current user is root                                                      |
+| IP          | The current device's ip                                                               |
+| BATTERY     | The current percentage of the battery (give or take...some OSs lie a little about it) |
+| IS_CHARGING | True if the device is connected and charging                                          |
+| GIT_STATUS  | The repository status. May be from -2 to 5, meaning:                                  |
+|             | -2: COMMITS DIVERGED                                                                  |
+|             | -1: COMMITS BEHIND                                                                    |
+|             | 0: NO CHANGES                                                                         |
+|             | 1: COMMITS AHEAD                                                                      |
+|             | 2: UNTRACKED CHANGES                                                                  |
+|             | 3: CHANGES TO BE COMMITTED                                                            |
+|             | 4: LOCAL AND UNTRACKED CHANGES                                                        |
+|             | 5: LOCAL CHANGES                                                                      |
+| GIT_SYMBOL  | A symbol representing the current position of the branch. Symbols can be:             |
+|             | "-": COMMITS BEHIND                                                                   |
+|             | "+": COMMITS AHEAD                                                                    |
+|             | "!": COMMITS DIVERGED                                                                 |
+|             | "*": UNTRACKED                                                                        |
+|             | "": Anything else                                                                     |
+| GIT_BRANCH  | The name of the current git branch                                                    |
+| IS_WRITABLE | True if the current user has write access to the current directory                    |
+| colors      | A referece to the a `chalk` instance, allowing you to add colors if you need to       |
 
-Use these data to decide how your exported object will be. You can use it, for example, to enable or disable parts of the PS1, or to show some parts in different colors.
+Use these data to decide how your exported object will be. You can use it, for example, to enable or disable parts of the ` $PS1 `, or to show some parts in different colors.
 
 Check the documentation bellow to understand it better, how to customize your terminal using JavaScript.
 
   > After any change you make in your customized theme, you should see the difference just by hitting [ENTER] in your terminal.  
-  If not...you can force it to reload using `termtools reload` or just the elias `reload`.
+  If not...you can force it to reload using ` termtools reload ` or just the alias ` reload `.
 
 ### Customization options
 
@@ -164,7 +192,7 @@ You can extend a given theme, or the default theme will be used.
 }
 ```
 
-While the default theme will have a _PS1_ like the first image in this documentation, the basic theme will look like this:
+While the default theme will have a _PS1_ like the second image in this documentation, the basic theme will look like this:
 
 ![Termtools basic theme](media/termtools-theme-basic.jpg)
 
@@ -190,12 +218,12 @@ bar
 
 #### Decorators
 
-You can remove/comment them from your custom settings if you want to keep it cleaner.  
 This will allow you to customize some of the decorators we will use in your PS1.  
 So far, they are:
 
 - pathSeparator
 - section
+- readOnly
 - git
 
 You can use the code (`\uCODE`) for the following characters (available in the installed font).  
@@ -207,26 +235,37 @@ For example, the code "e0a0" can be used as `"\ue0a0"`:
 #### ps1
 
 This is the part where you specify the rules for your PS1.  
-It has two customization options: `parts` and `effects`.  
+It has two customization options: ` parts ` and ` effects `.  
 The effects are the style rules, applied for each part.
 
 ##### Parts
 
-Every part of your PS1 has the `enabled` flag, allowing you to turn them on or off as you will.  
-Besides that, all the properties also accept a `wrapper`, which is a string with a "$1". For example, in the "username", the wrapper "[$1]" for the user "felipe" becomes "[felipe]"
-The available parts and their attributes special attributes are:
+Every part of your PS1 has the ` enabled ` flag, allowing you to turn them on or off as you will.  
+Besides that, all the properties also accept a ` wrapper `, which is a string with a "$1" in it.  
+For example, if in your "username" part, the wrapper is "[$1]", it will render "[felipe]" for a user named "felipe".  
+Some parts have their own special properties.
 
-| Part name | Description | Extra options |
-| battery | Shows the current battery state | |
-| time | The current time | |
-| userName | The currently logged user | | 
-| string | Any given string you might wanna add | content: The content of the string | 
-| machine | The machine name | |
-| path | The current path (without basename) | *Options escribed bellow |
-| basename | The current basename | |
-| git | If the current directory is a repository, show the git information about it | 
-| entry | The last character waiting for the user entry. Usually a "$" sign | content: A given string for it |
-| readOnly | Shown when the current directory is readonly for the current user | |
+The available parts and their special attributes are:
+
+| Part name | Description                                                                 | Extra options |
+|-----------|-----------------------------------------------------------------------------|---------------|
+| battery   | Shows the current battery state                                             | N/A           |
+| time      | The current time                                                            | N/A           |
+| userName  | The currently logged user                                                   | N/A           |
+| string    | Any given string you might wanna add                                        | content: The content of the string |
+| machine   | The machine name                                                            | N/A           |
+| path      | The current path (without basename)                                         | *Options escribed bellow |
+| basename  | The current basename                                                        | N/A           |
+| git       | If the current directory is a repository, show the git information about it | N/A           |
+| entry     | The last character waiting for the user entry. Usually a "$" sign           | content: A given string for it |
+| readOnly  | Shown when the current directory is readonly for the current user           | N/A           |
+
+The **path** part is special and has some very useful extra options:  
+
+| Option | Description | Values |
+| ellipsis | Uses "…" to truncate the name of each directory in the path| `false` or a number, limiting the size to be ellipsed |
+| cut| Will cut/truncate part of the path, ensuring it will stay inside _maxlength_. If it was truncated, "…" will be used | One of `false`, `"left"`, `"right"` or `"center"` |
+| maxLength | The maximun size of the while path, is _cut_ is enabled | `Number` |
 
 ##### Effects
 
@@ -242,27 +281,6 @@ The available effects are:
 - separator: By default, will be the decorator you set as separator. If false, no separator will be used for that part. Can be used to customize the separator of one specific part of PS1
 
   > Values for both `color` and `bgColor` accept the colors from [chalk](https://github.com/chalk/chalk). You can also use _RGB_ colors starting with "#", for example `#f00`. But keep in mind that some hex values are not supported in some terminals.
-
-#### Themes
-
-Yes, we deliver _termtools_ with 6 builtin themes, they are:
-
-- basic
-- default
-- hell
-- sea
-- pinkish
-- round
-
-You can easily move from one theme to another using the command
-
-```
-termtools set theme [theme-name]
-```
-
-Just be careful! It will replace your `~/.bash_profile.js` and, if you have done any customization to it, you will loose them.
-
-  > If you have created a very nice theme and want to share, send us a pull request :)
 
 ### Aliases
 
