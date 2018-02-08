@@ -287,63 +287,67 @@ The available effects are:
 
 ### Aliases
 
-- fixcamera: Fixes the camera when it is not loading (a known bug triggered in Google Chrome)
-- ipin: Shows the internal IP addess
-- ipout: Shows the IP facing the public network
-- ip: Shows both internal and external IPs
-- aliases: Shows the list of currently supported aliases
-- back: Goes to the last path where you were
-- ..: Equivalent to `cd ..`
-- cd..: Equivalent to `cd ..`
-- .2: Equivalent to `cd ../..`
-- .3: Equivalent to `cd ../../..`
-- .4: Equivalent to `cd ../../../..`
-- .5: Equivalent to `cd ../../../../..`
-- .6: Equivalent to `cd ../../../../../..`
-- .7: Equivalent to `cd ../../../../../../..`
-- ll: A better listing of your files and directories
-- ~: Goes to your HOME directory
-- root: Goes to your root path (/)
-- www: Goes to `/var/www/`
-- commit: `git commit -a`
-- commitAll: `git add -A; git commit`
-- gitlog: Shows a more readable log for your git repo
-- gittree: Shows a readable tree for your git repo
-- checkout: `git checkout`. Used as `checkout mybranch`.
-- push: `git push origin`. Use it like `push master`.
-- pull: `git pull origin`
-- sizes: Shows the size of your files and directories
-- flushDNS: Flushes the DNSs
-- DSFiles_removal: Removes all the `.DS_Store` files (recursivelly) in the current tree
-- hosts_editir: Opens and editor for your hosts file
-- h: Shows the bash history
-- today: Shows the date for today
-- now: Shows the current time
-- ports: Shows the currently pened ports
-- lsd: Equivalent to `ls` but showing only directories
-- extract: Extracts any compressed files (works with any file with extension tar.bz2, tar.gz, bz2, rar, gz, tar, tbz2, tgz, zip, Z, 7z)
-- pid: Shows the PID for a given process name
-- about: Shows info on the current serve/session/user
-- targz: Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
-- googl/short: Shortens a URL using goo.gl service
-- sizeof: Gives you the size of a file, or the total size of a directory
-- hierarchy: Shows a tree of files ignoring `node_modules` and other temp files, using line numbers, pages and colors.
-- hide-desktop-icons: Hide all the desktop icons (specially useful when presenting to an audience)
-- show-desktop-icons: show all desktop icons
-- chromekill: Kills all Google Chrome tabs to free some memory
-- afk: Locks the screen, as you are Away From Keyboard
-- path: Shows all the address in your `$PATH`, each one in a different line
-- show-hidden-files: Show hidden files (MacOS only)
-- hide-hidden-files: Hide hidden files (MacOS only)
-- dog: Just like cat, but paginated and using line numbers
-- ifactive: Shows all the active network connections
-- amioffline: Answers "Yes" if you are offline, and "No" otherwise
-- amionline: Answers "Yes" if you are online, and "No" otherwise
-- desktop/desk: Equivalent to `cd ~/Desktop`
-- docs/d/documents: Equivalent to `cd ~/Documents`
-- downloads/down: Equivalent to `cd ~/Downloads`
-- line: Writes a line (-) in terminal
-- doubleline: Writes a double line (=) in terminal
-- bold: Like `echo`, but outputs the text in _bold_.
+| Alias              | Description                                                                           |
+|--------------------|---------------------------------------------------------------------------------------|
+| fixcamera          | Fixes the camera when it is not loading (a known bug triggered in Google Chrome)      |
+| ipin               | Shows the internal IP addess                                                          |
+| ipout              | Shows the IP facing the public network                                                |
+| ip                 | Shows both internal and external IPs                                                  |
+| aliases            | Shows the list of currently supported aliases                                         |
+| back               | Goes to the last path where you were                                                  |
+| ..                 | Equivalent to `cd ..`                                                                 |
+| cd..               | Equivalent to `cd ..`                                                                 |
+| .2                 | Equivalent to `cd ../..`                                                              |
+| .3                 | Equivalent to `cd ../../..`                                                           |
+| .4                 | Equivalent to `cd ../../../..`                                                        |
+| .5                 | Equivalent to `cd ../../../../..`                                                     |
+| .6                 | Equivalent to `cd ../../../../../..`                                                  |
+| .7                 | Equivalent to `cd ../../../../../../..`                                               |
+| ll                 | A better listing of your files and directories                                        |
+| ~:                 | Goes to your HOME directory                                                           |
+| root               | Goes to your root path (/)                                                            |
+| www                | Goes to `/var/www/`                                                                   |
+| commit             | `git commit -a`                                                                       |
+| commitAll          | `git add -A; git commit`                                                              |
+| gitlog             | Shows a more readable log for your git repo                                           |
+| gittree            | Shows a readable tree for your git repo                                               |
+| checkout           | `git checkout`. Used as `checkout mybranch`.                                          |
+| push               | `git push origin`. Use it like `push master`.                                         |
+| pull               | `git pull origin`                                                                     |
+| sizes              | Shows the size of your files and directories                                          |
+| flushDNS           | Flushes the DNSs                                                                      |
+| DSFiles_removal    | Removes all the `.DS_Store` files (recursivelly) in the current tree                  |
+| hosts_editir       | Opens and editor for your hosts file                                                  |
+| h                  | Shows the bash history                                                                |
+| today              | Shows the date for today                                                              |
+| now                | Shows the current time                                                                |
+| ports              | Shows the currently pened ports                                                       |
+| lsd                | Equivalent to `ls` but showing only directories                                       |
+| extract            | Extracts any compressed files (works with any file with                               |
+|                    | extension tar.bz2, tar.gz, bz2, rar, gz, tar, tbz2, tgz, zip, Z, 7z)                  |
+| pid                | Shows the PID for a given process name                                                |
+| about              | Shows info on the current serve/session/user                                          |
+| targz              | Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression            |
+| googl/short        | Shortens a URL using goo.gl service                                                   |
+| sizeof             | Gives you the size of a file, or the total size of a directory                        |
+| hierarchy          | Shows a tree of files ignoring `node_modules` and other temp files, using line        |
+|                    | numbers, pages and colors.                                                            |
+| hide-desktop-icons | Hide all the desktop icons (specially useful when presenting to an audience)          |
+| show-desktop-icons | show all desktop icons                                                                |
+| chromekill         | Kills all Google Chrome tabs to free some memory                                      |
+| afk                | Locks the screen, as you are Away From Keyboard                                       |
+| path               | Shows all the address in your `$PATH`, each one in a different line                   |
+| show-hidden-files  | Show hidden files (MacOS only)                                                        |
+| hide-hidden-files  | Hide hidden files (MacOS only)                                                        |
+| dog                | Just like cat, but paginated and using line numbers                                   |
+| ifactive           | Shows all the active network connections                                              |
+| amioffline         | Answers "Yes" if you are offline, and "No" otherwise                                  |
+| amionline          | Answers "Yes" if you are online, and "No" otherwise                                   |
+| desktop/desk       | Equivalent to `cd ~/Desktop`                                                          |
+| docs/d/documents   | Equivalent to `cd ~/Documents`                                                        |
+| downloads/down     | Equivalent to `cd ~/Downloads`                                                        |
+| line               | Writes a line (-) in terminal                                                         |
+| doubleline         | Writes a double line (=) in terminal                                                  |
+| bold               | Like `echo`, but outputs the text in _bold_.                                          |
 
 
