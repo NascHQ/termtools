@@ -350,4 +350,23 @@ The available effects are:
 | doubleline         | Writes a double line (=) in terminal                                                  |
 | bold               | Like `echo`, but outputs the text in _bold_.                                          |
 
+### License
+
+We use an MIT license, you can find it in our [repository](https://github.com/NascHQ/termtools/).
+
+### Code of Conduct
+
+As everything else [Nasc](https://nasc.io/) does, we follow a _Code of Conduct_.  
+Please refer to it in our [repository](https://github.com/NascHQ/termtools/).
+
+### Have a question or suggestion?
+
+Ask your questions in our issues with the title starting with "[QUESTION]".  
+Be sure your searched for similar issues that might also have been already closed by then.  
+Send suggestions opening issues with the title starting with "[SUGGESTION]".
+
+### Contribute
+
+We are welcoming new themes and all the help we might get.  
+Let's get in touch :)  
 
