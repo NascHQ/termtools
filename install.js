@@ -5,6 +5,7 @@ const colors = require('./colors')
 const execSync = require('child_process').execSync
 const HOME = require('os').homedir()
 const PROFILE_PATH = HOME + path.sep + '.bash_profile'
+const writeInBox = require('./box.js')
 
 let SOURCE_COMMAND = '\n  source ' + __dirname + path.sep + 'index.sh'
 
@@ -28,6 +29,8 @@ try {
             colors.red('[x] '),
             'Permission denied to access ~/.bash_profile.\n' +
             'You will need to add it to your bash_profile yourself: \n' +
-            `\n    echo "${SOURCE_COMMAND_STR}" >> ${PROFILE_PATH}` + '\n\n')
+            writeInBox(`\necho "${SOURCE_COMMAND}" >> ${PROFILE_PATH}\n`).join('\n        ')
+            // `\n    echo "${SOURCE_COMMAND_STR}" >> ${PROFILE_PATH}` + '\n\n'
+        )
     }
 }
