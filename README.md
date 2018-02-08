@@ -262,25 +262,28 @@ The available parts and their special attributes are:
 
 The **path** part is special and has some very useful extra options:  
 
-| Option | Description | Values |
-| ellipsis | Uses "…" to truncate the name of each directory in the path| `false` or a number, limiting the size to be ellipsed |
+| Option     | Description                                                                | Values        |
+|------------|----------------------------------------------------------------------------|---------------|
+| ellipsis | Uses "…" to truncate the name of each directory in the path| ` false ` or a ` Number `, limiting the size to be ellipsed |
 | cut| Will cut/truncate part of the path, ensuring it will stay inside _maxlength_. If it was truncated, "…" will be used | One of `false`, `"left"`, `"right"` or `"center"` |
-| maxLength | The maximun size of the while path, is _cut_ is enabled | `Number` |
+| maxLength | The maximun size of the while path, is _cut_ is enabled | ` Number ` |
 
 ##### Effects
 
 For each part you used, you can apply effects.  
 The available effects are:
 
-- color*: The text color
-- bgColor*: The background color
-- bold: Sets text as bold
-- italic: Tries to set the text as italic (not all terminals support it)
-- underline: Underlines the text
-- dim: Sets the text as dim
-- separator: By default, will be the decorator you set as separator. If false, no separator will be used for that part. Can be used to customize the separator of one specific part of PS1
+| Option     | Description                                                                |
+|------------|----------------------------------------------------------------------------|
+| color*     | The text color                                                             |
+| bgColor*   | The background color                                                       |
+| bold       | Sets text as bold                                                          |
+| italic     | Tries to set the text as italic (not all terminals support it)             |
+| underline  | Underlines the text                                                        |
+| dim        | Sets the text as dim                                                       |
+| separator  | By default, will be the decorator you set as separator. If ` false `, no separator will be used for that part. Can be used to customize the separator of one specific part of ` PS1 ` |
 
-  > Values for both `color` and `bgColor` accept the colors from [chalk](https://github.com/chalk/chalk). You can also use _RGB_ colors starting with "#", for example `#f00`. But keep in mind that some hex values are not supported in some terminals.
+  > Values for both ` color ` and ` bgColor ` accept the colors from [chalk](https://github.com/chalk/chalk). You can also use _RGB_ colors starting with "#", for example `#f00`. But keep in mind that some hex values are not supported in some terminals.
 
 ### Aliases
 
