@@ -29,8 +29,8 @@ try {
         console.log(
             colors.red('[x] '),
             'Permission denied to access ~/.bash_profile.\n' +
-            'You will need to add it to your bash_profile yourself: \n\n            ' +
-            writeInBox(`\necho "${SOURCE_COMMAND.replace(/\n +/, '')}" >> ${PROFILE_PATH}`).join('\n        ') +
+            'You will need to add it to your bash_profile yourself: \n\n    ' +
+            writeInBox(`\necho "${SOURCE_COMMAND.replace(/\n +/, '')}" >> ${PROFILE_PATH}`).join('\n    ') +
             '\n'
             // `\n    echo "${SOURCE_COMMAND_STR}" >> ${PROFILE_PATH}` + '\n\n'
         )
