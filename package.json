@@ -1,6 +1,6 @@
 {
   "name": "@nasc/termtools",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "Easy to customize, uses the power of both JavaScript and Bash to add a bunch of _aliases_ and extra funcionality for your bash profile.",
   "main": "install.js",
   "bin": {
@@ -16,7 +16,14 @@
     "type": "git",
     "url": "https://github.com/NascHQ/termtools"
   },
-  "keywords": ["terminal", "ps1", "javascript", "customize", "themes", "bash"],
+  "keywords": [
+    "terminal",
+    "ps1",
+    "javascript",
+    "customize",
+    "themes",
+    "bash"
+  ],
   "author": "",
   "license": "MIT",
   "homepage": "https://github.com/NascHQ/termtools",
