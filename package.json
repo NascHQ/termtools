@@ -16,7 +16,7 @@
     "type": "git",
     "url": "https://github.com/NascHQ/termtools"
   },
-  "keywords": [],
+  "keywords": ["terminal", "ps1", "javascript", "customize", "themes", "bash"],
   "author": "",
   "license": "MIT",
   "homepage": "https://github.com/NascHQ/termtools",
