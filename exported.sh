@@ -401,7 +401,7 @@ function buildPS1ForReal () {
 
     # every time PS1 is rendered, we trigger this node call
     # ensuring it will bring its results up to date
-    node /private/var/www/NASC/projects/termtools/get-ps1-parts.js /private/var/www/NASC/projects/termtools/index.js /private/var/www/NASC/projects/termtools/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(getGit) $WRITTABLE $BATT_CONNECTED $BATT_PCT $(now) $1 1 2>/dev/null
+    node /private/var/www/NASC/projects/termtools/get-ps1-parts.js /private/var/www/NASC/projects/termtools/index.js /private/var/www/NASC/projects/termtools/index.sh 0 Felipes-MBP /Users/felipe $(getGit) $WRITTABLE $BATT_CONNECTED $BATT_PCT $(now) $1 1 2>/dev/null
 }
 
 # This function is called only ONCE, as soon as the profile is applied
@@ -414,7 +414,7 @@ function buildPS1 () {
 
 # here is where we use the current settings to generate the output for sudo
 # we do this only once, too
-node /private/var/www/NASC/projects/termtools/get-ps1-parts.js /private/var/www/NASC/projects/termtools/index.js /private/var/www/NASC/projects/termtools/index.sh 0 Felipes-MacBook-Pro.local /Users/felipe $(now) root 1 > /private/var/www/NASC/projects/termtools/sudoed-ps1.txt 2>/dev/null
+node /private/var/www/NASC/projects/termtools/get-ps1-parts.js /private/var/www/NASC/projects/termtools/index.js /private/var/www/NASC/projects/termtools/index.sh 0 Felipes-MBP /Users/felipe $(now) root 1 > /private/var/www/NASC/projects/termtools/sudoed-ps1.txt 2>/dev/null
 
 # exporting the function
 export -f buildPS1
@@ -425,7 +425,7 @@ PROMPT_COMMAND="buildPS1"
 # also, we will deal with PS2, showing some line numbers while you type
 # commands in multiple lines
 PS1="${PS2c##*[$((PS2c=1))-9]}$PS1"
-PS2="[40m[90m \$((PS2c=PS2c+1)) [39m[49m"
+PS2=" \$((PS2c=PS2c+1)) "
 
 
 

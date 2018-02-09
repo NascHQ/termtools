@@ -22,6 +22,7 @@ Easy to customize, built on top of the power of JavaScript and Bash, it ads a bu
 - [x] Ensures colors...everywhere... _grep_, _git_, _ls_...
 - [x] More tools, like time, battery and readOnly...
 - [x] Extendable...you can customize your theme with any extra string, allowing you to use JavaScript to decide what to show
+- [x] Create aditional, customizable parts for _$PS1_
 
 ![Termtools with battery, time and read only](media/termtools-theme-default-with-battery.jpg)
 
@@ -230,7 +231,11 @@ You can use the code (`\uCODE`) for the following characters (available in the i
 For example, the code "e0a0" can be used as `"\ue0a0"`:
 
 ![Termtool fontforge](media/fontforge.png)  
-(imported from https://github.com/ryanoasis/powerline-extra-symbols)
+(imported from _powerline nerd fonts plus_)
+
+Also, some other symbols and code you might find promising:
+
+![Termtools extra symbols](media/termtools-extra-useful-symbols.png)
 
 #### ps1
 
@@ -245,6 +250,8 @@ Besides that, all the properties also accept a ` wrapper `, which is a string wi
 For example, if in your "username" part, the wrapper is "[$1]", it will render "[felipe]" for a user named "felipe".  
 Some parts have their own special properties.
 
+You can create any other part, and it may have the ` enabled `, ` wrapper ` and ` content ` properties (like _string_ parts). And yes, you can then customize them with effects as well.
+
 The available parts and their special attributes are:
 
 | Part name | Description                                                                 | Extra options |
@@ -258,7 +265,9 @@ The available parts and their special attributes are:
 | basename  | The current basename                                                        | N/A           |
 | git       | If the current directory is a repository, show the git information about it | N/A           |
 | entry     | The last character waiting for the user entry. Usually a "$" sign           | content: A given string for it |
+| os        | The current OS                                                              |               |
 | readOnly  | Shown when the current directory is readonly for the current user           | N/A           |
+| custom    | your own                                                                    | content: The string to be the content |
 
 The **path** part is special and has some very useful extra options:  
 
@@ -284,6 +293,31 @@ The available effects are:
 | separator  | By default, will be the decorator you set as separator. If ` false `, no separator will be used for that part. Can be used to customize the separator of one specific part of ` PS1 ` |
 
   > Values for both ` color ` and ` bgColor ` accept the colors from [chalk](https://github.com/chalk/chalk). You can also use _RGB_ colors starting with "#", for example `#f00`. But keep in mind that some hex values are not supported in some terminals.
+
+### Extending
+
+It's javascript! So...you can extend parts like this, for example:
+
+```js
+let osType = require('os').type().toLowerCase()
+const OS_TYPE = osType == 'linux' ? '\ue712' : osType == 'darwin' ? '\ue711' : '\ue70f'
+
+// ....
+
+module.exports = function (data) {
+    // ....
+    parts: {
+        customOS: { enabled: true, content: OS_TYPE, wrapper: '$1 ' }
+    }
+    // ....
+}
+```
+
+And the results would be one of:
+
+![Termtools extending with OS](termtools-extension-os.jpg)
+
+  > Just a heads up...we do have an `os` part already, that was just an example
 
 ### Aliases
 

@@ -6,6 +6,8 @@ const execSync = require('child_process').execSync
 const HOME = require('os').homedir()
 const PROFILE_PATH = HOME + path.sep + '.bash_profile'
 
+// TODO, comment/uncomment the line in "redirect.sh"
+
 let SOURCE_COMMAND = '\n  source ' + __dirname + path.sep + 'index.sh'
 
 let bashProfileContent = fs.readFileSync(PROFILE_PATH, 'utf8').toString()

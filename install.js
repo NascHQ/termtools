@@ -7,7 +7,7 @@ const HOME = require('os').homedir()
 const PROFILE_PATH = HOME + path.sep + '.bash_profile'
 const writeInBox = require('./box.js')
 
-let SOURCE_COMMAND = '\n  source ' + __dirname + path.sep + 'index.sh'
+let SOURCE_COMMAND = '\n  source ' + __dirname + path.sep + 'redirect.sh'
 let SOURCE_COMMAND_STR = `
 # Pointing bash_profile to load profiler js${SOURCE_COMMAND};
 `

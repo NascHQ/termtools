@@ -186,6 +186,7 @@ const VARS = {
     machine: getWrapper('machine', `${MACHINE}`),
     basename: getWrapper('basename', `${BASENAME || (IS_ROOT ? '': ' / ')}`),
     path: getPath,
+    os: getOS,
     entry: getWrapper('entry', ''),
     readOnly: getWrapper('readOnly', IS_WRITABLE ? '' : SETTINGS.decorators.readOnly || 'R'), // 🔒🔐👁
     separator: sectionSeparator,
@@ -218,8 +219,8 @@ for (let partName in SETTINGS.ps1.parts) {
 
     // in case the current part is "string" or "entry", we will output that part
     // using their respective effects, adding their contents
-    if (partName === 'string' || partName === 'entry') {
-        tmp += applyEffects(part, part.content)
+    if (partName === 'string' || partName === 'entry' || !VARS[partName]) {
+        tmp += applyEffects(part, getWrapper(partName, part.content))
     } else {
         // for any other kind of part, we check if they exist in our valid list
         if (VARS[partName]) {
@@ -308,12 +309,13 @@ process.stdout.write(PS1Parts + colors.reset())
  */
 function getWrapper (partName, content) {
     let part = SETTINGS.ps1.parts[partName]
+
     if (part) {
         if (part.wrapper) {
-            return part.wrapper.replace(/\$1/, content)
+            return part.wrapper.replace(/\$1/, content.toString())
         }
     }
-    return content
+    return content.toString()
 }
 
 // we can use nonSections to avoid section separators
@@ -453,6 +455,13 @@ function applyEffects (part, str) {
         return str
     }
     return str
+}
+
+function getOS (opts = {}) {
+    const osType = require('os').type().toLowerCase()
+    const OS_TYPE = osType == 'linux' ? '\ue712' : osType == 'darwin' ? '\ue711' : '\ue70f'
+    const ret = { name: osType, symbol: OS_TYPE, toString: function () { return this.symbol }}
+    return ret
 }
 
 // not sure will ever be used again...but once it worked on TTYs...
