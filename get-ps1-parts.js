@@ -128,6 +128,7 @@ const context = {
     IS_WRITABLE,
     IS_CHARGING,
     colors,
+    storage: getStorage()
 }
 
 // time to start preparing the PS1 itself
@@ -187,6 +188,7 @@ const VARS = {
     basename: getWrapper('basename', `${BASENAME || (IS_ROOT ? '': ' / ')}`),
     path: getPath,
     os: getOS,
+    weather: getWeather,
     entry: getWrapper('entry', ''),
     readOnly: getWrapper('readOnly', IS_WRITABLE ? '' : SETTINGS.decorators.readOnly || 'R'), // 🔒🔐👁
     separator: sectionSeparator,
@@ -227,6 +229,7 @@ for (let partName in SETTINGS.ps1.parts) {
             // and, if so,
             // that may be either a string of a function that will return a string
             let value = VARS[partName]
+
             if (typeof value === 'function') {
                 value = getWrapper(partName, value(part))
             }
@@ -238,10 +241,12 @@ for (let partName in SETTINGS.ps1.parts) {
     // if there is something to add...
     if (tmp) {
         // we set it in our map, for later use
-        effectsMap.set(tmp, {
-            fx: SETTINGS.ps1.effects[part.name],
-            part
-        })
+        if (SETTINGS.ps1.effects[part.name]) {
+            effectsMap.set(tmp, {
+                fx: SETTINGS.ps1.effects[part.name],
+                part
+            })
+        }
         PS1Parts.push(tmp)
     }
 }
@@ -462,6 +467,91 @@ function getOS (opts = {}) {
     const OS_TYPE = osType == 'linux' ? '\ue712' : osType == 'darwin' ? '\ue711' : '\ue70f'
     const ret = { name: osType, symbol: OS_TYPE, toString: function () { return this.symbol }}
     return ret
+}
+
+function getWeather (opts = {}) {
+    if (!opts.city) {
+        return ''
+    }
+    try {
+        let lastWeather = context.storage.getItem('termtools-last-weather')
+        // we will check for weather changes only once every 3 hours
+        if (!lastWeather || lastWeather.lastCheck < (new Date).getTime() - 10800000) {
+            const city = encodeURIComponent(opts.city.toLowerCase())
+            
+            const WEATHER_SERVICE = `http://samples.openweathermap.org/data/2.5/forecast?q=${city}&appid=e52979c4fe80f8dbc823fad77212e0c9`
+            const fetch = require('node-fetch')
+            fetch(WEATHER_SERVICE).then((response) => {
+                response.json().then(json => {
+                    let main = json.list[0].weather[0].main
+                    console.log(2, main)
+                    context.storage.setItem('termtools-last-weather', JSON.stringify({
+                        lastCheck: (new Date).getTime(),
+                        main
+                    }))
+                })
+            }).catch(err => {
+                console.log(colors.red('[x] ' + 'Failed looking for weather data\n', err))
+            })
+            return ''
+        }
+        if (lastWeather) {
+            if (typeof lastWeather !== 'object') {
+                lastWeather = JSON.parse(lastWeather)
+            }
+            return getWeatherSymbol(lastWeather.main.toLowerCase())
+        }
+    } catch (error) {
+        console.log(colors.red('[x] ') + error)
+    }
+    // console.log(opts)
+    return ''
+}
+
+function getWeatherSymbol (type) {
+    const list = new Map()
+    list.set(/thunderstorm(.+)heavy/, '⛈')
+    list.set(/thunderstorm(.+)(rain|drizzle)/, '⛈')
+    list.set(/heavy(.+)thunderstorm/, '⛈')
+    list.set(/thunderstorm/, '🌩')
+    list.set(/heavy(.+)?drizzle/, '☔')
+    list.set(/drizzle/, '🌂')
+    list.set(/(heavy|extreme|freezing|ragged)(.+)rain/, '🌧')
+    list.set(/rain/, '🌦')
+    list.set(/sleet/, '❅')
+    list.set(/heavy(.+)snow/, '❆')
+    list.set(/snow|hail/, '❄')
+    list.set(/mist|fog|dust|sand|haze|ash/, '☁')
+    list.set(/windy/, '🌬')
+    list.set(/tornado|hurricane/, '🌪')
+    list.set(/clouds/, '⛅')
+    list.set(/clear/, '🌞')
+    list.set(/sunny/, '🌞')
+
+    let main = '⛅'
+    iterator = list.entries()
+    let item
+    console.log(type)
+    while(item = iterator.next()) {
+        if (type.match(item.value[0])) {
+            main = item.value[1]
+            break
+        }
+        if (item.done) {
+            break
+        }
+    }
+
+    return main + ' '
+}
+
+function getStorage () {
+    if (typeof localStorage === "undefined" || localStorage === null) {
+        const LocalStorage = require('node-localstorage').LocalStorage;
+        localStorage = new LocalStorage('./scratch');
+        return localStorage
+    }
+    return localStorage
 }
 
 // not sure will ever be used again...but once it worked on TTYs...

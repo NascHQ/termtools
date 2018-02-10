@@ -425,7 +425,7 @@ PROMPT_COMMAND="buildPS1"
 # also, we will deal with PS2, showing some line numbers while you type
 # commands in multiple lines
 PS1="${PS2c##*[$((PS2c=1))-9]}$PS1"
-PS2=" \$((PS2c=PS2c+1)) "
+PS2="[40m[90m \$((PS2c=PS2c+1)) [39m[49m"
 
 
 
