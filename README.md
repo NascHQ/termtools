@@ -315,7 +315,7 @@ module.exports = function (data) {
 
 And the results would be one of:
 
-![Termtools extending with OS](termtools-extension-os.jpg)
+![Termtools extending with OS](media/termtools-extension-os.jpg)
 
   > Just a heads up...we do have an `os` part already, that was just an example
 

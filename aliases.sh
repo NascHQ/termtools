@@ -9,9 +9,9 @@ alias fixcamera="sudo killall VDCAssistant"
 # your IP in the local network
 alias ipin="ipconfig getifaddr en0"
 # your IP seen from outside
-alias ipout='dig +short myip.opendns.com @resolver1.opendns.com'
+alias ipout='dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null || echo "No internet connection"'
 # more information about your ip
-alias ip="echo -e Internal IP Address: ;  ipconfig getifaddr en0; echo -e Public facing IP Address: ; curl ipecho.net/plain ; echo ;"
+alias ip="echo -e Internal IP Address: ; ipconfig getifaddr en0; echo -e Public facing IP Address: ; curl ipecho.net/plain ; echo ;"
 alias aliases='alias'
 alias ..='cd ..'
 alias cd..='cd ..'
