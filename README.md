@@ -217,6 +217,19 @@ $ foo
 bar
 ```
 
+Some useful aliases to add, are telated to the the environment you use to work.  
+For example, let's say you keep all your projects under `~/projects/web/`, you can create a alis for going there:
+
+```js
+{
+    aliases: {
+        www: "~/projects/web/"
+    }
+}
+```
+
+Now, you can type ` www ` to go there.
+
 #### Decorators
 
 This will allow you to customize some of the decorators we will use in your PS1.  

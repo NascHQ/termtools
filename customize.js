@@ -47,7 +47,7 @@ module.exports = function (homePath, theme = 'default') {
                 createCustomFile(homeFilePath, theme)
             }
             rl.close()
-        });
+        })
     } else {
         createCustomFile(homeFilePath, theme)
         rl.close()
