@@ -14,28 +14,31 @@ let SOURCE_COMMAND_STR = `
 `
 
 try {
+    // if the user's bash_profile does not import our "redirect.sh" yet,
+    // we will append a line to it
     const bashProfileContent = fs.readFileSync(PROFILE_PATH, 'utf8').toString()
     if (bashProfileContent.indexOf(SOURCE_COMMAND) < 0) {
 
         execSync(`echo "${SOURCE_COMMAND_STR}" >> ${PROFILE_PATH}`)
 
         const l = Math.max(60, SOURCE_COMMAND.length + 2)
-        console.log(' > New source created and added to your ~/.bash_profile')
+        console.log('\n > New source created and added to your ~/.bash_profile\n\n')
     } else {
-        // console.log('> Looks like you already had it applied to your ~/.bash_profile')
+        // let's uncomment the lines in redirect.sh
         let redirectContent = fs.readFileSync(redirectSH, 'utf8')
         redirectContent = redirectContent.replace(/(^|\n)\# /g, '$1')
         fs.writeFileSync(redirectSH, redirectContent, 'utf8')
     }
 } catch (error) {
     if (error.message.toLowerCase().indexOf('denied') < 0) {
+        // if the problem was related to permission, we have to inform the user
         console.log(
             colors.red('[x] '),
             'Permission denied to access ~/.bash_profile.\n' +
             'You will need to add it to your bash_profile yourself: \n\n    ' +
             writeInBox(`\necho "${SOURCE_COMMAND.replace(/\n +/, '')}" >> ${PROFILE_PATH}`).join('\n    ') +
-            '\n'
-            // `\n    echo "${SOURCE_COMMAND_STR}" >> ${PROFILE_PATH}` + '\n\n'
+            '\n' + 
+            '\nIt\'s required only once, after that, termtools takes care of it for you.'
         )
     }
 }
