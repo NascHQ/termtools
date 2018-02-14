@@ -31,6 +31,7 @@ fi
 
 # let's ensure the right fonts are available
 . $DIR/ensure-fonts.sh
+. $DIR/completion.sh
 
 echo $PS1 > "$DIR/_previous-ps1.bkp"
 

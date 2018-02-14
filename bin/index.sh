@@ -8,7 +8,7 @@ case $1 in
         nasc-termtools install
         exec ${SHELL} -l
     ;;
-    "version" | "-v" | "v")
+    "version" | "--version" | "-v" | "v")
         nasc-termtools version
     ;;
     "reload")
