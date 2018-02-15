@@ -548,7 +548,7 @@ function getWeatherSymbol (type) {
 function getStorage () {
     if (typeof localStorage === "undefined" || localStorage === null) {
         const LocalStorage = require('node-localstorage').LocalStorage;
-        localStorage = new LocalStorage('./scratch');
+        localStorage = new LocalStorage(path.resolve(DIR_NAME, 'scratch'));
         return localStorage
     }
     return localStorage
