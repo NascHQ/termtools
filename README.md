@@ -1,13 +1,17 @@
 # Bash Profile in JavaScript
 
-Easy to customize, built on top of the power of JavaScript and Bash, it ads a bunch of _aliases_, functions, features and extra funcionality for your bash profile.
+Easy to customize, built on top of the power of JavaScript and Bash, it ads a bunch of _aliases_, functions, features and extra funcionality for your bash profile.  
+The perfect tool to optimize the JavaScript developer command line.
 
 ![termtools themes](media/termtools-built-in-themes.png)
+![NPM Scripts auto completion](media/npm-scripts-auto-complete.gif)
+![Termtools with battery, time and read only](media/termtools-theme-default-with-battery.jpg)
 
 ## Features
 
 - [x] Fully customizable using **JavaScript**
 - [x] Applies to PS1
+- [x] Adds auto completion to npm scripts
 - [x] Terminal comands to enable or disable it (restoring your previous PS1)
 - [x] Allows you to dinamically _turn on_ and _off_ parts of PS1
 - [x] PS2 with line numbers
@@ -23,8 +27,6 @@ Easy to customize, built on top of the power of JavaScript and Bash, it ads a bu
 - [x] More tools, like time, battery and readOnly...
 - [x] Extendable...you can customize your theme with any extra string, allowing you to use JavaScript to decide what to show
 - [x] Create aditional, customizable parts for _$PS1_
-
-![Termtools with battery, time and read only](media/termtools-theme-default-with-battery.jpg)
 
 ## Installing it
 

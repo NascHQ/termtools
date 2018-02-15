@@ -33,6 +33,9 @@ fi
 . $DIR/ensure-fonts.sh
 . $DIR/completion.sh
 
+# ensuring basic npm completion
+source <(npm completion)
+
 echo $PS1 > "$DIR/_previous-ps1.bkp"
 
 node $DIR/index.js $SOURCE $TTY $HOSTNAME $HOME $IP $SESSION_TYPE 
