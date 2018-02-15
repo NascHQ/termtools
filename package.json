@@ -1,6 +1,6 @@
 {
   "name": "@nasc/termtools",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "description": "Easy to customize, uses the power of both JavaScript and Bash to add a bunch of _aliases_ and extra funcionality for your bash profile.",
   "main": "install.js",
   "bin": {
