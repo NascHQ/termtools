@@ -7,6 +7,8 @@ The perfect tool to optimize the JavaScript developer command line.
 ![NPM Scripts auto completion](media/npm-scripts-auto-complete.gif)
 ![Termtools with battery, time and read only](media/termtools-theme-default-with-battery.jpg)
 
+  > Still in alpha version. Looking for tests and feedback :)
+
 ## Features
 
 - [x] Fully customizable using **JavaScript**
@@ -198,6 +200,11 @@ You can extend a given theme, or the default theme will be used.
 While the default theme will have a _PS1_ like the second image in this documentation, the basic theme will look like this:
 
 ![Termtools basic theme](media/termtools-theme-basic.jpg)
+
+#### Completition (auto complete)
+
+We will also add auto-complete for your _git_ commands, and add a richer auto-complete for your _npm_ commands as well.  
+For example, we can hint all the branch names of your repository, or all the scripts from your package.json.
 
 #### aliases
 

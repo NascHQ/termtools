@@ -19,7 +19,7 @@ function _getNPMOptions () {
                     return true\
                 }\
             }).join(' ')\
-        )"`
+        )" 2>/dev/null`
         COMPREPLY=( $(compgen -W "$scriptsList" -- $word) )
     ;;
     *)
