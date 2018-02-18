@@ -263,6 +263,9 @@ function forward {
     fi
 }
 
+alias foo="echo baz?"
+alias baz="echo bar ^^"
+alias bar="echo foo?!"
 function getGit () {
     local branch_name=`git branch 2>/dev/null | grep -e '\*' --color=never | sed 's/\* //'`
     local status=0
@@ -398,7 +401,7 @@ function buildPS1ForReal () {
 
     # every time PS1 is rendered, we trigger this node call
     # ensuring it will bring its results up to date
-    node /home/unknown/dev/termtools/get-ps1-parts.js /home/unknown/dev/termtools/index.js /home/unknown/dev/termtools/index.sh 0 unlock /home/unknown $(getGit) $WRITTABLE $BATT_CONNECTED $BATT_PCT $(now) $1 1 2>/dev/null
+    node /private/var/www/NASC/projects/termtools/get-ps1-parts.js /private/var/www/NASC/projects/termtools/index.js /private/var/www/NASC/projects/termtools/index.sh 0 Felipes-MBP /Users/felipe $(getGit) $WRITTABLE $BATT_CONNECTED $BATT_PCT $(now) $1 1 2>/dev/null
 }
 
 # This function is called only ONCE, as soon as the profile is applied
@@ -406,12 +409,12 @@ function buildPS1ForReal () {
 # and will also write a default output for sudo
 function buildPS1 () {
     PS2c=1
-    PS1="\$(if [ -n \"\$(type -t buildPS1ForReal)\" ]; then echo \"$(buildPS1ForReal $(whoami))\"; else echo \"$(cat /home/unknown/dev/termtools/sudoed-ps1.txt 2>/dev/null)\" ; fi)"
+    PS1="\$(if [ -n \"\$(type -t buildPS1ForReal)\" ]; then echo \"$(buildPS1ForReal $(whoami))\"; else echo \"$(cat /private/var/www/NASC/projects/termtools/sudoed-ps1.txt 2>/dev/null)\" ; fi)"
 }
 
 # here is where we use the current settings to generate the output for sudo
 # we do this only once, too
-node /home/unknown/dev/termtools/get-ps1-parts.js /home/unknown/dev/termtools/index.js /home/unknown/dev/termtools/index.sh 0 unlock /home/unknown $(now) root 1 > /home/unknown/dev/termtools/sudoed-ps1.txt 2>/dev/null
+node /private/var/www/NASC/projects/termtools/get-ps1-parts.js /private/var/www/NASC/projects/termtools/index.js /private/var/www/NASC/projects/termtools/index.sh 0 Felipes-MBP /Users/felipe $(now) root 1 > /private/var/www/NASC/projects/termtools/sudoed-ps1.txt 2>/dev/null
 
 # exporting the function
 export -f buildPS1
