@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+
+
 const fs = require('fs')
 const path = require('path')
 const os = require('os');
@@ -8,38 +10,41 @@ const HOME = os.homedir()
 const PLATFORM = os.platform();
 const PROFILE_PATH = HOME + path.sep + (PLATFORM === 'darwin' ? '.bash_profile' : '.bashrc')
 const writeInBox = require('./box.js')
-
 const redirectSH = __dirname + path.sep + 'redirect.sh'
+
 let SOURCE_COMMAND = 'source ' + redirectSH
-let SOURCE_COMMAND_STR = `
-# Pointing ${PROFILE_PATH} to load profiler js\n${SOURCE_COMMAND};
-`
+let SOURCE_COMMAND_STR = `# Pointing ${PROFILE_PATH} to load profiler js\n${SOURCE_COMMAND};`
+
 
 try {
     // if the user's .bash_profile/.bashrc file,
     // does not import our "redirect.sh" yet,
     // we will append a line to it
     const bashProfileContent = fs.readFileSync(PROFILE_PATH, 'utf8').toString()
-    let isAlreadyAddedCmd =  bashProfileContent.indexOf(SOURCE_COMMAND) < 0;
+    let isNotInstalled =  bashProfileContent.indexOf(SOURCE_COMMAND) < 0
     
-    if (isAlreadyAddedCmd) {
+    if(isNotInstalled) {
         execSync(`echo "${SOURCE_COMMAND_STR}" >> ${PROFILE_PATH}`)
-        console.log(`\n> ${SOURCE_COMMAND} command added to your ${PROFILE_PATH} file\n\n`);
-    } else {
-        // let's uncomment the lines in redirect.sh
-        let redirectContent = fs.readFileSync(redirectSH, 'utf8')
-        redirectContent = redirectContent.replace(/(^|\n)\# /g, '$1')
 
-        fs.writeFileSync(redirectSH, redirectContent, 'utf8')
+        console.log(`\n> ${SOURCE_COMMAND} command ADDED to ${PROFILE_PATH} file\n\n`)
+        return;
     }
-} catch (error) {
+    
+    // let's uncomment the lines in redirect.sh
+    // used to apply/restore command
+    let redirectContent = fs.readFileSync(redirectSH, 'utf8')
+    redirectContent = redirectContent.replace(/(^|\n)\# /g, '$1')
+
+    fs.writeFileSync(redirectSH, redirectContent, 'utf8')
+
+    console.log(`\n> ${SOURCE_COMMAND} command IT\'S ALREADY ADDED TO ${PROFILE_PATH} file\n\n`)
+} catch(error) {
     let errorMessage = error.message.toLowerCase();
     let isErrorDenied = errorMessage.indexOf('denied') < 0;
 
     if (isErrorDenied) {
         // if the problem was related to permission, 
         // we have to inform the user
-
         console.log(
             colors.red(`[x] `),
             `Permission denied to access ${PROFILE_PATH}.\n` +
