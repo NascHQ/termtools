@@ -4,6 +4,8 @@
 #     npm install trash-cli -g
 # fi
 
+# if test "$(uname)" = "Darwin" ; then
+
 # some chrome versions require this for you to enter on a meeting
 alias fixcamera="sudo killall VDCAssistant"
 # your IP in the local network
@@ -66,8 +68,8 @@ alias docs='cd ~/Documents'
 alias documents='cd ~/Documents'
 alias downloads='cd ~/Downloads'
 alias down='cd ~/Downloads'
-alias amionline="ping www.google.com -t 1 2>/dev/null >/dev/null && echo \"Yes\" || echo \"No\""
-alias amioffline="ping www.google.com -t 1 2>/dev/null >/dev/null && echo \"No\" || echo \"Yes\""
+alias amionline="ping www.google.com -c 1 2>/dev/null >/dev/null && echo \"Yes\" || echo \"No\""
+alias amioffline="ping www.google.com -c 1 2>/dev/null >/dev/null && echo \"No\" || echo \"Yes\""
 
 alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
 alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"

@@ -37,7 +37,6 @@ try {
 
     fs.writeFileSync(redirectSH, redirectContent, 'utf8')
 
-    console.log(`\n> ${SOURCE_COMMAND} command IT\'S ALREADY ADDED TO ${PROFILE_PATH} file\n\n`)
 } catch(error) {
     let errorMessage = error.message.toLowerCase();
     let isErrorDenied = errorMessage.indexOf('denied') < 0;

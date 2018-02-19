@@ -1,5 +1,26 @@
 
-complete -W "restore remove reload apply \"set theme\" help version version customize" termtools
+# complete -W "restore remove reload apply \"set theme\" help version version customize" termtools
+
+function _getTermToolsOptions () {
+    local word=${COMP_WORDS[COMP_CWORD]}
+    local prevWord=${COMP_WORDS[COMP_CWORD - 1]}
+    local line=${COMP_LINE}
+
+    case "$prevWord" in
+    "set")
+        COMPREPLY=( $(compgen -W "theme" -- $word) )
+        ;;
+    "theme")
+        scriptsList=`ls themes | sed 's/\(.*\)\..*/\1 /' | tr -d '\n' 2>/dev/null`
+        COMPREPLY=( $(compgen -W "$scriptsList" -- $word) )
+    ;;
+    *)
+        COMPREPLY=( $(compgen -W 'restore remove reload apply set help version version customize' -- $word ) )
+    esac
+}
+
+complete -F _getTermToolsOptions termtools
+
 
 function _getNPMOptions () {
     local word=${COMP_WORDS[COMP_CWORD]}
