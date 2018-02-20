@@ -10,47 +10,102 @@ function try () {
     local apt=`command -v apt-get`
     local yum=`command -v yum`
     local brew=`command -v brew`
-    local theCommand="$1"
+    local theCommandIdx=1
+    local isQuiet=false
+    local triggerError=false
+    local output=""
+    local theCommand="${!theCommandIdx}"
 
-    if [ "$theCommand" == "sudo" ]; then
-        theCommand="$2"
-    fi
+    while test $# -gt 0; do
+        case "$1" in
+                -h|--help)
+                    echo "Try a command, checking it if it exists and then executing it."
+                    echo " "
+                    echo "try [options] command [arguments]"
+                    echo " "
+                    echo "options:"
+                    echo "  -h, --help                show brief help"
+                    echo "  -q                        if commend is not installed, stay quiet"
+                    echo "  -e,                       exits with an error if the command does not exist"
+                    echo ""
+                    return
+                    ;;
+                -q)
+                    ((theCommandIdx+=1))
+                    theCommand="${!theCommandIdx}"
+                    isQuiet=true
+                    shift
+                    break
+                    ;;
+                -e)
+                    ((theCommandIdx+=1))
+                    theCommand="${!theCommandIdx}"
+                    triggerError=true
+                    shift
+                    break
+                    ;;
+                -eq | -qe)
+                    ((theCommandIdx+=1))
+                    theCommand="${!theCommandIdx}"
+                    triggerError=true
+                    isQuiet=true
+                    shift
+                    break
+                    ;;
+                "sudo") 
+                    ((theCommandIdx+=1))
+                    theCommand="${!theCommandIdx}"
+                    ((theCommandIdx-=1))
+                    break
+                    ;;
+                *)
+                    break
+                    ;;
+        esac
+    done
 
     if hash $theCommand 2>/dev/null; then
+        # ${@:$theCommandIdx}
         $@
     else
-        echo "$theCommand is not installed"
+        output="$output $theCommand is not installed\n"
         if [ -n "$apt" ]; then
-            echo "Try installing it like:"
-            echo ""
-            echo "apt-get -y install $theCommand"
+            output="$output Try installing it like:\n\n"
+            output="$output apt-get -y install $theCommand\n\n"
         elif [ -n "$yum" ]; then
-            echo "Try installing it like:"
-            echo ""
-            echo "yum -y install $theCommand"
+            output="$output Try installing it like:\n\n"
+            output="$output yum -y install $theCommand\n\n"
         elif [ -n "$brew" ]; then
-            echo "Try installing it like:"
-            echo ""
-            echo "brew install $theCommand"
+            output="$output Try installing it like:\n\n"
+            output="$output brew install $theCommand\n\n"
         fi
-        echo ""
+        if [ "$isQuiet" != true ]; then
+            printf "$output"
+        fi
+        if [ "$triggerError" == true ]; then
+            return 1
+        else
+            return 0
+        fi
     fi
-}
-
-function commandExists () {
-    # echo `command -v foo >/dev/null 2>&1 || echo >&2 "The command $1 is not installed $2"; exit 1`
-    `hash tree 2>/dev/null || exit 1`
 }
 
 # some chrome versions require this for you to enter on a meeting
 alias fixcamera="sudo killall VDCAssistant"
 # your IP in the local network
-alias ipin="ipconfig getifaddr en0"
+# alias ipin="try -qe ipconfig getifaddr en0 "
+alias ipin="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 # your IP seen from outside
 alias ipout='dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null || echo "No internet connection"'
 # more information about your ip
-alias ip="echo -e Internal IP Address: ; ipconfig getifaddr en0; echo -e Public facing IP Address: ; curl ipecho.net/plain ; echo ;"
+alias ip="echo -e Internal IP Address: ; ipin; echo -e Public facing IP Address: ; ipout ; echo ;"
+alias ips="ip"
 alias aliases='alias'
+alias lh='ls -lisAdGl .[^.]*'
+alias ff='find . -not -path "*/node_modules/*" -not -path "*.git/*" -type f -iname '
+alias findfile='ff'
+alias fd='find . -not -path "*/node_modules/*" -not -path "*.git/*" -type d -iname '
+alias finddir='fd'
 alias ..='cd ..'
 alias cd..='cd ..'
 alias .2="cd ../../"
@@ -78,8 +133,19 @@ alias bold="bold"
 alias push="git push origin"
 alias pull="git pull origin"
 alias exit="exit && echo 0 > ~/.uis"
-alias line="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -"
-alias doubleline="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' ="
+
+function line () {
+    if [[ -z "$1" ]]; then
+        local char="-"
+    else 
+        local char="$1"
+    fi
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' $char
+}
+function doubleline () {
+    line "="
+}
+
 alias sizes="sudo du -cxhd 1"
 alias flushDNS='dscacheutil -flushcache'
 alias DSFiles_removal="find . -type f -name '*.DS_Store' -ls -delete"
@@ -89,7 +155,9 @@ alias reload="exec ${SHELL} -l"
 # alias reload="tset 2>/dev/null || reset"
 alias h='history'
 alias today='date +"%d-%m-%Y"'
-alias now='date +"%T"'
+if [ -n "now" ]; then
+    alias now='date +"%T"'
+fi
 alias ports='netstat -tulanp'
 alias lsd='ll | grep "^d" --colors=never' # ls for only directories
 alias lsf='ll | grep "^[^d]" --color=no' # ls for only files
@@ -143,6 +211,7 @@ if [ $? -eq 0 ]; then
 		git diff --no-index --color-words "$@";
 	}
 fi;
+
 # `hierarchy` is a shorthand for `tree` with hidden files and color enabled, ignoring
 # the `.git` directory, listing directories first. The output gets piped into
 # `less` with options to preserve color and line numbers, unless the output is
@@ -164,6 +233,7 @@ function sizeof() {
 		du $arg .[^.]* ./*;
 	fi;
 }
+
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
 function targz() {
 	local tmpFile="${@%/}.tar";

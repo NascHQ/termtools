@@ -348,7 +348,7 @@ And the results would be one of:
 | fixcamera          | Fixes the camera when it is not loading (a known bug triggered in Google Chrome)      |
 | ipin               | Shows the internal IP addess                                                          |
 | ipout              | Shows the IP facing the public network                                                |
-| ip                 | Shows both internal and external IPs                                                  |
+| ip/ips             | Shows both internal and external IPs                                                  |
 | aliases            | Shows the list of currently supported aliases                                         |
 | back               | Goes to the last path where you were                                                  |
 | ..                 | Equivalent to `cd ..`                                                                 |
@@ -374,18 +374,14 @@ And the results would be one of:
 | flushDNS           | Flushes the DNSs                                                                      |
 | DSFiles_removal    | Removes all the `.DS_Store` files (recursivelly) in the current tree                  |
 | hosts_editir       | Opens and editor for your hosts file                                                  |
+| ff/findfile        | Searches for a file with the given name                                               |
+| fd/finddir         | Searches for a directory with the given name                                          |
 | h                  | Shows the bash history                                                                |
+| lh                 | Lists only the hidden files                                                           |
 | today              | Shows the date for today                                                              |
 | now                | Shows the current time                                                                |
 | ports              | Shows the currently pened ports                                                       |
 | lsd                | Equivalent to `ls` but showing only directories                                       |
-| extract            | Extracts any compressed files (works with any file with <br/>extension tar.bz2, tar.gz, bz2, rar, gz, tar, tbz2, tgz, zip, Z, 7z)                  |
-| pid                | Shows the PID for a given process name                                                |
-| about              | Shows info on the current serve/session/user                                          |
-| targz              | Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression            |
-| googl/short        | Shortens a URL using goo.gl service                                                   |
-| sizeof             | Gives you the size of a file, or the total size of a directory                        |
-| hierarchy          | Shows a tree of files ignoring `node_modules` and other temp files, using line <br/>numbers, pages and colors.                                                            |
 | hide-desktop-icons | Hide all the desktop icons (specially useful when presenting to an audience)          |
 | show-desktop-icons | show all desktop icons                                                                |
 | chromekill         | Kills all Google Chrome tabs to free some memory                                      |
@@ -393,17 +389,37 @@ And the results would be one of:
 | path               | Shows all the address in your `$PATH`, each one in a different line                   |
 | show-hidden-files  | Show hidden files (MacOS only)                                                        |
 | hide-hidden-files  | Hide hidden files (MacOS only)                                                        |
-| dog                | Just like cat, but paginated and using line numbers                                   |
 | ifactive           | Shows all the active network connections                                              |
 | amioffline         | Answers "Yes" if you are offline, and "No" otherwise                                  |
 | amionline          | Answers "Yes" if you are online, and "No" otherwise                                   |
 | desktop/desk       | Equivalent to `cd ~/Desktop`                                                          |
 | docs/d/documents   | Equivalent to `cd ~/Documents`                                                        |
 | downloads/down     | Equivalent to `cd ~/Downloads`                                                        |
-| line               | Writes a line (-) in terminal                                                         |
-| doubleline         | Writes a double line (=) in terminal                                                  |
-| bold               | Like `echo`, but outputs the text in _bold_.                                          |
-| try                | Will try the following command and if it is not installed, will show a nicer message exiting with `0`.<br/>Ex:<br/>`try some command` <br/>or<br/>`try ls -la` |
+
+### Functions
+
+| Function           | Description                                                                           | Options |
+|--------------------|---------------------------------------------------------------------------------------|-----------|
+| try                | Will try the following command and if it is not installed, will show a nicer message exiting with `0`..<br/>Ex:<br/>`try some command` <br/>or<br/>`try ls -la`<br/>.  | `-q`: Executes the command if the program is installed, and does nothing if not(return value is 0)<br/>`-e`: Returns 1 as the _return value_ in case the program is not installed<br/>`-h`: A full help description of the function |
+| bold               | Echoes the following arguments in bold | |
+| line               | Writes a line (-) in terminal                                                         | `""`: A string with one character to be used to draw the line.<br/>Careful when using special characters as they will **require** quotes          |
+| doubleline         | Writes a double line (=) in terminal                                                  |           |
+| dog                | Just like cat, but paginated and using line numbers                                   | Any argument you would use with `cat`          |
+| sizeof             | Gives you the size of a file, or the total size of a directory                        | `[path]`: You can pass the path for the a file or directory            |
+| hierarchy          | Shows a tree of files ignoring `node_modules` and other temp files, using line <br/>numbers, pages and colors. | Any extra argument you can pass into `tree` |
+| extract            | Extracts any compressed files (works with any file with <br/>extension tar.bz2, tar.gz, bz2, rar, gz, tar, tbz2, tgz, zip, Z, 7z)                  |
+| pid                | Shows the PID for a given process name                                                | `process name`: You can a string or a regex, like `pid /^node$/`  |
+| about              | Shows info on the current serve/session/user                                          | |
+| targz              | Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression            | `path`: The path for the file to be compressed |
+| googl/short        | Shortens a URL using goo.gl service                                                   | `path`: The path for the file to be compressed`path`: The path for the file to be shrinked |
+
+### Safety
+
+We will also add some features for safety, like:
+
+- `rm` is now `rm -i` by default and will ask you if you are sure you want to remove a file (unless you use `-f`)
+- `chgrp` will ensure you keep your root path safe
+- `chown` will ensure you keep your root path safe
 
 ### License
 
@@ -424,4 +440,3 @@ Send suggestions opening issues with the title starting with "[SUGGESTION]".
 
 We are welcoming new themes and all the help we might get.  
 Let's get in touch :)  
-
