@@ -2,12 +2,6 @@
 const fs = require('fs')
 const colors = require('../colors.js')
 
-// apply // applies the new bash_profile
-// reload // applies the default
-// remove // comments the source line in bash_profile
-// restore // alias for remove
-// help // shows the contents from readme
-// customize // create a custom file for you to edit (based on the current default)
 const param = process.argv[2]
 const args = Array.from(process.argv).slice(3)
 

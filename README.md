@@ -101,6 +101,9 @@ termtools apply
 
 ## CLI options
 
+You can use the _cli options_ following the pattern:
+
+`termtools [options]`
 
 | Option    | Description                                                                 |
 |-----------|-----------------------------------------------------------------------------|
@@ -112,6 +115,7 @@ termtools apply
 | set theme | Replaces the current theme with an existing one. Use `[tab]` to see the list of installed themes.<br/>**BE CAREFUL**: It will overwrite your `~/.bash_profile.js` if it already exists and you may loose any customization you had applied to it       |
 | check     | Shows a test block for you to verify if your font family is working ok      |
 
+> You can hit [tab] for some auto-complete
 
 ## Git integration
 
@@ -174,21 +178,8 @@ If you exported a function, it will be called receiving one parameter, an object
 | IP          | The current device's ip                                                               |
 | BATTERY     | The current percentage of the battery (give or take...some OSs lie a little about it) |
 | IS_CHARGING | True if the device is connected and charging                                          |
-| GIT_STATUS  | The repository status. May be from -2 to 5, meaning:                                  |
-|             | -2: COMMITS DIVERGED                                                                  |
-|             | -1: COMMITS BEHIND                                                                    |
-|             | 0: NO CHANGES                                                                         |
-|             | 1: COMMITS AHEAD                                                                      |
-|             | 2: UNTRACKED CHANGES                                                                  |
-|             | 3: CHANGES TO BE COMMITTED                                                            |
-|             | 4: LOCAL AND UNTRACKED CHANGES                                                        |
-|             | 5: LOCAL CHANGES                                                                      |
-| GIT_SYMBOL  | A symbol representing the current position of the branch. Symbols can be:             |
-|             | "-": COMMITS BEHIND                                                                   |
-|             | "+": COMMITS AHEAD                                                                    |
-|             | "!": COMMITS DIVERGED                                                                 |
-|             | "*": UNTRACKED                                                                        |
-|             | "": Anything else                                                                     |
+| GIT_STATUS  | The repository status. May be from -2 to 5, meaning:<br/>-2: COMMITS DIVERGED<br/>-1: COMMITS BEHIND<br/>0: NO CHANGES<br/>1: COMMITS AHEAD<br/>2: UNTRACKED CHANGES<br/>3: CHANGES TO BE COMMITTED<br/>4: LOCAL AND UNTRACKED CHANGES<br/>5: LOCAL CHANGES |
+| GIT_SYMBOL  | A symbol representing the current position of the branch. Symbols can be: <br/>"-": COMMITS BEHIND<br/>"+": COMMITS AHEAD<br/>"!": COMMITS DIVERGED<br/>"*": UNTRACKED<br/>"": Anything else |
 | GIT_BRANCH  | The name of the current git branch                                                    |
 | IS_WRITABLE | True if the current user has write access to the current directory                    |
 | colors      | A referece to the a `chalk` instance, allowing you to add colors if you need to       |

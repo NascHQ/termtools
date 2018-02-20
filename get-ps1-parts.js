@@ -504,7 +504,6 @@ function getWeather (opts = {}) {
     } catch (error) {
         console.log(colors.red('[x] ') + error)
     }
-    // console.log(opts)
     return ''
 }
 

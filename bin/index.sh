@@ -4,7 +4,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 case $1 in 
     "apply") 
-        # node "$DIR/install.js"
         nasc-termtools install
         exec ${SHELL} -l
     ;;

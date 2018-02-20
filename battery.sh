@@ -53,7 +53,7 @@ function battery_charge() {
             else
                 BATT_CONNECTED=1
             fi
-                BATTERY_STATE=$battery_state #$(cat $battery_current)
+                BATTERY_STATE=$battery_state
             ;;
     esac
 }

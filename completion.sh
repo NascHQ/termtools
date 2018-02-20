@@ -1,5 +1,4 @@
 
-# complete -W "restore remove reload apply \"set theme\" help version version customize" termtools
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 function _getTermToolsOptions () {

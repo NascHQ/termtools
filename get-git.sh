@@ -16,7 +16,7 @@ function getGit () {
                     ;;
                     "ahead")
                         timelineSymbol="+"
-                        status=1 #"$COMMITS_AHEAD_OR_BEHIND"
+                        status=1 # COMMITS_AHEAD_OR_BEHIND"
                     ;;
                     "diverged")
                         timelineSymbol="!"
@@ -24,25 +24,25 @@ function getGit () {
                     ;;
                     *)
                         timelineSymbol=""
-                        status=0 #"$NO_CHANGES_COLOR"
+                        status=0 # NO_CHANGES_COLOR"
                     ;;
                 esac
                 # fi
                 ;;
             'Untracked' | 'Untracked,nothing' | 'Unmerged' | 'Unmerged,Untracked')
-                status=2 #"$UNTRACKED_CHANGES_COLOR"
+                status=2 # UNTRACKED_CHANGES_COLOR"
                 timelineSymbol+="*"
                 ;;
             'Changes,to be committed')
-                status=3 #"[38;5;228m"
+                status=3 # "[38;5;228m"
                 ;;
             'Changes,Untracked' | 'Changes,to be committed,Changes,Untracked' | 'Changes,to be committed,Untracked')
-                status=4 #"$LOCAL_AND_UNTRACKED_CHANGES_COLOR"
+                status=4 # LOCAL_AND_UNTRACKED_CHANGES_COLOR"
                 timelineSymbol+="*"
                 ;;
             *)
                 COUNTER=-5
-                status=5 #"$LOCAL_CHANGES_COLOR"
+                status=5 # LOCAL_CHANGES_COLOR"
                 ;;
             esac
 

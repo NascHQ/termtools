@@ -18,7 +18,7 @@ module.exports = function writeInBox (content, color = '#384250', bgColor = '#f0
 
     content.unshift(''.padEnd(lineLength))
     content.push(''.padEnd(lineLength))
-    // content.push('').padEnd(lineLength)
+    
     content = content.map((line, i) => {
         let raw = line.replace(rx, '')
         let diff = line.length - raw.length

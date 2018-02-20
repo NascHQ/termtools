@@ -2,7 +2,6 @@
 const colors = require('./colors')
 const writeInBox = require('./box.js')
 
-// const boxFX = colors.bgWhite.black
 console.log(`
 Can you see the two "arrow symbols" inside the box bellow?
 

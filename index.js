@@ -58,6 +58,11 @@ let git = fs.readFileSync(DIR_NAME + '/get-git.sh', 'utf8').toString()
 // battery manager
 let battery = fs.readFileSync(DIR_NAME + '/battery.sh', 'utf8').toString()
 
+/**
+ * This is used to mark termtools as installed (by touching a ~/.uis file)
+ * 
+ * This will define the PS1 as a function to call our node manager.
+ */
 let ps1 = `
 echo 0 > ~/.uis
 
@@ -104,11 +109,7 @@ PS1="\${PS2c##*[$((PS2c=1))-9]}\$PS1"
 PS2="${colors.bgBlack.gray(" \\$((PS2c=PS2c+1)) ")}"
 `
 
-let nodeBin = ''// `export PATH="$HOME/.node/bin:$PATH"`
-
-// the characters we will try to use are these:
-// ⎇")
-// we should find a way to ensure the user can see them in their terminal
+let nodeBin = ''
 
 // joining all the resulting content
 const exportedContent = '' +
@@ -140,5 +141,4 @@ try {
         console.log('\n'+
         'Do you have problem with sudo and global instalations? try running:\n\n   sudo chown -R $(whoami) ~/.npm\n\n')
     }
-    // throw new Error(colors.red('[x] ') + 'Error when applying terminal tools!\n' + colors.bold(error))
 }
