@@ -379,15 +379,13 @@ And the results would be one of:
 | now                | Shows the current time                                                                |
 | ports              | Shows the currently pened ports                                                       |
 | lsd                | Equivalent to `ls` but showing only directories                                       |
-| extract            | Extracts any compressed files (works with any file with                               |
-|                    | extension tar.bz2, tar.gz, bz2, rar, gz, tar, tbz2, tgz, zip, Z, 7z)                  |
+| extract            | Extracts any compressed files (works with any file with <br/>extension tar.bz2, tar.gz, bz2, rar, gz, tar, tbz2, tgz, zip, Z, 7z)                  |
 | pid                | Shows the PID for a given process name                                                |
 | about              | Shows info on the current serve/session/user                                          |
 | targz              | Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression            |
 | googl/short        | Shortens a URL using goo.gl service                                                   |
 | sizeof             | Gives you the size of a file, or the total size of a directory                        |
-| hierarchy          | Shows a tree of files ignoring `node_modules` and other temp files, using line        |
-|                    | numbers, pages and colors.                                                            |
+| hierarchy          | Shows a tree of files ignoring `node_modules` and other temp files, using line <br/>numbers, pages and colors.                                                            |
 | hide-desktop-icons | Hide all the desktop icons (specially useful when presenting to an audience)          |
 | show-desktop-icons | show all desktop icons                                                                |
 | chromekill         | Kills all Google Chrome tabs to free some memory                                      |
@@ -405,6 +403,7 @@ And the results would be one of:
 | line               | Writes a line (-) in terminal                                                         |
 | doubleline         | Writes a double line (=) in terminal                                                  |
 | bold               | Like `echo`, but outputs the text in _bold_.                                          |
+| try                | Will try the following command and if it is not installed, will show a nicer message exiting with `0`.<br/>Ex:<br/>`try some command` <br/>or<br/>`try ls -la` |
 
 ### License
 

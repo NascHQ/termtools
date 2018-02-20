@@ -5,6 +5,42 @@
 # fi
 
 # if test "$(uname)" = "Darwin" ; then
+function try () {
+    # echo `command -v foo >/dev/null 2>&1 || echo >&2 "The command $1 is not installed $2"; exit 1`
+    local apt=`command -v apt-get`
+    local yum=`command -v yum`
+    local brew=`command -v brew`
+    local theCommand="$1"
+
+    if [ "$theCommand" == "sudo" ]; then
+        theCommand="$2"
+    fi
+
+    if hash $theCommand 2>/dev/null; then
+        $@
+    else
+        echo "$theCommand is not installed"
+        if [ -n "$apt" ]; then
+            echo "Try installing it like:"
+            echo ""
+            echo "apt-get -y install $theCommand"
+        elif [ -n "$yum" ]; then
+            echo "Try installing it like:"
+            echo ""
+            echo "yum -y install $theCommand"
+        elif [ -n "$brew" ]; then
+            echo "Try installing it like:"
+            echo ""
+            echo "brew install $theCommand"
+        fi
+        echo ""
+    fi
+}
+
+function commandExists () {
+    # echo `command -v foo >/dev/null 2>&1 || echo >&2 "The command $1 is not installed $2"; exit 1`
+    `hash tree 2>/dev/null || exit 1`
+}
 
 # some chrome versions require this for you to enter on a meeting
 alias fixcamera="sudo killall VDCAssistant"
@@ -112,7 +148,7 @@ fi;
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
 function hierarchy() {
-	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+	try tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
 # Determine size of a file or total size of a directory

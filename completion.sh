@@ -44,6 +44,9 @@ function _getNPMOptions () {
         )" 2>/dev/null`
         COMPREPLY=( $(compgen -W "$scriptsList" -- $word) )
     ;;
+    "version")
+        COMPREPLY=( $(compgen -W "patch minor major" -- $word) )
+    ;;
     *)
         COMPREPLY=( $(compgen -W 'run start test access adduser bin bugs cache completion config ddp dedupe deprecate dist-tag docs doctor edit explore get help help-search init install link list login logout ls outdated owner pack ping prefix profile prune publish uninstall unpublish unstar update version view whoami' -- $word ) )
     esac
