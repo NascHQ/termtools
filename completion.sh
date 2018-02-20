@@ -16,7 +16,7 @@ function _getTermToolsOptions () {
         COMPREPLY=( $(compgen -W "$scriptsList" -- $word) )
     ;;
     *)
-        COMPREPLY=( $(compgen -W 'restore remove reload apply set help version version customize' -- $word ) )
+        COMPREPLY=( $(compgen -W 'restore remove reload check apply set help version version customize' -- $word ) )
     esac
 }
 

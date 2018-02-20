@@ -1,6 +1,6 @@
 # Bash Profile in JavaScript
 
-Easy to customize, built on top of the power of JavaScript and Bash, it ads a bunch of _aliases_, functions, features and extra funcionality for your bash profile.  
+Easy to customize, built on top of the power of JavaScript and Bash, it adds a bunch of _aliases_, functions, features and extra funcionality for your bash profile.  
 The perfect tool to optimize the JavaScript developer command line.
 
 ![termtools themes](media/termtools-built-in-themes.png)
@@ -98,6 +98,20 @@ reload
 termtools restore
 termtools apply
 ```
+
+## CLI options
+
+
+| Option    | Description                                                                 |
+|-----------|-----------------------------------------------------------------------------|
+| help      | Shows the help contenbt                                                     |
+| apply     | Applies the termtools PS1 effects                                           |
+| reload    | Reloads the bash profile                                                    |
+| restore   | Disables termtools effects, restoring your PS1 to what is was before        |
+| customize | Will copy the default theme into your _home_ directory for you to customize it.<br/>**BE CAREFUL**: It will overwrite your `~/.bash_profile.js` if it already exists and you may loose any customization you had applied to it            |
+| set theme | Replaces the current theme with an existing one. Use `[tab]` to see the list of installed themes.<br/>**BE CAREFUL**: It will overwrite your `~/.bash_profile.js` if it already exists and you may loose any customization you had applied to it       |
+| check     | Shows a test block for you to verify if your font family is working ok      |
+
 
 ## Git integration
 
