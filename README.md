@@ -165,7 +165,7 @@ Just run:
  termtools customize
 ```
 
-It will create a file at **` ~/.basch_profile.js `**.  
+It will create a file at **` ~/.bash_profile.js `**.  
 That file is a copy of our _default_ theme, with comments and all you might need to extend it.  
 This JavaScript file **must** export a _literal object_, or a _function that returns a literal object_.
 
