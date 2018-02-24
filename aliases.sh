@@ -177,8 +177,35 @@ alias amioffline="ping www.google.com -c 1 2>/dev/null >/dev/null && echo \"No\"
 
 alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
 alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
+# Empty the Trash on all mounted volumes and the main HDD
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash;"
+alias pubkey="more ~/.ssh/id_rsa.pub | pbcopy | printf '=> Public key copied to pasteboard.\n'"
 command -v md5sum > /dev/null || alias md5sum="md5"
 command -v sha1sum > /dev/null || alias sha1sum="shasum"
+
+# Ignore duplicate commands in the history
+export HISTCONTROL=ignoredups
+# Make new shells get the history lines from all previous
+# shells instead of the default "last window closed" history
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
+# imported from @necolas's dotfiles
+# Create a data URI from a file and copy it to the pasteboard
+datauri() {
+    local mimeType=$(file -b --mime-type "$1")
+    if [[ $mimeType == text/* ]]; then
+        mimeType="${mimeType};charset=utf-8"
+    fi
+    printf "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')" | pbcopy | printf "=> data URI copied to pasteboard.\n"
+}
+# Autocorrect typos in path names when using `cd`
+shopt -s cdspell
+
+# Check the window size after each command and, if necessary, update the values
+# of LINES and COLUMNS.
+shopt -s checkwinsize
+
+
 
 function dog () {
     cat $@ | less -FRNX

@@ -29,6 +29,8 @@ The perfect tool to optimize the JavaScript developer command line.
 - [x] More tools, like time, battery and readOnly...
 - [x] Extendable...you can customize your theme with any extra string, allowing you to use JavaScript to decide what to show
 - [x] Create aditional, customizable parts for _$PS1_
+- [x] Ignore duplicate commands in history
+- [x] New terminal windows will have the history from brevious bash
 
 ## Installing it
 
@@ -400,6 +402,8 @@ And the results would be one of:
 | desktop/desk       | Equivalent to `cd ~/Desktop`                                                          |
 | docs/d/documents   | Equivalent to `cd ~/Documents`                                                        |
 | downloads/down     | Equivalent to `cd ~/Downloads`                                                        |
+| emptytrash         | Empty the Trash on all mounted volumes and the main HDD                               |
+| pubkey             | Copies your public key to clipboard                                                   |
 
 ### Functions
 
@@ -417,6 +421,7 @@ And the results would be one of:
 | about              | Shows info on the current serve/session/user                                          | |
 | targz              | Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression            | `path`: The path for the file to be compressed |
 | googl/short        | Shortens a URL using goo.gl service                                                   | `path`: The path for the file to be compressed`path`: The path for the file to be shrinked |
+| datauri            | Create a data URI from a file and copy it to the pasteboard                           | `path`: The file to be copied as base64 |
 
 ### Safety
 
@@ -440,6 +445,27 @@ Please refer to it in our [repository](https://github.com/NascHQ/termtools/).
 Ask your questions in our issues with the title starting with "[QUESTION]".  
 Be sure your searched for similar issues that might also have been already closed by then.  
 Send suggestions opening issues with the title starting with "[SUGGESTION]".
+
+### Influences
+
+We noticed many well known developers share some of their aliases and customizations for terminal.  
+This has inspired us as well, bringing some of the best ideas to termtools.  
+Feel free to submit new ideas as well, by using the issues in this repository.
+
+Some ideas for the aliases and functions were inspired by (or brought from):
+
+- [@addyosmani](https://github.com/addyosmani) (Addy Osmani)
+  [https://github.com/addyosmani/dotfiles](https://github.com/addyosmani/dotfiles)
+- [@alrra](https://github.com/alrra) (Cãtãlin Mariş)
+  [https://github.com/alrra/dotfiles](https://github.com/alrra/dotfiles)
+- [@cowboy](https://github.com/cowboy) (Ben Alman)
+  [https://github.com/cowboy/dotfiles](https://github.com/cowboy/dotfiles)
+- [@mathiasbynens](https://github.com/mathiasbynens) (Mathias Bynens)
+  [https://github.com/mathiasbynens/dotfiles](https://github.com/mathiasbynens/dotfiles)
+- [@necolas](https://github.com/necolas) (Nicolas Gallagher)
+  [https://github.com/necolas/dotfiles](https://github.com/necolas/dotfiles)
+- [@paulirish](https://github.com/paulirish) (Paul Irish)
+  [https://github.com/paulirish/dotfiles](https://github.com/paulirish/dotfiles)
 
 ### Contribute
 
