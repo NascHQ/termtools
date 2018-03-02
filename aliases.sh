@@ -187,7 +187,7 @@ alias down='cd ~/Downloads'
 alias amionline="ping www.google.com -c 1 2>/dev/null >/dev/null && echo \"Yes\" || echo \"No\""
 alias amioffline="ping www.google.com -c 1 2>/dev/null >/dev/null && echo \"No\" || echo \"Yes\""
 
-alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
+alias ifactive="sudo ifconfig | try pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
 alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
 # Empty the Trash on all mounted volumes and the main HDD
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash;"
