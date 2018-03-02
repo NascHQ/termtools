@@ -149,7 +149,18 @@ function doubleline () {
 alias sizes="sudo du -cxhd 1"
 alias flushDNS='dscacheutil -flushcache'
 alias DSFiles_removal="find . -type f -name '*.DS_Store' -ls -delete"
-alias hosts_edit='sudo vi /etc/hosts'
+
+
+function hostedit() {
+    local apt=`command -v vim`
+
+    if [ -n $vim ]; then
+        sudo vim /etc/hosts
+    else
+        sudo vi /etc/hosts
+    fi
+}
+alias hosts_edit=hostedit
 alias reloadprofiler='source ~/.bash_profile'
 alias reload="exec ${SHELL} -l"
 # alias reload="tset 2>/dev/null || reset"
