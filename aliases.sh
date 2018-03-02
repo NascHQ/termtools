@@ -6,7 +6,8 @@
 
 # if test "$(uname)" = "Darwin" ; then
 function try () {
-    # echo `command -v foo >/dev/null 2>&1 || echo >&2 "The command $1 is not installed $2"; exit 1`
+    # echo `command -v foo >/dev/null 2>&1 || echo >&2
+    # "The command $1 is not installed $2"; exit 1`
     local apt=`command -v apt-get`
     local yum=`command -v yum`
     local brew=`command -v brew`
@@ -94,7 +95,7 @@ function try () {
 alias fixcamera="sudo killall VDCAssistant"
 # your IP in the local network
 # alias ipin="try -qe ipconfig getifaddr en0 "
-alias ipin="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
+alias ipin="sudo ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 # your IP seen from outside
 alias ipout='dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null || echo "No internet connection"'
 # more information about your ip
