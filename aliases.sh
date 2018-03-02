@@ -162,6 +162,7 @@ function hostedit() {
 }
 alias hosts_edit=hostedit
 alias reloadprofiler='source ~/.bash_profile'
+alias reloadbashrc='source ~/.bashrc'
 alias reload="exec ${SHELL} -l"
 # alias reload="tset 2>/dev/null || reset"
 alias h='history'
