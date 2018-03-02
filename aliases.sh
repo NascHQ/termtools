@@ -171,7 +171,7 @@ if [ -n "now" ]; then
     alias now='date +"%T"'
 fi
 alias ports='netstat -tulanp'
-alias lsd='ll | grep "^d" --colors=never' # ls for only directories
+alias lsd='ll | grep "^d" --color=never' # ls for only directories
 alias lsf='ll | grep "^[^d]" --color=no' # ls for only files
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
