@@ -3,6 +3,11 @@ alias ipin="sudo ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){
 alias ipout='dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null || echo "No internet connection"'
 alias ports='netstat -tulanp'
 
+# Tip imported from Mathias Bynens' dotfiles
+# https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
+# Print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'
+
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
