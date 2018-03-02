@@ -151,10 +151,10 @@ alias flushDNS='dscacheutil -flushcache'
 alias DSFiles_removal="find . -type f -name '*.DS_Store' -ls -delete"
 
 
-function hostedit() {
-    local apt=`command -v vim`
+function hostsedit() {
+    viim=`command -v vim`
 
-    if [ -n $vim ]; then
+    if [ $viim ]; then
         sudo vim /etc/hosts
     else
         sudo vi /etc/hosts
