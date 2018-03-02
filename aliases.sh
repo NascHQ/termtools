@@ -6,8 +6,7 @@
 
 # if test "$(uname)" = "Darwin" ; then
 function try () {
-    # echo `command -v foo >/dev/null 2>&1 || echo >&2
-    # "The command $1 is not installed $2"; exit 1`
+    # echo `command -v foo >/dev/null 2>&1 || echo >&2 "The command $1 is not installed $2"; exit 1`
     local apt=`command -v apt-get`
     local yum=`command -v yum`
     local brew=`command -v brew`
@@ -150,7 +149,7 @@ function doubleline () {
 alias sizes="sudo du -cxhd 1"
 alias flushDNS='dscacheutil -flushcache'
 alias DSFiles_removal="find . -type f -name '*.DS_Store' -ls -delete"
-alias hosts_edit='sudo vim /etc/hosts'
+alias hosts_edit='sudo vi /etc/hosts'
 alias reloadprofiler='source ~/.bash_profile'
 alias reload="exec ${SHELL} -l"
 # alias reload="tset 2>/dev/null || reset"
