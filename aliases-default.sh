@@ -1,6 +1,8 @@
-alias ips="ip"
-alias ipin="sudo ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 alias ipout='dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null || echo "No internet connection"'
+alias ip="echo -e Internal IP Address: ; ipin; echo -e Public facing IP Address: ; ipout ; echo ;"
+alias ips="ip"
+alias ipin="getIpIn"
+
 alias ports='netstat -tulanp'
 
 # Tip imported from Mathias Bynens' dotfiles
@@ -67,7 +69,7 @@ alias aliases='alias'
 
 alias amionline="ping www.google.com -c 1 2>/dev/null >/dev/null && echo \"Yes\" || echo \"No\""
 alias amioffline="ping www.google.com -c 1 2>/dev/null >/dev/null && echo \"No\" || echo \"Yes\""
-alias ifactive="sudo ifconfig | try pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
+alias ifactive="ifActive"
 
 alias chown='chown --preserve-root'
 alias chgrp='chgrp --preserve-root'

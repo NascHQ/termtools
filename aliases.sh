@@ -118,15 +118,6 @@ function doubleline () {
 }
 
 
-function hosts_edit() {
-    vimEditor=`command -v vim`
-
-    if [ $vimEditor ]; then
-        sudo vim /etc/hosts
-    else
-        sudo vi /etc/hosts
-    fi
-}
 
 
 # `hierarchy` is a shorthand for `tree` with hidden files and color enabled, ignoring
@@ -288,6 +279,39 @@ function forward {
         BACK_HISTORY=$PWD:$BACK_HISTORY
         builtin cd "$DIR"
     fi
+}
+
+
+hosts_edit() {
+    vimEditor=`command -v vim`
+
+    if [ $vimEditor ]; then
+        sudo vim /etc/hosts
+    else
+        sudo vi /etc/hosts
+    fi
+}
+
+
+# Linux use xclip and not pbcopy
+# we are simulating pbcopy
+# to have a hybrid command
+if [ $(uname) != 'Darwin' ]; then
+    alias pbcopy='try xclip -selection clipboard'
+    alias pbpaste='try xclip -selection clipboard -o'
+fi
+pubkey() {
+    more ~/.ssh/id_rsa.pub | pbcopy | printf '===> Public key copied to pasteboard. \n'
+}
+
+
+getIpIn() {
+    ifconfig 2>/dev/null || sudo ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'
+}
+
+
+ifActive() {
+    ifconfig 2>/dev/null || sudo ifconfig | try pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'
 }
 
 
