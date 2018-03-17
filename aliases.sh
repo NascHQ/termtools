@@ -318,8 +318,8 @@ ifActive() {
 #####################
 # IMPORTING ALIASES #
 #####################
-source 'aliases-default.sh'
+. './aliases-default.sh'
 
 if [ $(uname) == 'Darwin' ]; then
-    source 'aliases-macos.sh'
+    . './aliases-macos.sh'
 fi;
