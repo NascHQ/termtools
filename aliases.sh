@@ -296,12 +296,22 @@ hosts_edit() {
 # Linux use xclip and not pbcopy
 # we are simulating pbcopy
 # to have a hybrid command
-if [ $(uname) != 'Darwin' ]; then
-    alias pbcopy='try xclip -selection clipboard'
-    alias pbpaste='try xclip -selection clipboard -o'
-fi
+
 pubkey() {
-    more ~/.ssh/id_rsa.pub | pbcopy | printf '===> Public key copied to pasteboard. \n'
+    #alias pbcopy='try xclip -selection clipboard'
+    #alias pbpaste='try xclip -selection clipboard -o'
+    
+    if [ $(uname) != 'Darwin' ]; then
+        xclipIsCommand=`command -v xclip`
+
+        if [ $xclipIsCommand ]; then
+            more ~/.ssh/id_rsa.pub | xclip -selection clipboard | printf '===> Public key copied to pasteboard. \n'
+        else
+            try xclip -selection clipboard
+        fi
+    else
+        more ~/.ssh/id_rsa.pub | pbcopy | printf '===> Public key copied to pasteboard. \n'
+    fi
 }
 
 
