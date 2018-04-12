@@ -20,6 +20,7 @@ case $1 in
     "remove" | "restore")
         nasc-termtools remove
         export TERMTOOLS_ENABLED=0
+        export PROMPT_COMMAND=""
         exec ${SHELL} -l
     ;;
     "post-install")

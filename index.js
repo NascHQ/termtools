@@ -89,7 +89,10 @@ function buildPS1ForReal () {
 # it will write the PS1 in a way it will trigger buildPS1ForReal on new entries
 # and will also write a default output for sudo
 function buildPS1 () {
-    if [ $TERMTOOLS_ENABLED -eq 1 ]; then
+    if [ -n "$(type -t $buildPS1ForReal)" ]; then
+        return
+    fi
+    if [ "$TERMTOOLS_ENABLED" == "1" ]; then
         PS2c=1
         PS1="\\$(if [ -n \\"\\$(type -t buildPS1ForReal)\\" ]; then echo \\"$(buildPS1ForReal $(whoami) 2>/dev/null) \\"; else echo \\"$(cat ${DIR_NAME}/sudoed-ps1.txt 2>/dev/null)\\" ; fi)"
     fi
@@ -116,11 +119,13 @@ let nodeBin = ''
 // joining all the resulting content
 const exportedContent = '' +
     `#!/bin/bash\n` +
+    `if [ "$TERMTOOLS_ENABLED" == "1" ]; then\n` +
     `${aliases}\n` +
     `${git}\n` +
     `${battery}\n` +
     `${ps1}\n` +
-    `${nodeBin}\n\n`
+    `${nodeBin}\n` +
+    `fi\n\n`
 
 // and finally printing it all into the real .sh file
 const exportedPath = DIR_NAME + '/exported.sh'
