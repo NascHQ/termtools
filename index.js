@@ -89,8 +89,10 @@ function buildPS1ForReal () {
 # it will write the PS1 in a way it will trigger buildPS1ForReal on new entries
 # and will also write a default output for sudo
 function buildPS1 () {
-    PS2c=1
-    PS1="\\$(if [ -n \\"\\$(type -t buildPS1ForReal)\\" ]; then echo \\"$(buildPS1ForReal $(whoami))\\"; else echo \\"$(cat ${DIR_NAME}/sudoed-ps1.txt 2>/dev/null)\\" ; fi)"
+    if [ $TERMTOOLS_ENABLED -eq 1 ]; then
+        PS2c=1
+        PS1="\\$(if [ -n \\"\\$(type -t buildPS1ForReal)\\" ]; then echo \\"$(buildPS1ForReal $(whoami) 2>/dev/null) \\"; else echo \\"$(cat ${DIR_NAME}/sudoed-ps1.txt 2>/dev/null)\\" ; fi)"
+    fi
 }
 
 # here is where we use the current settings to generate the output for sudo

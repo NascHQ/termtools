@@ -14,7 +14,7 @@ try {
         console.log('> Termtools was already disabled')
     } else {
         const commented = '# ' + REDIRECT_FILE.join('\n# ')
-        fs.writeFileSync(redirectSH, commented, 'utf8')
+        fs.writeFileSync(redirectSH, commented + '\n', 'utf8')
     }
 } catch (error) {
     

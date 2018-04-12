@@ -5,6 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 case $1 in 
     "apply") 
         nasc-termtools install
+        export TERMTOOLS_ENABLED=1
         exec ${SHELL} -l
     ;;
     "version" | "--version" | "-v" | "v")
@@ -18,6 +19,7 @@ case $1 in
     ;;
     "remove" | "restore")
         nasc-termtools remove
+        export TERMTOOLS_ENABLED=0
         exec ${SHELL} -l
     ;;
     "post-install")

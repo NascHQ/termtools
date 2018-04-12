@@ -26,16 +26,16 @@ try {
     if(isNotInstalled) {
         execSync(`echo "${SOURCE_COMMAND_STR}" >> ${PROFILE_PATH}`)
 
-        console.log(`\n> ${SOURCE_COMMAND} command ADDED to ${PROFILE_PATH} file\n\n`)
-        return;
+        console.log(`\n> command ADDED to ${PROFILE_PATH} file\n\n`)
+        // return;
     }
     
     // let's uncomment the lines in redirect.sh
     // used to apply/restore command
     let redirectContent = fs.readFileSync(redirectSH, 'utf8')
-    redirectContent = redirectContent.replace(/(^|\n)\# /g, '$1')
+    redirectContent = redirectContent.replace(/(^|\n)\# /g, '$1').replace(/\n\n/g, '\n')
 
-    fs.writeFileSync(redirectSH, redirectContent, 'utf8')
+    fs.writeFileSync(redirectSH, redirectContent + '\n', 'utf8')
 
 } catch(error) {
     let errorMessage = error.message.toLowerCase();
