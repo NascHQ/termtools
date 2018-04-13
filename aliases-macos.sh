@@ -11,6 +11,11 @@ alias pubkey="more ~/.ssh/id_rsa.pub | pbcopy | printf '=> Public key copied to 
 alias show-hidden-files="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
 alias hide-hidden-files="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
 
+# Looks for processes using a given port
+isusingport() {
+    lsof -i tcp:$1
+}
+
 # Lock the screen (when going AFK)
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 # Kill all the tabs in Chrome to free up memory

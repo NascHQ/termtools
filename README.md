@@ -422,6 +422,7 @@ And the results would be one of:
 | targz              | Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression            | `path`: The path for the file to be compressed |
 | googl/short        | Shortens a URL using goo.gl service                                                   | `path`: The path for the file to be compressed`path`: The path for the file to be shrinked |
 | datauri            | Create a data URI from a file and copy it to the pasteboard                           | `path`: The file to be copied as base64 |
+| isusingport        | Looks for any process currently using a given port                                    | `port`: The port you are looking for
 
 ### Safety
 
